@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { readFile } from 'fs/promises'
+import path from 'path'
 import { parseM3U } from '@/lib/m3u-parser'
 import { resolvePlaylistUrl } from '@/lib/playlists'
 
@@ -13,6 +15,37 @@ type CacheEntry = {
 const cache = new Map<string, CacheEntry>()
 const CACHE_TTL_MS = 10 * 60 * 1000 // 10 minutes
 
+/**
+ * Read playlist content from a URL or a local public/ path.
+ * - Paths starting with "/" are resolved against the project's public/ directory.
+ * - Other strings are treated as remote URLs and fetched over HTTP.
+ */
+async function readPlaylistContent(target: string): Promise<string> {
+  // Local public file?
+  if (target.startsWith('/') && !target.startsWith('//')) {
+    const filePath = path.join(process.cwd(), 'public', target)
+    const buf = await readFile(filePath)
+    return buf.toString('utf-8')
+  }
+  // Remote URL
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 30000)
+  try {
+    const response = await fetch(target, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; StreamDeck/2.0)',
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`Failed to fetch playlist: ${response.status} ${response.statusText}`)
+    }
+    return await response.text()
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
   const providerId = searchParams.get('provider')
@@ -21,7 +54,7 @@ export async function GET(req: NextRequest) {
   const url = searchParams.get('url')
 
   // Determine what to fetch
-  let targetUrl: string | null = null
+  let target: string | null = null
   let cacheKey: string | null = null
   let sourceLabel = 'custom'
 
@@ -33,11 +66,11 @@ export async function GET(req: NextRequest) {
         { status: 404 },
       )
     }
-    targetUrl = resolved
+    target = resolved
     cacheKey = `${providerId}:${categoryId}:${playlistId ?? '_direct'}`
     sourceLabel = `${providerId}/${categoryId}${playlistId ? '/' + playlistId : ''}`
   } else if (url) {
-    targetUrl = url
+    target = url
     cacheKey = `url:${url}`
     sourceLabel = 'custom'
   } else {
@@ -60,26 +93,9 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // Fetch the M3U file
+  // Read the M3U content (local file or remote URL)
   try {
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 30000)
-    const response = await fetch(targetUrl!, {
-      signal: controller.signal,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; StreamDeck/2.0)',
-      },
-    })
-    clearTimeout(timeout)
-
-    if (!response.ok) {
-      return NextResponse.json(
-        { error: `Failed to fetch playlist: ${response.status} ${response.statusText}` },
-        { status: 502 },
-      )
-    }
-
-    const content = await response.text()
+    const content = await readPlaylistContent(target!)
     const parsed = parseM3U(content)
 
     // Cache it

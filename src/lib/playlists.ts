@@ -161,19 +161,19 @@ export const PROVIDERS: Provider[] = [
   },
 
   // ─────────────────────────────────────────────────────────────────────────
-  // SakaTV (Sakatv2025) — beIN Sports playlists
+  // IPTV4ON — uploaded local playlist (172 channels: Arabic, beIN Sports, France, World Cup 2026)
   // ─────────────────────────────────────────────────────────────────────────
   {
-    id: 'sakatv',
-    name: 'SakaTV',
-    description: 'beIN Sports playlists by Sakatv2025',
-    flag: '🏆',
+    id: 'iptv4on',
+    name: 'IPTV4ON',
+    description: 'Arabic, beIN Sports, France, World Cup 2026 — 172 channels',
+    flag: '🎬',
     categories: [
       {
-        id: 'bein-sport',
-        name: 'beIN Sports',
-        flag: '⚽',
-        directUrl: 'https://raw.githubusercontent.com/Sakatv2025/iptv-playlist/main/Bein_Sport.m3u',
+        id: 'all',
+        name: 'All Channels',
+        flag: '📺',
+        directUrl: '/iptv4on.m3u',
       },
     ],
   },
