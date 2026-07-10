@@ -334,6 +334,17 @@ export default function Home() {
     return m
   }, [data, showFavsOnly, showRecentOnly, favorites, deadChannels, hideDead, hideBad, recentSet])
 
+  // Total visible count (respecting dead/bad filters, but not search/group/fav/recent)
+  const totalVisibleCount = useMemo(() => {
+    if (!data) return 0
+    let list = data.channels
+    if (showFavsOnly) list = list.filter(c => favorites.has(c.url))
+    if (showRecentOnly) list = list.filter(c => recentSet.has(c.url))
+    if (hideBad) list = list.filter(c => !c.not247 && !c.geoBlocked)
+    if (hideDead) list = list.filter(c => !deadChannels.has(c.url))
+    return list.length
+  }, [data, showFavsOnly, showRecentOnly, favorites, deadChannels, hideDead, hideBad, recentSet])
+
   // ─── Provider switching ─────────────────────────────────────────────────
   const switchProvider = useCallback((provider: Provider) => {
     setActiveProvider(provider)
@@ -592,7 +603,7 @@ export default function Home() {
             <div className="p-2 space-y-0.5">
               <GroupButton
                 label="All Channels"
-                count={data ? data.totalCount - (hideDead ? deadChannels.size : 0) - (hideBad ? (data.totalCount - filteredChannels.length) : 0) : 0}
+                count={totalVisibleCount}
                 active={activeGroup === '__all' && !showFavsOnly && !showRecentOnly}
                 onClick={() => { setActiveGroup('__all'); setShowFavsOnly(false); setShowRecentOnly(false); setSidebarOpen(false) }}
                 icon={<Globe className="w-4 h-4" />}

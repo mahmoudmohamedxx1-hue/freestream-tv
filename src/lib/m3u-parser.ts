@@ -138,7 +138,62 @@ function nextId(): string {
   return `ch-${idCounter}`
 }
 
+/**
+ * Some M3U files on GitHub are accidentally saved as RTF (Rich Text Format),
+ * e.g. Sakatv2025/iptv-playlist/Bein_Sport.m3u was saved by TextEdit on macOS
+ * which wrapped it in RTF. This function detects and strips the RTF wrapper,
+ * extracting the underlying M3U text.
+ *
+ * RTF line breaks are encoded as `\` at the end of a line. RTF control words
+ * start with `\` (e.g. `\par`, `\f0`, `\cf0`). The actual text content follows
+ * the `\cf0 ` marker and ends with `}`.
+ */
+function stripRtfWrapper(content: string): string {
+  // Quick check: not RTF
+  if (!content.includes('{\\rtf')) return content
+
+  // Split into lines and extract M3U content
+  const lines = content.split(/\r?\n/)
+  const out: string[] = []
+  let inText = false
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i]
+
+    // Detect start of actual text content (after \cf0 marker)
+    if (!inText) {
+      if (line.includes('\\cf0')) {
+        // Extract everything after \cf0 on this line
+        const idx = line.indexOf('\\cf0')
+        line = line.slice(idx + 4).replace(/^\s+/, '')
+        inText = true
+        // Fall through to process this line
+      } else {
+        continue
+      }
+    }
+
+    // Strip trailing backslash (RTF line break)
+    if (line.endsWith('\\') && !line.endsWith('\\\\')) {
+      line = line.slice(0, -1)
+    }
+
+    // Strip trailing `}` (end of RTF document)
+    line = line.replace(/\}$/, '')
+
+    // Unescape RTF escape sequences
+    line = line.replace(/\\\\/g, '\\')
+
+    if (line.trim()) out.push(line)
+  }
+
+  return out.join('\n')
+}
+
 export function parseM3U(content: string): ParsedPlaylist {
+  // Strip RTF wrapper if present (some .m3u files were saved as RTF by accident)
+  content = stripRtfWrapper(content)
+
   const lines = content.split(/\r?\n/)
   const channels: Channel[] = []
   const groupSet = new Set<string>()

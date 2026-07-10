@@ -161,77 +161,19 @@ export const PROVIDERS: Provider[] = [
   },
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Arab IPTV (yazki87) — filtered Arabic list
+  // SakaTV (Sakatv2025) — beIN Sports playlists
   // ─────────────────────────────────────────────────────────────────────────
   {
-    id: 'arab-iptv',
-    name: 'Arab IPTV',
-    description: 'Filtered Arabic channels by yazki87',
-    flag: '🇦🇪',
+    id: 'sakatv',
+    name: 'SakaTV',
+    description: 'beIN Sports playlists by Sakatv2025',
+    flag: '🏆',
     categories: [
       {
-        id: 'filtered',
-        name: 'Filtered List',
-        flag: '✨',
-        directUrl: 'https://raw.githubusercontent.com/yazki87/arab-iptv/main/filtered_file_05.01.25.m3u',
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // Ustream (ktkooot1) — Arabic sports & entertainment packs
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    id: 'ustream',
-    name: 'Ustream',
-    description: 'Arabic sports & entertainment packs by ktkooot1',
-    flag: '👥',
-    categories: [
-      {
-        id: 'bein',
+        id: 'bein-sport',
         name: 'beIN Sports',
         flag: '⚽',
-        playlists: [
-          { id: 'ktk-bein-max', name: 'beIN Sports Max', flag: '⚽', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/BEIN%20SPORTS%20MAX.m3u' },
-          { id: 'ktk-bein-2025', name: 'beIN Sports 2025', flag: '⚽', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Beinsport%202025.6.11.m3u' },
-        ],
-      },
-      {
-        id: 'sports-packs',
-        name: 'Sports Packs',
-        flag: '🏆',
-        playlists: [
-          { id: 'ktk-blue-sport', name: 'Blue Sport', flag: '🔵', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Blue%20Sport.m3u' },
-          { id: 'ktk-ch-sport', name: 'CH Sport', flag: '⚽', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/CH%20Sport.m3u' },
-          { id: 'ktk-faster-sport', name: 'Faster Sport', flag: '⚡', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Faster%20Sport.m3u' },
-          { id: 'ktk-forever-sport', name: 'Forever Sport', flag: '♾️', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Forever%20Sport.m3u' },
-          { id: 'ktk-fun-sport', name: 'Fun Sport', flag: '🎯', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Fun%20Sport.m3u' },
-          { id: 'ktk-ghazal-sport', name: 'Ghazal Sport', flag: '🦌', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Ghazal%20Sport.m3u' },
-          { id: 'ktk-go-sport', name: 'Go Sport', flag: '🏁', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Go%20Sport.m3u' },
-          { id: 'ktk-novavod-sport', name: 'NOVAVOD Sport', flag: '🆕', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/NOVAVOD%20Sport.m3u' },
-          { id: 'ktk-novaa-sport', name: 'Novaa Sport', flag: '🆕', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Novaa%20Sport.m3u' },
-          { id: 'ktk-sdk-sport', name: 'SDK Sport', flag: '⚽', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/SDK%20SPORT.m3u' },
-          { id: 'ktk-showplus-sport', name: 'Showplus Sport', flag: '➕', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Showplus%20Sport.m3u' },
-          { id: 'ktk-sport-my-tv', name: 'Sport My TV', flag: '🏆', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Sport%20My%20TV.m3u' },
-          { id: 'ktk-top-sport', name: 'Top Sport', flag: '🔝', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Top%20Sport%20(1).m3u' },
-          { id: 'ktk-vip-sport', name: 'VIP Sport', flag: '💎', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/VIP%20SPORT.m3u' },
-          { id: 'ktk-venus-sport', name: 'Venus Sport', flag: '🌟', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Venus%20Sport.m3u' },
-        ],
-      },
-      {
-        id: 'entertainment',
-        name: 'Entertainment',
-        flag: '📺',
-        playlists: [
-          { id: 'ktk-alwan', name: 'Alwan Channels', flag: '🌈', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/ALWAN%20CHANNELS_20260623_230126.m3u' },
-          { id: 'ktk-hussam-tv', name: 'Hussam TV', flag: '📺', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Hussam_TV.m3u' },
-          { id: 'ktk-joker-aziz', name: 'Joker Aziz', flag: '🃏', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/JOKER%20AZIZ%20(1).m3u' },
-          { id: 'ktk-karam', name: 'Karam Palestine', flag: '🇵🇸', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/KARAM%20PALSSTEN%20IPTV.M3U' },
-          { id: 'ktk-ostora-tv', name: 'Ostora TV', flag: '🐉', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Ostora%20TV%20(2).m3u' },
-          { id: 'ktk-yasine-tv', name: 'Yasine TV', flag: '📺', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Yasine%20TV.m3u' },
-          { id: 'ktk-bn-max-nm', name: 'bN Max NM', flag: '📦', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/bN_MAX_NM.m3u' },
-          { id: 'ktk-bn-sa', name: 'bN SA', flag: '📦', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/bN_SA.m3u' },
-        ],
+        directUrl: 'https://raw.githubusercontent.com/Sakatv2025/iptv-playlist/main/Bein_Sport.m3u',
       },
     ],
   },
