@@ -1,0 +1,1163 @@
+[
+  {
+    "name": "Dev-Gaminger Sport Pack",
+    "url": "https://gist.githubusercontent.com/Dev-Gaminger010/36540530e38d3309000f6ff7a0c65f5f/raw",
+    "total": 5337,
+    "bein_total": 120,
+    "tested": 40,
+    "working": 0,
+    "dead": 40,
+    "working_channels": [],
+    "dead_channels": [
+      {
+        "name": "BEIN_Sports_News",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/2296",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Sport_NBA_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49691",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Movies_premiere",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/17",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Movies_Action",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/18",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Movies_Drama",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/19",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Movies_family",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/1791",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Fox_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49494",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN_FOX_Family_Movies_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/51393",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Drama_Arabic",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49495",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Baraem",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/3564",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Series_1",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/4114",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Series_2",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/50439",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_JEEM",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/3563",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_BE_Junior",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49868",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_GOURMET",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/4113",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Fatafeat",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/50063",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_AMC",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/48776",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_DREAMWORKS",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/4577",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN_Boomerang",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/48858",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_DMAX",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/48892",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN_Outdoor",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49491",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_DTX",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49496",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeiN_HGTV",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/52009",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Fox_Life_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/52773",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Discovery_Kids_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/52774",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Cartoon_Network_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/52775",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_BBC_Earth_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/52786",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeiN_Baby_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/52811",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Fox_Crime_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/53023",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Fox_Action_Movies_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/53024",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Box_Office_1",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/53060",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Box_Office_2",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/53061",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN_Discovery_Life",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/53944",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein_Animal_Planet_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/54362",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR_BeIN_SPORTS_1_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/3682",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR_BeIN_SPORTS_2_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/47302",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR_BeIN_SPORTS_3_HD",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/3680",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR_BEIN_SPORT_MAX_07",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49617",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR_BEIN_SPORT_MAX_08",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49616",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR_BEIN_SPORT_MAX_09",
+        "url": "http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/49615",
+        "reason": "Connection error"
+      }
+    ]
+  },
+  {
+    "name": "ItsRandall Arabic Sports",
+    "url": "https://gist.githubusercontent.com/ItsRandall/3119615c8b4732d7b56e5217d66edbab/raw",
+    "total": 516,
+    "bein_total": 78,
+    "tested": 40,
+    "working": 0,
+    "dead": 40,
+    "working_channels": [],
+    "dead_channels": [
+      {
+        "name": "ARABIC-BEIN SPORT 1",
+        "url": "rtmp://$OPT:rtmp-raw=rtmp://95.168.199.245:1935/live playpath=bns1 swfUrl=http://www.flashtv.co/ePlayerr.swf live=1 pageUrl=http://www.flashtv.co/Sportsiptv token=%ZZri(nKa@#Z",
+        "reason": "InvalidSchema: No connection adapters were found for 'rtmp://$OPT"
+      },
+      {
+        "name": "ARABIC-BEIN SPORT 2",
+        "url": "rtmp://$OPT:rtmp-raw=rtmp://95.168.199.245:1935/live playpath=bns2 swfUrl=http://www.flashtv.co/ePlayerr.swf live=1 pageUrl=http://www.flashtv.co/Sportsiptv token=%ZZri(nKa@#Z",
+        "reason": "InvalidSchema: No connection adapters were found for 'rtmp://$OPT"
+      },
+      {
+        "name": "ARABIC-beIN Sport 2",
+        "url": "http://hls01-04.az.myvideo.az/hls-live/livepkgr/sport2/sport2/sport2.m3u8?rRb545vJBB5tYzB7vVP",
+        "reason": "Connection error"
+      },
+      {
+        "name": "ARABIC-BEIN SPORT 3",
+        "url": "rtmp://$OPT:rtmp-raw=rtmp://31.220.0.103:1935/live playpath=bns3 pageUrl=http://www.flashtv.co/loboicaperucita token=%ZZri(nKa@#Z",
+        "reason": "InvalidSchema: No connection adapters were found for 'rtmp://$OPT"
+      },
+      {
+        "name": "ARABIC-beIN Sport 3",
+        "url": "http://hls01-04.az.myvideo.az/hls-live/livepkgr/sport3/sport3/sport3.m3u8?rRb545vJBB5tYzB7vVP",
+        "reason": "Connection error"
+      },
+      {
+        "name": "ARABIC-beIN Sport 4",
+        "url": "http://hls01-04.az.myvideo.az/hls-live/livepkgr/sport4/sport4/sport4.m3u8?rRb545vJBB5tYzB7vVP",
+        "reason": "Connection error"
+      },
+      {
+        "name": "ARABIC-beIN Sport 5",
+        "url": "http://hls01-06.az.myvideo.az/hls-live/livepkgr/sport5/sport5/sport5.m3u8?rRb545vJBB5tYzB7vVP",
+        "reason": "Connection error"
+      },
+      {
+        "name": "ARABIC-beIN Sport 6",
+        "url": "http://hls01-06.az.myvideo.az/hls-live/livepkgr/sport6/sport6/sport6.m3u8?rRb545vJBB5tYzB7vVP",
+        "reason": "Connection error"
+      },
+      {
+        "name": "ARABIC-BEIN SPORT 7",
+        "url": "rtmp://$OPT:rtmp-raw=rtmp://31.220.0.194:1935/live playpath=bns7 pageUrl=http://www.flashtv.co/loboicaperucita token=%ZZri(nKa@#Z",
+        "reason": "InvalidSchema: No connection adapters were found for 'rtmp://$OPT"
+      },
+      {
+        "name": "ARABIC-beIN Sport 7 works or not",
+        "url": "http://hls01-07.az.myvideo.az/hls-live/livepkgr/sport7/sport7/sport7.m3u8?rRb545vJBB5tYzB7vVP",
+        "reason": "Connection error"
+      },
+      {
+        "name": "ARABIC-beIN Sport 8 works or not",
+        "url": "http://hls01-07.az.myvideo.az/hls-live/livepkgr/sport8/sport8/sport8.m3u8?rRb545vJBB5tYzB7vVP",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FRENCH : BEIN SPORT 1 FR HD",
+        "url": "http://iptvservice.ddns.net:8000/live/bruno/bruno/482.m3u8",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FRENCH : BEIN SPORT 2 FR HD",
+        "url": "http://iptvservice.ddns.net:8000/live/bruno/bruno/483.m3u8",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FRENCH : BEIN SPORT 3 FR HD",
+        "url": "http://iptvservice.ddns.net:8000/live/bruno/bruno/484.m3u8",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FRENCH : BEIN SPORT 4 FR HD",
+        "url": "http://iptvservice.ddns.net:8000/live/bruno/bruno/2739.m3u8",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD1",
+        "url": "http://bit.ly/1DIYT9z",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD2",
+        "url": "http://bit.ly/1gg44Je",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD3",
+        "url": "http://bit.ly/1LNxVpk",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD4",
+        "url": "http://bit.ly/1InbBvD",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD5",
+        "url": "http://bit.ly/1MsnRBp",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD6",
+        "url": "http://bit.ly/1MsnV3Y",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD7",
+        "url": "http://bit.ly/1KtviFX",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD9",
+        "url": "http://bit.ly/1InbJeP",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD10",
+        "url": "http://bit.ly/1OKLQL9",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD11",
+        "url": "http://bit.ly/1ettAc1",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD12",
+        "url": "http://bit.ly/1gg4Iqj",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD12",
+        "url": "http://bit.ly/1eU81le",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD14",
+        "url": "http://bit.ly/1D1Y80K",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT HD15",
+        "url": "http://bit.ly/1ettMbf",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT 1FR",
+        "url": "http://bit.ly/1D1Z6tS",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEIN SPORT 2FR",
+        "url": "http://bit.ly/1VIVMcV",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 1 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/2.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 2 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/1.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 3 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/4.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 4 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/5.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 5 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/6.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 6 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/7.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 7 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/8.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 8 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/9.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIn Sports 9 HD",
+        "url": "http://satyrnsat.dyndns.org:8000/live/ttran77/shlomi19215aycn/10.ts",
+        "reason": "Connection error"
+      }
+    ]
+  },
+  {
+    "name": "Muhand beIN Sports Pack",
+    "url": "https://gist.githubusercontent.com/Muhand/cd236a44b2c1019a624a8a58a8ade09f/raw",
+    "total": 81,
+    "bein_total": 78,
+    "tested": 40,
+    "working": 0,
+    "dead": 40,
+    "working_channels": [],
+    "dead_channels": [
+      {
+        "name": "FR:beIN Sport1",
+        "url": "http://bit.ly/1q8LCqr",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR:beIN Sport2",
+        "url": "http://bit.ly/1qvPcLD",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR:beIN Sport3",
+        "url": "http://bit.ly/1YgyIBB",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beinHD_Sports_HD1",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/699.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD2",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/700.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD3",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/701.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD4",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/702.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD5",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/703.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD6",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/704.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD7",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/705.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD8",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/706.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD9",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/707.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD10",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/708.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD11",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/709.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD12",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/710.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD13",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/711.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD14",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/712.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD15",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/713.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD_Sports_HD16",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/714.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD Sport 1 FR",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/715.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beinHD Sport 2 FR",
+        "url": "http://37.187.24.177:80/Hamadil1xa141/Hamadil1xa141/716.ch",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Sport1",
+        "url": "http://bit.ly/1UI5AVS",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport2",
+        "url": "http://bit.ly/1SPpECs",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport3",
+        "url": "http://bit.ly/1XgGSdg",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport4",
+        "url": "http://bit.ly/1XgGVFQ",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport5",
+        "url": "http://bit.ly/1MRZPlU",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport6",
+        "url": "http://bit.ly/1RXD5A4",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport7",
+        "url": "http://bit.ly/1oBxN2y",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport8",
+        "url": "http://bit.ly/1Vwk4am",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport9",
+        "url": "http://bit.ly/1TBD335",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport10",
+        "url": "http://bit.ly/1TBD3Ah",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport11",
+        "url": "http://bit.ly/1oBxULo",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN Sport12",
+        "url": "http://bit.ly/1Vwkcqk",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beINSport 1 HD",
+        "url": "http://therevenant.ddns.net:3880/live/mimmo/mimmo/257.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beINSport 2 HD",
+        "url": "http://therevenant.ddns.net:3880/live/mimmo/mimmo/258.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beINSport 3 HD",
+        "url": "http://therevenant.ddns.net:3880/live/mimmo/mimmo/259.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beINSport 4 HD",
+        "url": "http://therevenant.ddns.net:3880/live/mimmo/mimmo/260.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beINSport 5 HD",
+        "url": "http://therevenant.ddns.net:3880/live/mimmo/mimmo/261.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beINSport 6 HD",
+        "url": "http://therevenant.ddns.net:3880/live/mimmo/mimmo/262.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beINSport 7 HD",
+        "url": "http://therevenant.ddns.net:3880/live/mimmo/mimmo/263.ts",
+        "reason": "Connection error"
+      }
+    ]
+  },
+  {
+    "name": "Fazzani beIN VIP + Tunisia",
+    "url": "https://gist.githubusercontent.com/Fazzani/722f67c30ada8bac4602f62a2aaccff6/raw",
+    "total": 96,
+    "bein_total": 57,
+    "tested": 40,
+    "working": 0,
+    "dead": 40,
+    "working_channels": [],
+    "dead_channels": [
+      {
+        "name": "beIN SPORTS NEWS FHD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/104712",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS GLOBAL HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78372",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS GLOBAL HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78371",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 1 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78402",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 2 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78399",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 3 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78396",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 4 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78393",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 5 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78390",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 6 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78387",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 7 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78384",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 8 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78381",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 9 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78378",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 10 HD (1080i)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78375",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 1 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78401",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 2 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78398",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 3 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78395",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 4 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78392",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 5 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78389",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 6 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78386",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 7 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78383",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 8 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78380",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 9 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78377",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 10 HD*",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78374",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 1 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78400",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 2 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78397",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 3 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78394",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 4 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78391",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 5 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78388",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 6 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78385",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 7 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78382",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 8 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78379",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 9 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78376",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS 10 SD",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/78373",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS FHD 1 (hevc)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/47000",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS FHD 2 (hevc)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/46999",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS FHD 3 (hevc)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/46998",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS FHD 4 (hevc)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/46997",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS FHD 5 (hevc)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/46996",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS FHD 6 (hevc)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/46995",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beIN SPORTS FHD 7 (hevc)",
+        "url": "http://testurl-tv.net:8080/pas109QUd/ZMMo0YUDzM/46994",
+        "reason": "Connection error"
+      }
+    ]
+  },
+  {
+    "name": "regragi beIN Sports FR",
+    "url": "https://gist.githubusercontent.com/regragi-younes/a77b56c45b3c086cc166b79d5cc45e4a/raw",
+    "total": 159,
+    "bein_total": 22,
+    "tested": 22,
+    "working": 0,
+    "dead": 22,
+    "working_channels": [],
+    "dead_channels": [
+      {
+        "name": "beINSports-fr1",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/16.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "beINSports-fr2",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/17.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BEINSPORTS-FR3",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/566.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein-Movies1",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/387.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein-Movies2",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/343.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein-Movies3",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/534.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd1",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/293.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd2",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/294.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd3",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/295.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd4",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/296.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd5",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/297.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd6",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/298.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd7",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/299.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd8",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/300.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd9",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/301.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeinSport-Sd10",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/302.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "EN:BeinSport-11",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/575.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "EN:BeinSport-12",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/577.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR:BEINSPORT-13",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/632.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR:BEINSPORT-14",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/633.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR:BEINSPORT-15",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/634.ts",
+        "reason": "Connection error"
+      },
+      {
+        "name": "FR:BEINSPORT-16",
+        "url": "http://iptv.am000.tv:8000/live/add17/add17/635.ts",
+        "reason": "Connection error"
+      }
+    ]
+  },
+  {
+    "name": "rosman83 Arabic IPTV",
+    "url": "https://gist.githubusercontent.com/rosman83/b362513e881237d7e6110b1dc54f05f5/raw",
+    "total": 428,
+    "bein_total": 10,
+    "tested": 10,
+    "working": 0,
+    "dead": 10,
+    "working_channels": [],
+    "dead_channels": [
+      {
+        "name": "beIN Premium 1",
+        "url": "http://212.224.98.207:2200/EX/bein8hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Premium 2",
+        "url": "http://212.224.98.207:2200/EX/bein9hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Premium 3",
+        "url": "http://212.224.98.207:2200/EX/bein10hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Sports 1",
+        "url": "http://212.224.98.207:2200/EX/bein1hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Sports 2",
+        "url": "http://212.224.98.207:2200/EX/bein2hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Sports 3",
+        "url": "http://212.224.98.207:2200/EX/bein3hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Sports 4",
+        "url": "http://212.224.98.207:2200/EX/bein4hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Sports 5",
+        "url": "http://212.224.98.207:2200/EX/bein5hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Sports 6",
+        "url": "http://212.224.98.207:2200/EX/bein6hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      },
+      {
+        "name": "beIN Sports 7",
+        "url": "http://212.224.98.207:2200/EX/bein7hd-ar/index.m3u8?token=",
+        "reason": "Timeout"
+      }
+    ]
+  },
+  {
+    "name": "FreeCA TV",
+    "url": "https://raw.githubusercontent.com/manikiptv/freecatv.github.io/main/freecatv.m3u8",
+    "total": 170,
+    "bein_total": 8,
+    "tested": 8,
+    "working": 3,
+    "dead": 5,
+    "working_channels": [
+      {
+        "name": "BeiN Sports Extra",
+        "url": "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8",
+        "reason": "HLS + .ts segment OK"
+      },
+      {
+        "name": "BEIN SPORT EXTRA Ñ 🇪🇸",
+        "url": "https://bein-esp-xumo.amagi.tv/playlistR1080p.m3u8",
+        "reason": "HLS + .ts segment OK"
+      },
+      {
+        "name": "BEIN SPORT CANLI 🇹🇷",
+        "url": "http://vip.torktv.org:2095/live/zgr2553/zgr.dnm2/5849.ts",
+        "reason": "HTTP 200"
+      }
+    ],
+    "dead_channels": [
+      {
+        "name": "Bein Sports 1",
+        "url": "http://125.209.88.166:45793/BRN/beINSP11.stream/playlist.m3u8",
+        "reason": "Connection error"
+      },
+      {
+        "name": "Bein Sports 2",
+        "url": "http://125.209.88.166:45793/BRN/beINSP12.stream/playlist.m3u8",
+        "reason": "Timeout"
+      },
+      {
+        "name": "Bein Sports 1 France 🇫🇷",
+        "url": "http://51.178.65.238/BeinSport/mono.m3u8",
+        "reason": "HTTP 404"
+      },
+      {
+        "name": "Bein Sports 🇬🇧",
+        "url": "http://fl2.moveonjoy.com/BEIN_SPORTS/index.m3u8",
+        "reason": "HTTP 404"
+      },
+      {
+        "name": "BEIN SPORT EXTRA Ñ 🇪🇸",
+        "url": "https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bein-sports-xtra-en-espanol/playlist.m3u8",
+        "reason": "HTTP 404"
+      }
+    ]
+  },
+  {
+    "name": "iptv-org Sports Category",
+    "url": "https://iptv-org.github.io/iptv/categories/sports.m3u",
+    "total": 451,
+    "bein_total": 4,
+    "tested": 4,
+    "working": 3,
+    "dead": 1,
+    "working_channels": [
+      {
+        "name": "beIN Sports Haber (720p)",
+        "url": "https://1nyaler.streamhostingcdn.top/stream/23/index.m3u8",
+        "reason": "HLS + .ts segment OK"
+      },
+      {
+        "name": "beIN SPORTS XTRA (1080p)",
+        "url": "https://bein-xtra-bein.amagi.tv/playlist.m3u8",
+        "reason": "HLS manifest + variant + .ts segment OK"
+      },
+      {
+        "name": "beIN Sports XTRA en Espanol (1080p)",
+        "url": "https://dc1644a9jazgj.cloudfront.net/beIN_Sports_Xtra_Espanol.m3u8",
+        "reason": "HLS manifest + variant + .ts segment OK"
+      }
+    ],
+    "dead_channels": [
+      {
+        "name": "beIN Sports USA (720p)",
+        "url": "http://23.237.104.106:8080/USA_BEIN/index.m3u8",
+        "reason": "HTTP 404"
+      }
+    ]
+  },
+  {
+    "name": "World IPTV Verified",
+    "url": "https://romaxa55.github.io/world_ip_tv/output/index.m3u",
+    "total": 14148,
+    "bein_total": 6,
+    "tested": 6,
+    "working": 3,
+    "dead": 3,
+    "working_channels": [
+      {
+        "name": "beIN Sports Haber (720p)",
+        "url": "https://1nyaler.streamhostingcdn.top/stream/23/index.m3u8",
+        "reason": "HLS + .ts segment OK"
+      },
+      {
+        "name": "beIN SPORTS XTRA (1080p)",
+        "url": "https://bein-xtra-bein.amagi.tv/playlist.m3u8",
+        "reason": "HLS manifest + variant + .ts segment OK"
+      },
+      {
+        "name": "beIN Sports XTRA en Espanol (1080p)",
+        "url": "https://dc1644a9jazgj.cloudfront.net/beIN_Sports_Xtra_Espanol.m3u8",
+        "reason": "HLS manifest + variant + .ts segment OK"
+      }
+    ],
+    "dead_channels": [
+      {
+        "name": "beIN Sports USA",
+        "url": "http://fl3.moveonjoy.com/BEIN_SPORTS/index.m3u8",
+        "reason": "Connection error"
+      },
+      {
+        "name": "BeIN SPORTS XTRA en Espanol (720p) [Geo-blocked]",
+        "url": "https://bein-esp-klowdtv.amagi.tv/playlist.m3u8",
+        "reason": "HTTP 403"
+      },
+      {
+        "name": "beIN Sports USA (720p)",
+        "url": "http://23.237.104.106:8080/USA_BEIN/index.m3u8",
+        "reason": "HTTP 404"
+      }
+    ]
+  }
+]
