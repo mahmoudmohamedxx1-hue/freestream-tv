@@ -417,6 +417,72 @@ export const PROVIDERS: Provider[] = [
       },
     ],
   },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // beIN Sports Community — playlists found via web search (dorking)
+  // These are community-maintained beIN Sports M3U files published on GitHub
+  // gists and repos. Stream reliability varies — many beIN channels are
+  // subscription-locked (MAC-based portals) and will show as dead. Use the
+  // auto-skip + dead-channel memory features to filter them down to working
+  // streams over time.
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'bein-community',
+    name: 'beIN Sports',
+    description: 'Community beIN Sports playlists (auto-skip will filter dead)',
+    flag: '⚽',
+    categories: [
+      {
+        id: 'all-sports',
+        name: 'All Sports Packs',
+        flag: '🏆',
+        playlists: [
+          {
+            id: 'bc-dev-gaminger',
+            name: 'Sport Pack (5300+)',
+            flag: '🔥',
+            url: 'https://gist.githubusercontent.com/Dev-Gaminger010/36540530e38d3309000f6ff7a0c65f5f/raw',
+          },
+          {
+            id: 'bc-itsrandall',
+            name: 'Arabic Sports (520)',
+            flag: '🇸🇦',
+            url: 'https://gist.githubusercontent.com/ItsRandall/3119615c8b4732d7b56e5217d66edbab/raw',
+          },
+          {
+            id: 'bc-muhand',
+            name: 'beIN Sports Pack (80)',
+            flag: '⚽',
+            url: 'https://gist.githubusercontent.com/Muhand/cd236a44b2c1019a624a8a58a8ade09f/raw',
+          },
+          {
+            id: 'bc-fazzani',
+            name: 'beIN VIP + Tunisia (96)',
+            flag: '✨',
+            url: 'https://gist.githubusercontent.com/Fazzani/722f67c30ada8bac4602f62a2aaccff6/raw',
+          },
+          {
+            id: 'bc-regragi',
+            name: 'beIN Sports FR (159)',
+            flag: '🇫🇷',
+            url: 'https://gist.githubusercontent.com/regragi-younes/a77b56c45b3c086cc166b79d5cc45e4a/raw',
+          },
+          {
+            id: 'bc-rosman83',
+            name: 'Arabic IPTV (428)',
+            flag: '📺',
+            url: 'https://gist.githubusercontent.com/rosman83/b362513e881237d7e6110b1dc54f05f5/raw',
+          },
+          {
+            id: 'bc-freecatv',
+            name: 'FreeCA TV (170)',
+            flag: '📡',
+            url: 'https://raw.githubusercontent.com/manikiptv/freecatv.github.io/main/freecatv.m3u8',
+          },
+        ],
+      },
+    ],
+  },
 ]
 
 // ─── Lookup helpers ──────────────────────────────────────────────────────────
