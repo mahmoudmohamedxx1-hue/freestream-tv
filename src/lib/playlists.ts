@@ -2,6 +2,8 @@
 // Sources: iptv-org project (https://github.com/iptv-org/iptv)
 //          Free-TV project (https://github.com/Free-TV/IPTV)
 //          rhythm98/iptv-vlc fork (https://github.com/rhythm98/iptv-vlc)
+//          ktkooot1/Ustream (https://github.com/ktkooot1/Ustream) — Arabic sports packs
+//          yazki87/arab-iptv (https://github.com/yazki87/arab-iptv) — filtered Arabic list
 // All public, free, legal playlists. Country-specific playlists tend to have
 // a much higher ratio of working channels than the giant global index.
 
@@ -15,6 +17,7 @@ export type PlaylistCategory =
   | 'africa'
   | 'category'
   | 'curated'
+  | 'community'
 
 export type PlaylistSource = {
   id: string
@@ -198,6 +201,45 @@ export const PLAYLIST_SOURCES: PlaylistSource[] = [
   { id: 'urd', name: 'Urdu (All)', description: 'All Urdu-language channels', url: 'https://iptv-org.github.io/iptv/languages/urd.m3u', category: 'featured', flag: '🇵🇰', priority: 60 },
   { id: 'zho', name: 'Chinese (All)', description: 'All Chinese-language channels', url: 'https://iptv-org.github.io/iptv/languages/zho.m3u', category: 'featured', flag: '🇨🇳', priority: 60 },
   { id: 'tur', name: 'Turkish (All)', description: 'All Turkish-language channels', url: 'https://iptv-org.github.io/iptv/languages/tur.m3u', category: 'featured', flag: '🇹🇷', priority: 65 },
+
+  // ─── Community playlists (curated by enthusiasts) ──────────────────────────
+  // yazki87/arab-iptv — filtered Arabic list
+  {
+    id: 'yazki-arab',
+    name: 'Arab IPTV (filtered)',
+    description: 'Curated filtered Arabic channels — yazki87',
+    url: 'https://raw.githubusercontent.com/yazki87/arab-iptv/main/filtered_file_05.01.25.m3u',
+    category: 'community',
+    flag: '🇦🇪',
+    priority: 90,
+  },
+
+  // ktkooot1/Ustream — 25 sports/entertainment packs
+  { id: 'ktk-bein-max', name: 'beIN Sports Max', description: 'beIN Sports MAX pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/BEIN%20SPORTS%20MAX.m3u', category: 'community', flag: '⚽', priority: 80 },
+  { id: 'ktk-bein-2025', name: 'beIN Sports 2025', description: 'beIN Sports — June 2025 update', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Beinsport%202025.6.11.m3u', category: 'community', flag: '⚽', priority: 80 },
+  { id: 'ktk-alwan', name: 'Alwan Channels', description: 'Alwan multi-genre pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/ALWAN%20CHANNELS_20260623_230126.m3u', category: 'community', flag: '🌈', priority: 60 },
+  { id: 'ktk-blue-sport', name: 'Blue Sport', description: 'Blue Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Blue%20Sport.m3u', category: 'community', flag: '🔵', priority: 65 },
+  { id: 'ktk-ch-sport', name: 'CH Sport', description: 'CH Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/CH%20Sport.m3u', category: 'community', flag: '⚽', priority: 60 },
+  { id: 'ktk-faster-sport', name: 'Faster Sport', description: 'Faster Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Faster%20Sport.m3u', category: 'community', flag: '⚡', priority: 60 },
+  { id: 'ktk-forever-sport', name: 'Forever Sport', description: 'Forever Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Forever%20Sport.m3u', category: 'community', flag: '♾️', priority: 60 },
+  { id: 'ktk-fun-sport', name: 'Fun Sport', description: 'Fun Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Fun%20Sport.m3u', category: 'community', flag: '🎯', priority: 55 },
+  { id: 'ktk-ghazal-sport', name: 'Ghazal Sport', description: 'Ghazal Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Ghazal%20Sport.m3u', category: 'community', flag: '🦌', priority: 55 },
+  { id: 'ktk-go-sport', name: 'Go Sport', description: 'Go Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Go%20Sport.m3u', category: 'community', flag: '🏁', priority: 55 },
+  { id: 'ktk-hussam-tv', name: 'Hussam TV', description: 'Hussam TV multi-genre', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Hussam_TV.m3u', category: 'community', flag: '📺', priority: 55 },
+  { id: 'ktk-joker-aziz', name: 'Joker Aziz', description: 'Joker Aziz pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/JOKER%20AZIZ%20(1).m3u', category: 'community', flag: '🃏', priority: 55 },
+  { id: 'ktk-karam', name: 'Karam Palestine IPTV', description: 'Karam Palestine IPTV pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/KARAM%20PALSSTEN%20IPTV.M3U', category: 'community', flag: '🇵🇸', priority: 70 },
+  { id: 'ktk-novavod-sport', name: 'NOVAVOD Sport', description: 'NOVAVOD Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/NOVAVOD%20Sport.m3u', category: 'community', flag: '🆕', priority: 55 },
+  { id: 'ktk-novaa-sport', name: 'Novaa Sport', description: 'Novaa Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Novaa%20Sport.m3u', category: 'community', flag: ' Nova', priority: 55 },
+  { id: 'ktk-ostora-tv', name: 'Ostora TV', description: 'Ostora TV pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Ostora%20TV%20(2).m3u', category: 'community', flag: '🐉', priority: 55 },
+  { id: 'ktk-sdk-sport', name: 'SDK Sport', description: 'SDK Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/SDK%20SPORT.m3u', category: 'community', flag: '⚽', priority: 55 },
+  { id: 'ktk-showplus-sport', name: 'Showplus Sport', description: 'Showplus Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Showplus%20Sport.m3u', category: 'community', flag: '➕', priority: 55 },
+  { id: 'ktk-sport-my-tv', name: 'Sport My TV', description: 'Sport My TV pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Sport%20My%20TV.m3u', category: 'community', flag: '🏆', priority: 55 },
+  { id: 'ktk-top-sport', name: 'Top Sport', description: 'Top Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Top%20Sport%20(1).m3u', category: 'community', flag: '🔝', priority: 60 },
+  { id: 'ktk-vip-sport', name: 'VIP Sport', description: 'VIP Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/VIP%20SPORT.m3u', category: 'community', flag: '💎', priority: 65 },
+  { id: 'ktk-venus-sport', name: 'Venus Sport', description: 'Venus Sport pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Venus%20Sport.m3u', category: 'community', flag: '🌟', priority: 55 },
+  { id: 'ktk-yasine-tv', name: 'Yasine TV', description: 'Yasine TV multi-genre', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/Yasine%20TV.m3u', category: 'community', flag: '📺', priority: 55 },
+  { id: 'ktk-bn-max-nm', name: 'bN Max NM', description: 'bN Max NM pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/bN_MAX_NM.m3u', category: 'community', flag: '📦', priority: 50 },
+  { id: 'ktk-bn-sa', name: 'bN SA', description: 'bN SA pack', url: 'https://raw.githubusercontent.com/ktkooot1/Ustream/main/bN_SA.m3u', category: 'community', flag: '📦', priority: 50 },
 ]
 
 export function getPlaylistById(id: string): PlaylistSource | undefined {
@@ -207,6 +249,7 @@ export function getPlaylistById(id: string): PlaylistSource | undefined {
 export const PLAYLIST_CATEGORIES: { id: PlaylistCategory; label: string; flag: string }[] = [
   { id: 'featured', label: 'Featured', flag: '⭐' },
   { id: 'arabic', label: 'Arabic', flag: '🇸🇦' },
+  { id: 'community', label: 'Community', flag: '👥' },
   { id: 'middle-east', label: 'Middle East', flag: '🕌' },
   { id: 'europe', label: 'Europe', flag: '🇪🇺' },
   { id: 'americas', label: 'Americas', flag: '🌎' },

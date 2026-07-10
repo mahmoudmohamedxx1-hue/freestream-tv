@@ -1,16 +1,30 @@
 // M3U / M3U8 playlist parser
-// Supports both #EXTINF attributes (tvg-* attributes) and plain URL lines
+// Supports both #EXTINF attributes (tvg-* attributes) and plain URL lines.
+// Also extracts country, quality, and status labels (Not 24/7, Geo-blocked) from channel name.
 
 export type Channel = {
   id: string
   name: string
+  /** Cleaned display name (no quality suffix, no [Label] tags) */
+  displayName: string
   url: string
   logo?: string
   group?: string
   tvgId?: string
   tvgName?: string
   country?: string
+  /** ISO country code derived from tvg-id (e.g. "ma" from "2MInternational.ma") */
+  countryCode?: string
   language?: string
+  /** Video quality: "4K", "1080p", "720p", "576p", "480p", "360p", "SD", or undefined */
+  quality?: string
+  /** Numeric quality tier for sorting (4K=40, 1080p=30, 720p=20, 576p=15, 480p=10, 360p=5, SD=1) */
+  qualityTier?: number
+  /** Status flags parsed from name like [Not 24/7], [Geo-blocked] */
+  not247?: boolean
+  geoBlocked?: boolean
+  /** Original raw name (preserves everything) */
+  rawName?: string
 }
 
 export type ParsedPlaylist = {
@@ -21,12 +35,9 @@ export type ParsedPlaylist = {
 
 /**
  * Parse #EXTINF attribute string into key-value pairs.
- * Example line:
- *   #EXTINF:-1 tvg-id="..." tvg-name="..." tvg-logo="..." group-title="News",Channel Name
  */
 function parseAttributes(extinfLine: string): Record<string, string> {
   const attrs: Record<string, string> = {}
-  // Match patterns like key="value"
   const regex = /([a-zA-Z0-9-]+)="([^"]*)"/g
   let match
   while ((match = regex.exec(extinfLine)) !== null) {
@@ -35,14 +46,90 @@ function parseAttributes(extinfLine: string): Record<string, string> {
   return attrs
 }
 
-/**
- * Extract the channel name from an #EXTINF line.
- * The name comes after the comma.
- */
+/** Extract the channel name (after the comma) */
 function extractName(extinfLine: string): string {
   const commaIdx = extinfLine.lastIndexOf(',')
   if (commaIdx === -1) return 'Unknown Channel'
   return extinfLine.slice(commaIdx + 1).trim() || 'Unknown Channel'
+}
+
+/**
+ * Strip decorative prefixes from names like:
+ *   "-• ✬● AR | BEIN SPORTS MAX  | AR ●✬•-"  ->  "BEIN SPORTS MAX"
+ *   "AR | beIN SPORTS MAX 1 FHD"              ->  "beIN SPORTS MAX 1 FHD"
+ */
+function cleanName(rawName: string): string {
+  let n = rawName.trim()
+  // Strip leading "-• ✬● ... | " patterns (common in ktkooot1 m3u files)
+  n = n.replace(/^[-•✬●★◆►▷\s]*\|?\s*[A-Za-z]{2}\s*\|\s*/, '')
+  // Strip trailing " | AR ●✬•-" patterns
+  n = n.replace(/\s*\|\s*[A-Za-z]{2}\s*[-•✬●★◆◄◁\s]*$/, '')
+    .replace(/\s+\|$/, '')
+    .trim()
+  // Collapse multi-spaces
+  n = n.replace(/\s{2,}/g, ' ').trim()
+  return n || rawName
+}
+
+/** Match quality from name (e.g. "1080p", "720p", "4K", "FHD", "HD", "SD") */
+function extractQuality(rawName: string): { quality?: string; tier?: number } {
+  // Look for explicit pixel quality first
+  const m = rawName.match(/\b(4320p|2160p|1440p|1080p|720p|576p|480p|360p|240p)\b/i)
+  if (m) {
+    const q = m[1].toLowerCase()
+    let tier = 0
+    if (q === '2160p' || q === '4320p') tier = 40
+    else if (q === '1440p') tier = 35
+    else if (q === '1080p') tier = 30
+    else if (q === '720p') tier = 20
+    else if (q === '576p') tier = 15
+    else if (q === '480p') tier = 10
+    else if (q === '360p') tier = 5
+    else if (q === '240p') tier = 3
+    if (q === '2160p') return { quality: '4K', tier: 40 }
+    if (q === '4320p') return { quality: '8K', tier: 45 }
+    return { quality: q, tier }
+  }
+  // Look for "4K" keyword
+  if (/\b4k\b/i.test(rawName)) return { quality: '4K', tier: 40 }
+  if (/\b8k\b/i.test(rawName)) return { quality: '8K', tier: 45 }
+  // FHD / HD / SD keywords
+  if (/\bfhd\b/i.test(rawName)) return { quality: '1080p', tier: 30 }
+  if (/\buhd\b/i.test(rawName)) return { quality: '4K', tier: 40 }
+  if (/\bhd\b/i.test(rawName)) return { quality: '720p+', tier: 20 }
+  if (/\bsd\b/i.test(rawName)) return { quality: 'SD', tier: 1 }
+  return {}
+}
+
+/** Extract status flags like [Not 24/7], [Geo-blocked] */
+function extractFlags(rawName: string): { not247: boolean; geoBlocked: boolean } {
+  return {
+    not247: /\[not\s*24\/7\]/i.test(rawName) || /\(not\s*24\/7\)/i.test(rawName),
+    geoBlocked: /\[geo-?blocked\]/i.test(rawName) || /\(geo-?blocked\)/i.test(rawName),
+  }
+}
+
+/**
+ * Strip quality suffix and [Label] tags from display name.
+ * "beIN SPORTS MAX 1 FHD [Not 24/7]" -> "beIN SPORTS MAX 1"
+ */
+function makeDisplayName(rawName: string): string {
+  let n = cleanName(rawName)
+  // Remove [Label] tags
+  n = n.replace(/\s*\[[^\]]+\]\s*/g, ' ').trim()
+  // Remove (Label) tags
+  n = n.replace(/\s*\([^)]*(?:not\s*24\/7|geo-?blocked|offline)[^)]*\)\s*/gi, ' ').trim()
+  // Remove trailing quality tokens
+  n = n.replace(/\s+(FHD|UHD|HD|SD|4K|8K)\b.*$/i, '').trim()
+  n = n.replace(/\s+\d{3,4}p\b.*$/i, '').trim()
+  return n || rawName
+}
+
+/** ISO country code from tvg-id (e.g. "2MInternational.ma" -> "ma") */
+function extractCountryCode(tvgId?: string): string | undefined {
+  if (!tvgId) return undefined
+  const m = tvgId.match(/\.([a-z]{2})$/i)
+  return m ? m[1].toLowerCase() : undefined
 }
 
 let idCounter = 0
@@ -51,9 +138,6 @@ function nextId(): string {
   return `ch-${idCounter}`
 }
 
-/**
- * Parse M3U playlist text into structured Channel objects.
- */
 export function parseM3U(content: string): ParsedPlaylist {
   const lines = content.split(/\r?\n/)
   const channels: Channel[] = []
@@ -67,10 +151,7 @@ export function parseM3U(content: string): ParsedPlaylist {
     const line = lines[i].trim()
     if (!line) continue
 
-    if (line.startsWith('#EXTM3U')) {
-      // Header, skip
-      continue
-    }
+    if (line.startsWith('#EXTM3U')) continue
 
     if (line.startsWith('#EXTINF')) {
       pendingAttrs = parseAttributes(line)
@@ -80,35 +161,40 @@ export function parseM3U(content: string): ParsedPlaylist {
     }
 
     if (line.startsWith('#EXTGRP')) {
-      // Group on its own line
       const group = line.slice(7).trim()
       if (group) pendingAttrs['group-title'] = group
       continue
     }
 
-    if (line.startsWith('#')) {
-      // Other directives we don't care about
-      continue
-    }
+    if (line.startsWith('#')) continue
 
-    // This is a URL line
+    // URL line
     if (hasPending || true) {
       const group = pendingAttrs['group-title'] || 'Other'
       groupSet.add(group)
 
+      const flags = extractFlags(pendingName)
+      const q = extractQuality(pendingName)
+
       channels.push({
         id: nextId(),
-        name: pendingName || 'Unknown Channel',
+        name: pendingName,
+        displayName: makeDisplayName(pendingName),
+        rawName: pendingName,
         url: line,
         logo: pendingAttrs['tvg-logo'] || undefined,
         group,
         tvgId: pendingAttrs['tvg-id'] || undefined,
         tvgName: pendingAttrs['tvg-name'] || undefined,
         country: pendingAttrs['tvg-country'] || undefined,
+        countryCode: extractCountryCode(pendingAttrs['tvg-id']),
         language: pendingAttrs['tvg-language'] || undefined,
+        quality: q.quality,
+        qualityTier: q.tier,
+        not247: flags.not247,
+        geoBlocked: flags.geoBlocked,
       })
 
-      // Reset
       pendingAttrs = {}
       pendingName = ''
       hasPending = false
