@@ -3,8 +3,9 @@
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react'
 import {
   Search, Heart, Tv, Loader2, AlertCircle, Menu, X, Radio,
-  Globe, ChevronRight, Star, Zap, Filter,
-  ZapOff, EyeOff, Settings, RotateCcw,
+  Globe, ChevronRight, Star, Zap, Filter, ZapOff, EyeOff,
+  Settings, RotateCcw, Clock, ArrowDownAZ, ArrowUpAZ, Flame,
+  ChevronDown, CheckCircle2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,33 +13,40 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
-import { VideoPlayer } from '@/components/video-player'
 import {
-  PLAYLIST_SOURCES, PLAYLIST_CATEGORIES, getSourcesByCategory,
-  type PlaylistSource, type PlaylistCategory,
-} from '@/lib/playlists'
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from '@/components/ui/select'
+import { VideoPlayer } from '@/components/video-player'
+import { PROVIDERS, type Provider, type ProviderCategory } from '@/lib/playlists'
 import type { Channel } from '@/lib/m3u-parser'
+import { flagForCountry, deriveCountryGroup } from '@/lib/countries'
 import { cn } from '@/lib/utils'
 
 type PlaylistData = {
   channels: Channel[]
   groups: string[]
   totalCount: number
-  sourceId: string
+  sourceKey: string
 }
+
+type SortMode = 'az' | 'za' | 'recent' | 'quality'
+type QualityFilter = 'all' | '4k' | '1080p' | '720p' | 'sd'
 
 const FAV_KEY = 'streamdeck.favorites'
 const DEAD_KEY = 'streamdeck.deadChannels'
-const ACTIVE_SRC_KEY = 'streamdeck.activeSource'
+const RECENT_KEY = 'streamdeck.recentChannels'
+const ACTIVE_PATH_KEY = 'streamdeck.activePath'
 const AUTOSKIP_KEY = 'streamdeck.autoSkip'
 const HIDE_DEAD_KEY = 'streamdeck.hideDead'
+const HIDE_BAD_KEY = 'streamdeck.hideBad'
+const SETTINGS_KEY = 'streamdeck.settingsOpen'
 
 export default function Home() {
-  // Active playlist source — default to Arabic (most reliable per-channel ratio)
-  const [activeSource, setActiveSource] = useState<PlaylistSource>(
-    PLAYLIST_SOURCES.find(s => s.id === 'arabic') ?? PLAYLIST_SOURCES[0],
-  )
-  const [activePlaylistCat, setActivePlaylistCat] = useState<PlaylistCategory>('featured')
+  // Active provider + category + playlist path
+  const [activeProvider, setActiveProvider] = useState<Provider>(PROVIDERS[0])
+  const [activeCategory, setActiveCategory] = useState<ProviderCategory | null>(PROVIDERS[0].categories[0])
+  const [activePlaylistId, setActivePlaylistId] = useState<string | undefined>(undefined)
+
   const [data, setData] = useState<PlaylistData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -46,45 +54,96 @@ export default function Home() {
   const [search, setSearch] = useState('')
   const [activeGroup, setActiveGroup] = useState<string>('__all')
   const [showFavsOnly, setShowFavsOnly] = useState(false)
+  const [showRecentOnly, setShowRecentOnly] = useState(false)
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
   const [deadChannels, setDeadChannels] = useState<Set<string>>(new Set())
+  const [recentChannels, setRecentChannels] = useState<string[]>([])
   const [hideDead, setHideDead] = useState(true)
+  const [hideBad, setHideBad] = useState(true)
   const [autoSkip, setAutoSkip] = useState(true)
+  const [qualityFilter, setQualityFilter] = useState<QualityFilter>('all')
+  const [sortMode, setSortMode] = useState<SortMode>('az')
   const [currentChannel, setCurrentChannel] = useState<Channel | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
 
-  // Load state from localStorage on mount
+  // ─── Load persisted state on mount ──────────────────────────────────────
   useEffect(() => {
     try {
       const favRaw = localStorage.getItem(FAV_KEY)
       if (favRaw) setFavorites(new Set(JSON.parse(favRaw)))
       const deadRaw = localStorage.getItem(DEAD_KEY)
       if (deadRaw) setDeadChannels(new Set(JSON.parse(deadRaw)))
-      const last = localStorage.getItem(ACTIVE_SRC_KEY)
-      if (last) {
-        const src = PLAYLIST_SOURCES.find(p => p.id === last)
-        if (src) {
-          setActiveSource(src)
-          setActivePlaylistCat(src.category)
-        }
-      }
+      const recentRaw = localStorage.getItem(RECENT_KEY)
+      if (recentRaw) setRecentChannels(JSON.parse(recentRaw))
       const as = localStorage.getItem(AUTOSKIP_KEY)
       if (as !== null) setAutoSkip(as === '1')
       const hd = localStorage.getItem(HIDE_DEAD_KEY)
       if (hd !== null) setHideDead(hd === '1')
+      const hb = localStorage.getItem(HIDE_BAD_KEY)
+      if (hb !== null) setHideBad(hb === '1')
+      const pathRaw = localStorage.getItem(ACTIVE_PATH_KEY)
+      if (pathRaw) {
+        const path = JSON.parse(pathRaw)
+        const prov = PROVIDERS.find(p => p.id === path.providerId)
+        if (prov) {
+          const cat = prov.categories.find(c => c.id === path.categoryId)
+          if (cat) {
+            setActiveProvider(prov)
+            setActiveCategory(cat)
+            setActivePlaylistId(path.playlistId)
+          }
+        }
+      }
     } catch {}
   }, [])
 
-  // Fetch playlist data
-  const fetchPlaylist = useCallback(async (source: PlaylistSource) => {
+  // ─── Persist state ──────────────────────────────────────────────────────
+  useEffect(() => {
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(Array.from(favorites))) } catch {}
+  }, [favorites])
+  useEffect(() => {
+    try { localStorage.setItem(DEAD_KEY, JSON.stringify(Array.from(deadChannels))) } catch {}
+  }, [deadChannels])
+  useEffect(() => {
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(recentChannels)) } catch {}
+  }, [recentChannels])
+  useEffect(() => {
+    try { localStorage.setItem(AUTOSKIP_KEY, autoSkip ? '1' : '0') } catch {}
+  }, [autoSkip])
+  useEffect(() => {
+    try { localStorage.setItem(HIDE_DEAD_KEY, hideDead ? '1' : '0') } catch {}
+  }, [hideDead])
+  useEffect(() => {
+    try { localStorage.setItem(HIDE_BAD_KEY, hideBad ? '1' : '0') } catch {}
+  }, [hideBad])
+  useEffect(() => {
+    if (activeProvider && activeCategory) {
+      try {
+        localStorage.setItem(ACTIVE_PATH_KEY, JSON.stringify({
+          providerId: activeProvider.id,
+          categoryId: activeCategory.id,
+          playlistId: activePlaylistId,
+        }))
+      } catch {}
+    }
+  }, [activeProvider, activeCategory, activePlaylistId])
+
+  // ─── Fetch playlist ─────────────────────────────────────────────────────
+  const fetchPlaylist = useCallback(async () => {
+    if (!activeProvider || !activeCategory) return
     setLoading(true)
     setError(null)
     setData(null)
     setActiveGroup('__all')
     setSearch('')
     try {
-      const res = await fetch(`/api/playlist?source=${encodeURIComponent(source.id)}`)
+      const params = new URLSearchParams({
+        provider: activeProvider.id,
+        category: activeCategory.id,
+      })
+      if (activePlaylistId) params.set('playlist', activePlaylistId)
+      const res = await fetch(`/api/playlist?${params.toString()}`)
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Failed to load playlist')
       setData(json)
@@ -101,31 +160,13 @@ export default function Home() {
     } finally {
       setLoading(false)
     }
-  }, [deadChannels])
+  }, [activeProvider, activeCategory, activePlaylistId, deadChannels])
 
   useEffect(() => {
-    fetchPlaylist(activeSource)
-    try { localStorage.setItem(ACTIVE_SRC_KEY, activeSource.id) } catch {}
-  }, [activeSource, fetchPlaylist])
+    fetchPlaylist()
+  }, [fetchPlaylist])
 
-  // Persist favorites
-  useEffect(() => {
-    try { localStorage.setItem(FAV_KEY, JSON.stringify(Array.from(favorites))) } catch {}
-  }, [favorites])
-
-  // Persist dead channels
-  useEffect(() => {
-    try { localStorage.setItem(DEAD_KEY, JSON.stringify(Array.from(deadChannels))) } catch {}
-  }, [deadChannels])
-
-  // Persist settings
-  useEffect(() => {
-    try { localStorage.setItem(AUTOSKIP_KEY, autoSkip ? '1' : '0') } catch {}
-  }, [autoSkip])
-  useEffect(() => {
-    try { localStorage.setItem(HIDE_DEAD_KEY, hideDead ? '1' : '0') } catch {}
-  }, [hideDead])
-
+  // ─── Channel actions ────────────────────────────────────────────────────
   const toggleFav = useCallback((channel: Channel) => {
     setFavorites(prev => {
       const next = new Set(prev)
@@ -134,7 +175,6 @@ export default function Home() {
       return next
     })
   }, [])
-
   const isFav = useCallback((channel: Channel) => favorites.has(channel.url), [favorites])
 
   const markDead = useCallback((channel: Channel) => {
@@ -144,7 +184,6 @@ export default function Home() {
       return next
     })
   }, [])
-
   const unmarkDead = useCallback((channel: Channel) => {
     setDeadChannels(prev => {
       const next = new Set(prev)
@@ -152,68 +191,115 @@ export default function Home() {
       return next
     })
   }, [])
-
   const isDead = useCallback((channel: Channel) => deadChannels.has(channel.url), [deadChannels])
+
+  const recordRecent = useCallback((channel: Channel) => {
+    setRecentChannels(prev => {
+      const next = [channel.url, ...prev.filter(u => u !== channel.url)].slice(0, 20)
+      return next
+    })
+  }, [])
 
   // Auto-skip to next channel
   const goToNextChannel = useCallback(() => {
     if (!data || !currentChannel) return
     const list = filteredChannelsRef.current
     const idx = list.findIndex(c => c.url === currentChannel.url)
-    // Find next non-dead channel
     for (let i = idx + 1; i < list.length; i++) {
-      const next = list[i]
-      if (!deadChannels.has(next.url)) {
-        setCurrentChannel(next)
+      if (!deadChannels.has(list[i].url)) {
+        setCurrentChannel(list[i])
         return
       }
     }
-    // Wrap around
     for (let i = 0; i < idx; i++) {
-      const next = list[i]
-      if (!deadChannels.has(next.url)) {
-        setCurrentChannel(next)
+      if (!deadChannels.has(list[i].url)) {
+        setCurrentChannel(list[i])
         return
       }
     }
   }, [data, currentChannel, deadChannels])
 
-  // Filtered channels based on search + group + favorites + dead
-  const filteredChannels = useMemo(() => {
-    if (!data) return []
-    let list = data.channels
-    if (showFavsOnly) {
-      list = list.filter(c => favorites.has(c.url))
+  const handleSelectChannel = useCallback((channel: Channel) => {
+    setCurrentChannel(channel)
+    recordRecent(channel)
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-    if (activeGroup !== '__all') {
-      list = list.filter(c => c.group === activeGroup)
-    }
-    const q = search.trim().toLowerCase()
-    if (q) {
-      list = list.filter(c =>
-        c.name.toLowerCase().includes(q) ||
-        (c.group || '').toLowerCase().includes(q) ||
-        (c.country || '').toLowerCase().includes(q)
-      )
-    }
-    if (hideDead) {
-      list = list.filter(c => !deadChannels.has(c.url))
-    }
-    return list
-  }, [data, search, activeGroup, showFavsOnly, favorites, deadChannels, hideDead])
+  }, [recordRecent])
 
-  // Keep a ref so goToNextChannel can access latest filtered list
-  const filteredChannelsRef = useRef<Channel[]>([])
-  useEffect(() => {
-    filteredChannelsRef.current = filteredChannels
-  }, [filteredChannels])
-
-  // When the player errors out, mark the channel as dead
   const handlePlayerError = useCallback((_msg: string) => {
     if (currentChannel) {
       markDead(currentChannel)
     }
   }, [currentChannel, markDead])
+
+  // ─── Filtering & sorting ────────────────────────────────────────────────
+  const recentSet = useMemo(() => new Set(recentChannels), [recentChannels])
+
+  const filteredChannels = useMemo(() => {
+    if (!data) return []
+    let list = data.channels
+    if (showFavsOnly) list = list.filter(c => favorites.has(c.url))
+    if (showRecentOnly) list = list.filter(c => recentSet.has(c.url))
+    if (activeGroup !== '__all') list = list.filter(c => c.group === activeGroup)
+
+    // Quality filter
+    if (qualityFilter !== 'all') {
+      list = list.filter(c => {
+        const q = (c.quality || '').toLowerCase()
+        if (qualityFilter === '4k') return q === '4k' || q === '8k'
+        if (qualityFilter === '1080p') return c.qualityTier && c.qualityTier >= 30
+        if (qualityFilter === '720p') return c.qualityTier && c.qualityTier >= 20
+        if (qualityFilter === 'sd') return c.qualityTier !== undefined
+        return true
+      })
+    }
+
+    // Auto-hide bad sources
+    if (hideBad) {
+      list = list.filter(c => !c.not247 && !c.geoBlocked)
+    }
+    // Hide dead
+    if (hideDead) {
+      list = list.filter(c => !deadChannels.has(c.url))
+    }
+
+    // Search
+    const q = search.trim().toLowerCase()
+    if (q) {
+      list = list.filter(c =>
+        c.displayName.toLowerCase().includes(q) ||
+        c.name.toLowerCase().includes(q) ||
+        (c.group || '').toLowerCase().includes(q) ||
+        (c.country || '').toLowerCase().includes(q)
+      )
+    }
+
+    // Sort
+    const sorted = [...list]
+    if (sortMode === 'az') {
+      sorted.sort((a, b) => a.displayName.localeCompare(b.displayName))
+    } else if (sortMode === 'za') {
+      sorted.sort((a, b) => b.displayName.localeCompare(a.displayName))
+    } else if (sortMode === 'quality') {
+      sorted.sort((a, b) => (b.qualityTier ?? 0) - (a.qualityTier ?? 0))
+    } else if (sortMode === 'recent') {
+      const idx = (url: string) => recentChannels.indexOf(url)
+      sorted.sort((a, b) => {
+        const ai = idx(a.url), bi = idx(b.url)
+        if (ai === -1 && bi === -1) return a.displayName.localeCompare(b.displayName)
+        if (ai === -1) return 1
+        if (bi === -1) return -1
+        return ai - bi
+      })
+    }
+    return sorted
+  }, [data, search, activeGroup, showFavsOnly, showRecentOnly, favorites, deadChannels, hideDead, hideBad, qualityFilter, sortMode, recentChannels, recentSet])
+
+  const filteredChannelsRef = useRef<Channel[]>([])
+  useEffect(() => {
+    filteredChannelsRef.current = filteredChannels
+  }, [filteredChannels])
 
   // Group counts (respecting current filters except group)
   const groupCounts = useMemo(() => {
@@ -221,22 +307,33 @@ export default function Home() {
     const m = new Map<string, number>()
     let list = data.channels
     if (showFavsOnly) list = list.filter(c => favorites.has(c.url))
+    if (showRecentOnly) list = list.filter(c => recentSet.has(c.url))
+    if (hideBad) list = list.filter(c => !c.not247 && !c.geoBlocked)
     if (hideDead) list = list.filter(c => !deadChannels.has(c.url))
     for (const c of list) {
       const g = c.group || 'Other'
       m.set(g, (m.get(g) ?? 0) + 1)
     }
     return m
-  }, [data, showFavsOnly, favorites, deadChannels, hideDead])
+  }, [data, showFavsOnly, showRecentOnly, favorites, deadChannels, hideDead, hideBad, recentSet])
 
-  const playlistsForActiveCat = useMemo(
-    () => getSourcesByCategory(activePlaylistCat),
-    [activePlaylistCat],
-  )
+  // ─── Provider switching ─────────────────────────────────────────────────
+  const switchProvider = useCallback((provider: Provider) => {
+    setActiveProvider(provider)
+    setActiveCategory(provider.categories[0])
+    // If first category has direct URL, no playlistId needed; else pick first playlist
+    const firstCat = provider.categories[0]
+    setActivePlaylistId(firstCat.playlists && firstCat.playlists.length > 0 ? firstCat.playlists[0].id : undefined)
+  }, [])
+
+  const switchCategory = useCallback((category: ProviderCategory) => {
+    setActiveCategory(category)
+    setActivePlaylistId(category.playlists && category.playlists.length > 0 ? category.playlists[0].id : undefined)
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* Header */}
+      {/* ─── Header ─── */}
       <header className="sticky top-0 z-30 backdrop-blur-xl bg-background/70 border-b border-border">
         <div className="px-4 md:px-6 py-3 flex items-center gap-3">
           <button
@@ -260,7 +357,7 @@ export default function Home() {
           <div className="flex-1 max-w-xl mx-auto relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search channels, groups, countries…"
+              placeholder="Search channels…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9 bg-secondary/60 border-border focus-visible:bg-secondary"
@@ -268,9 +365,20 @@ export default function Home() {
           </div>
 
           <Button
+            variant={showRecentOnly ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => { setShowRecentOnly(v => !v); setShowFavsOnly(false) }}
+            className="gap-2"
+            title="Recently watched"
+          >
+            <Clock className="w-4 h-4" />
+            <span className="hidden sm:inline">Recent</span>
+          </Button>
+
+          <Button
             variant={showFavsOnly ? 'default' : 'outline'}
             size="sm"
-            onClick={() => setShowFavsOnly(v => !v)}
+            onClick={() => { setShowFavsOnly(v => !v); setShowRecentOnly(false) }}
             className="gap-2"
           >
             <Heart className={cn('w-4 h-4', showFavsOnly && 'fill-current')} />
@@ -294,7 +402,7 @@ export default function Home() {
           </Button>
         </div>
 
-        {/* Settings panel */}
+        {/* ─── Settings panel ─── */}
         {showSettings && (
           <div className="px-4 md:px-6 pb-3 border-t border-border bg-card/40">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 max-w-3xl mx-auto">
@@ -314,12 +422,21 @@ export default function Home() {
                   <EyeOff className="w-4 h-4 text-primary" />
                   <div>
                     <p className="text-sm font-medium">Hide dead channels</p>
-                    <p className="text-xs text-muted-foreground">
-                      Hide {deadChannels.size} marked-dead streams
-                    </p>
+                    <p className="text-xs text-muted-foreground">{deadChannels.size} marked dead</p>
                   </div>
                 </div>
                 <Switch checked={hideDead} onCheckedChange={setHideDead} />
+              </label>
+
+              <label className="flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-secondary/40">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-primary" />
+                  <div>
+                    <p className="text-sm font-medium">Hide bad sources</p>
+                    <p className="text-xs text-muted-foreground">[Not 24/7] and [Geo-blocked]</p>
+                  </div>
+                </div>
+                <Switch checked={hideBad} onCheckedChange={setHideBad} />
               </label>
 
               {deadChannels.size > 0 && (
@@ -328,59 +445,76 @@ export default function Home() {
                   className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-secondary/40 hover:bg-secondary/60 transition text-sm sm:col-span-2"
                 >
                   <RotateCcw className="w-4 h-4" />
-                  Reset dead channel list ({deadChannels.size} channels)
+                  Reset dead channel list ({deadChannels.size})
                 </button>
               )}
             </div>
           </div>
         )}
 
-        {/* Playlist category selector */}
+        {/* ─── Row 1: Provider tabs ─── */}
         <div className="px-4 md:px-6 pb-2 flex gap-2 overflow-x-auto no-scrollbar">
-          {PLAYLIST_CATEGORIES.map(cat => {
-            const count = PLAYLIST_SOURCES.filter(s => s.category === cat.id).length
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActivePlaylistCat(cat.id)}
-                className={cn(
-                  'flex items-center gap-1.5 px-3 py-1 rounded-full whitespace-nowrap text-xs font-medium transition',
-                  activePlaylistCat === cat.id
-                    ? 'bg-secondary text-foreground'
-                    : 'text-muted-foreground hover:text-foreground',
-                )}
-              >
-                <span>{cat.flag}</span>
-                <span>{cat.label}</span>
-                <span className="text-[10px] opacity-70">({count})</span>
-              </button>
-            )
-          })}
-        </div>
-
-        {/* Playlist source selector (for active category) */}
-        <div className="px-4 md:px-6 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
-          {playlistsForActiveCat.map(src => (
+          {PROVIDERS.map(prov => (
             <button
-              key={src.id}
-              onClick={() => setActiveSource(src)}
+              key={prov.id}
+              onClick={() => switchProvider(prov)}
               className={cn(
-                'flex items-center gap-2 px-3 py-1.5 rounded-full whitespace-nowrap text-sm font-medium transition border',
-                activeSource.id === src.id
+                'flex items-center gap-2 px-4 py-1.5 rounded-full whitespace-nowrap text-sm font-medium transition border',
+                activeProvider.id === prov.id
                   ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/30'
                   : 'bg-secondary/50 text-foreground hover:bg-secondary border-transparent',
               )}
             >
-              <span>{src.flag}</span>
-              <span>{src.name}</span>
+              <span>{prov.flag}</span>
+              <span>{prov.name}</span>
             </button>
           ))}
         </div>
+
+        {/* ─── Row 2: Category chips for active provider ─── */}
+        <div className="px-4 md:px-6 pb-2 flex gap-2 overflow-x-auto no-scrollbar">
+          {activeProvider.categories.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => switchCategory(cat)}
+              className={cn(
+                'flex items-center gap-1.5 px-3 py-1 rounded-full whitespace-nowrap text-xs font-medium transition',
+                activeCategory?.id === cat.id
+                  ? 'bg-secondary text-foreground'
+                  : 'text-muted-foreground hover:text-foreground',
+              )}
+            >
+              <span>{cat.flag}</span>
+              <span>{cat.name}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* ─── Row 3: Playlist chips (if category has multiple playlists) ─── */}
+        {activeCategory?.playlists && activeCategory.playlists.length > 0 && (
+          <div className="px-4 md:px-6 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
+            {activeCategory.playlists.map(pl => (
+              <button
+                key={pl.id}
+                onClick={() => setActivePlaylistId(pl.id)}
+                className={cn(
+                  'flex items-center gap-1.5 px-3 py-1 rounded-md whitespace-nowrap text-xs transition border',
+                  activePlaylistId === pl.id
+                    ? 'bg-accent text-accent-foreground border-primary/40'
+                    : 'bg-transparent text-muted-foreground hover:text-foreground border-border',
+                )}
+              >
+                <span>{pl.flag}</span>
+                <span>{pl.name}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </header>
 
-      {/* Main */}
+      {/* ─── Main ─── */}
       <div className="flex-1 flex relative">
-        {/* Sidebar — groups */}
+        {/* ─── Sidebar ─── */}
         <aside
           className={cn(
             'absolute lg:static inset-y-0 left-0 z-20 w-64 bg-sidebar border-r border-border transition-transform duration-200',
@@ -391,7 +525,7 @@ export default function Home() {
             <div className="flex items-center gap-2 mb-1">
               <Filter className="w-4 h-4 text-muted-foreground" />
               <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                Categories
+                Groups
               </h2>
             </div>
             {data && (
@@ -404,21 +538,61 @@ export default function Home() {
             )}
           </div>
 
-          <ScrollArea className="h-[calc(100vh-12rem)] thin-scroll">
+          {/* Filter & sort controls */}
+          <div className="p-3 border-b border-border space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground shrink-0 w-12">Quality</span>
+              <Select value={qualityFilter} onValueChange={(v) => setQualityFilter(v as QualityFilter)}>
+                <SelectTrigger className="h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All qualities</SelectItem>
+                  <SelectItem value="4k">4K / 8K only</SelectItem>
+                  <SelectItem value="1080p">1080p or better</SelectItem>
+                  <SelectItem value="720p">720p or better</SelectItem>
+                  <SelectItem value="sd">Any known</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground shrink-0 w-12">Sort</span>
+              <Select value={sortMode} onValueChange={(v) => setSortMode(v as SortMode)}>
+                <SelectTrigger className="h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="az">A → Z</SelectItem>
+                  <SelectItem value="za">Z → A</SelectItem>
+                  <SelectItem value="recent">Recently watched</SelectItem>
+                  <SelectItem value="quality">Best quality first</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <ScrollArea className="h-[calc(100vh-18rem)] thin-scroll">
             <div className="p-2 space-y-0.5">
               <GroupButton
                 label="All Channels"
-                count={data ? data.totalCount - (hideDead ? deadChannels.size : 0) : 0}
-                active={activeGroup === '__all' && !showFavsOnly}
-                onClick={() => { setActiveGroup('__all'); setShowFavsOnly(false); setSidebarOpen(false) }}
+                count={data ? data.totalCount - (hideDead ? deadChannels.size : 0) - (hideBad ? (data.totalCount - filteredChannels.length) : 0) : 0}
+                active={activeGroup === '__all' && !showFavsOnly && !showRecentOnly}
+                onClick={() => { setActiveGroup('__all'); setShowFavsOnly(false); setShowRecentOnly(false); setSidebarOpen(false) }}
                 icon={<Globe className="w-4 h-4" />}
               />
               <GroupButton
                 label="Favorites"
                 count={favorites.size}
                 active={showFavsOnly}
-                onClick={() => { setShowFavsOnly(true); setActiveGroup('__all'); setSidebarOpen(false) }}
+                onClick={() => { setShowFavsOnly(true); setShowRecentOnly(false); setActiveGroup('__all'); setSidebarOpen(false) }}
                 icon={<Star className="w-4 h-4" />}
+              />
+              <GroupButton
+                label="Recently Watched"
+                count={recentChannels.length}
+                active={showRecentOnly}
+                onClick={() => { setShowRecentOnly(true); setShowFavsOnly(false); setActiveGroup('__all'); setSidebarOpen(false) }}
+                icon={<Clock className="w-4 h-4" />}
               />
               <div className="my-2 h-px bg-border" />
               {loading ? (
@@ -435,8 +609,8 @@ export default function Home() {
                       key={group}
                       label={group}
                       count={count}
-                      active={activeGroup === group && !showFavsOnly}
-                      onClick={() => { setActiveGroup(group); setShowFavsOnly(false); setSidebarOpen(false) }}
+                      active={activeGroup === group && !showFavsOnly && !showRecentOnly}
+                      onClick={() => { setActiveGroup(group); setShowFavsOnly(false); setShowRecentOnly(false); setSidebarOpen(false) }}
                     />
                   ))
               )}
@@ -452,7 +626,7 @@ export default function Home() {
           />
         )}
 
-        {/* Main content */}
+        {/* ─── Main content ─── */}
         <main className="flex-1 min-w-0 flex flex-col lg:flex-row">
           {/* Player + now playing */}
           <section className="lg:w-2/3 xl:w-3/4 p-4 md:p-6 space-y-4">
@@ -461,7 +635,7 @@ export default function Home() {
                 <VideoPlayer
                   src={currentChannel.url}
                   poster={currentChannel.logo}
-                  channelName={currentChannel.name}
+                  channelName={currentChannel.displayName}
                   onError={handlePlayerError}
                   onNext={goToNextChannel}
                   autoSkip={autoSkip}
@@ -476,9 +650,25 @@ export default function Home() {
                         </span>
                         LIVE
                       </Badge>
+                      {currentChannel.countryCode && flagForCountry(currentChannel.countryCode) && (
+                        <Badge variant="secondary" className="text-xs gap-1">
+                          {flagForCountry(currentChannel.countryCode)} {currentChannel.countryCode.toUpperCase()}
+                        </Badge>
+                      )}
+                      {currentChannel.quality && (
+                        <Badge variant="secondary" className="text-xs">{currentChannel.quality}</Badge>
+                      )}
                       {currentChannel.group && (
-                        <Badge variant="secondary" className="text-xs">
-                          {currentChannel.group}
+                        <Badge variant="secondary" className="text-xs">{currentChannel.group}</Badge>
+                      )}
+                      {currentChannel.not247 && (
+                        <Badge variant="outline" className="text-xs text-amber-500 border-amber-500/40">
+                          Not 24/7
+                        </Badge>
+                      )}
+                      {currentChannel.geoBlocked && (
+                        <Badge variant="outline" className="text-xs text-amber-500 border-amber-500/40">
+                          Geo-blocked
                         </Badge>
                       )}
                       {isDead(currentChannel) && (
@@ -488,10 +678,9 @@ export default function Home() {
                       )}
                     </div>
                     <h2 className="text-2xl font-bold tracking-tight truncate">
-                      {currentChannel.name}
+                      {currentChannel.displayName}
                     </h2>
                     <p className="text-sm text-muted-foreground truncate mt-1">
-                      {currentChannel.country && <span>{currentChannel.country} · </span>}
                       {currentChannel.language && <span>{currentChannel.language} · </span>}
                       <span className="text-muted-foreground/70 truncate">{currentChannel.url}</span>
                     </p>
@@ -542,12 +731,14 @@ export default function Home() {
             )}
           </section>
 
-          {/* Channel list (right side on desktop) */}
+          {/* Channel list */}
           <section className="lg:w-1/3 xl:w-1/4 border-t lg:border-t-0 lg:border-l border-border bg-card/30">
             <div className="p-4 border-b border-border sticky top-0 bg-card/80 backdrop-blur z-10">
               <div className="flex items-center justify-between gap-2">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                  {showFavsOnly ? 'Favorites' : activeGroup === '__all' ? 'All Channels' : activeGroup}
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground truncate">
+                  {showFavsOnly ? 'Favorites' :
+                   showRecentOnly ? 'Recently Watched' :
+                   activeGroup === '__all' ? 'All Channels' : activeGroup}
                 </h3>
                 <Badge variant="secondary" className="text-xs">
                   {filteredChannels.length.toLocaleString()}
@@ -561,11 +752,7 @@ export default function Home() {
                   <AlertCircle className="w-10 h-10 mx-auto mb-3 text-destructive" />
                   <h4 className="font-semibold mb-1">Failed to load</h4>
                   <p className="text-sm text-muted-foreground mb-4">{error}</p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => fetchPlaylist(activeSource)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => fetchPlaylist()}>
                     Retry
                   </Button>
                 </div>
@@ -585,14 +772,6 @@ export default function Home() {
                 <div className="p-8 text-center text-muted-foreground">
                   <Tv className="w-10 h-10 mx-auto mb-2 opacity-50" />
                   <p className="text-sm">No channels match your filters.</p>
-                  {hideDead && deadChannels.size > 0 && (
-                    <button
-                      onClick={() => setHideDead(false)}
-                      className="mt-3 text-xs text-primary hover:underline"
-                    >
-                      Show {deadChannels.size} hidden dead channels
-                    </button>
-                  )}
                 </div>
               ) : (
                 <div className="p-2 space-y-0.5">
@@ -603,12 +782,8 @@ export default function Home() {
                       active={currentChannel?.url === channel.url}
                       fav={isFav(channel)}
                       dead={isDead(channel)}
-                      onSelect={() => {
-                        setCurrentChannel(channel)
-                        if (typeof window !== 'undefined') {
-                          window.scrollTo({ top: 0, behavior: 'smooth' })
-                        }
-                      }}
+                      recent={recentSet.has(channel.url)}
+                      onSelect={() => handleSelectChannel(channel)}
                       onToggleFav={() => toggleFav(channel)}
                       onMarkDead={() => markDead(channel)}
                       onUnmarkDead={() => unmarkDead(channel)}
@@ -616,7 +791,7 @@ export default function Home() {
                   ))}
                   {filteredChannels.length > 500 && (
                     <div className="p-3 text-center text-xs text-muted-foreground">
-                      Showing first 500 of {filteredChannels.length.toLocaleString()} channels — refine your search to see more.
+                      Showing first 500 of {filteredChannels.length.toLocaleString()} — refine search to see more.
                     </div>
                   )}
                 </div>
@@ -629,9 +804,7 @@ export default function Home() {
   )
 }
 
-/* ----- helpers ----- */
-
-/* ----- Sub-components ----- */
+/* ─── Sub-components ─── */
 
 function GroupButton({
   label, count, active, onClick, icon,
@@ -647,9 +820,7 @@ function GroupButton({
       onClick={onClick}
       className={cn(
         'w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition',
-        active
-          ? 'bg-primary text-primary-foreground shadow-sm'
-          : 'hover:bg-secondary text-foreground/90',
+        active ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-secondary text-foreground/90',
       )}
     >
       {icon && <span className="shrink-0">{icon}</span>}
@@ -665,17 +836,19 @@ function GroupButton({
 }
 
 function ChannelRow({
-  channel, active, fav, dead, onSelect, onToggleFav, onMarkDead, onUnmarkDead,
+  channel, active, fav, dead, recent, onSelect, onToggleFav, onMarkDead, onUnmarkDead,
 }: {
   channel: Channel
   active: boolean
   fav: boolean
   dead: boolean
+  recent: boolean
   onSelect: () => void
   onToggleFav: () => void
   onMarkDead: () => void
   onUnmarkDead: () => void
 }) {
+  const flag = channel.countryCode ? flagForCountry(channel.countryCode) : undefined
   return (
     <div
       className={cn(
@@ -689,12 +862,10 @@ function ChannelRow({
         {channel.logo ? (
           <img
             src={channel.logo}
-            alt={channel.name}
+            alt={channel.displayName}
             className="w-full h-full object-contain"
             loading="lazy"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = 'none'
-            }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
           />
         ) : (
           <Tv className="w-5 h-5 text-muted-foreground" />
@@ -706,10 +877,38 @@ function ChannelRow({
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <p className={cn('text-sm font-medium truncate', active ? 'text-primary' : dead && 'line-through')}>
-          {channel.name}
-        </p>
-        <p className="text-xs text-muted-foreground truncate">{channel.group}</p>
+        <div className="flex items-center gap-1.5">
+          {flag && <span className="text-sm" title={channel.countryCode?.toUpperCase()}>{flag}</span>}
+          <p className={cn(
+            'text-sm font-medium truncate',
+            active ? 'text-primary' : dead && 'line-through',
+          )}>
+            {channel.displayName}
+          </p>
+        </div>
+        <div className="flex items-center gap-1.5 mt-0.5">
+          {channel.quality && (
+            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4">
+              {channel.quality}
+            </Badge>
+          )}
+          {channel.not247 && (
+            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 text-amber-500 border-amber-500/40">
+              Not 24/7
+            </Badge>
+          )}
+          {channel.geoBlocked && (
+            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 text-amber-500 border-amber-500/40">
+              Geo
+            </Badge>
+          )}
+          {recent && (
+            <Clock className="w-3 h-3 text-primary/70" />
+          )}
+          <span className="text-xs text-muted-foreground truncate">
+            {channel.group}
+          </span>
+        </div>
       </div>
       <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition">
         {dead ? (

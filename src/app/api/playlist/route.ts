@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { parseM3U } from '@/lib/m3u-parser'
-import { PLAYLIST_SOURCES } from '@/lib/playlists'
+import { resolvePlaylistUrl } from '@/lib/playlists'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,36 +8,41 @@ export const dynamic = 'force-dynamic'
 type CacheEntry = {
   data: ReturnType<typeof parseM3U>
   fetchedAt: number
-  sourceId: string
+  sourceKey: string
 }
 const cache = new Map<string, CacheEntry>()
 const CACHE_TTL_MS = 10 * 60 * 1000 // 10 minutes
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
-  const sourceId = searchParams.get('source')
+  const providerId = searchParams.get('provider')
+  const categoryId = searchParams.get('category')
+  const playlistId = searchParams.get('playlist') || undefined
   const url = searchParams.get('url')
 
   // Determine what to fetch
   let targetUrl: string | null = null
   let cacheKey: string | null = null
-  let resolvedSourceId = 'custom'
+  let sourceLabel = 'custom'
 
-  if (sourceId) {
-    const source = PLAYLIST_SOURCES.find((p) => p.id === sourceId)
-    if (!source) {
-      return NextResponse.json({ error: 'Unknown playlist source' }, { status: 404 })
+  if (providerId && categoryId) {
+    const resolved = resolvePlaylistUrl(providerId, categoryId, playlistId)
+    if (!resolved) {
+      return NextResponse.json(
+        { error: 'Unknown provider/category/playlist combination' },
+        { status: 404 },
+      )
     }
-    targetUrl = source.url
-    cacheKey = sourceId
-    resolvedSourceId = sourceId
+    targetUrl = resolved
+    cacheKey = `${providerId}:${categoryId}:${playlistId ?? '_direct'}`
+    sourceLabel = `${providerId}/${categoryId}${playlistId ? '/' + playlistId : ''}`
   } else if (url) {
     targetUrl = url
     cacheKey = `url:${url}`
-    resolvedSourceId = 'custom'
+    sourceLabel = 'custom'
   } else {
     return NextResponse.json(
-      { error: 'Provide either ?source=<id> or ?url=<m3u-url>' },
+      { error: 'Provide ?provider=&category=&playlist= or ?url=' },
       { status: 400 },
     )
   }
@@ -48,7 +53,7 @@ export async function GET(req: NextRequest) {
     if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
       return NextResponse.json({
         ...cached.data,
-        sourceId: cached.sourceId,
+        sourceKey: cached.sourceKey,
         cached: true,
         fetchedAt: cached.fetchedAt,
       })
@@ -62,7 +67,7 @@ export async function GET(req: NextRequest) {
     const response = await fetch(targetUrl!, {
       signal: controller.signal,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; IPTV-Host/1.0)',
+        'User-Agent': 'Mozilla/5.0 (compatible; StreamDeck/2.0)',
       },
     })
     clearTimeout(timeout)
@@ -82,13 +87,13 @@ export async function GET(req: NextRequest) {
       cache.set(cacheKey, {
         data: parsed,
         fetchedAt: Date.now(),
-        sourceId: resolvedSourceId,
+        sourceKey: sourceLabel,
       })
     }
 
     return NextResponse.json({
       ...parsed,
-      sourceId: resolvedSourceId,
+      sourceKey: sourceLabel,
       cached: false,
       fetchedAt: Date.now(),
     })
