@@ -67,6 +67,15 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
 
+  // ─── Refs that mirror state, so callbacks can read latest values
+  //    without being recreated (and without triggering refetches). ────────
+  const deadChannelsRef = useRef<Set<string>>(new Set())
+  const favoritesRef = useRef<Set<string>>(new Set())
+  const recentChannelsRef = useRef<string[]>([])
+  useEffect(() => { deadChannelsRef.current = deadChannels }, [deadChannels])
+  useEffect(() => { favoritesRef.current = favorites }, [favorites])
+  useEffect(() => { recentChannelsRef.current = recentChannels }, [recentChannels])
+
   // ─── Load persisted state on mount ──────────────────────────────────────
   useEffect(() => {
     try {
@@ -147,8 +156,9 @@ export default function Home() {
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Failed to load playlist')
       setData(json)
-      // Pick first non-dead channel as initial preview
-      const firstPlayable = (json.channels as Channel[]).find(c => !deadChannels.has(c.url))
+      // Pick first non-dead channel as initial preview (use ref to avoid deps)
+      const deadSet = deadChannelsRef.current
+      const firstPlayable = (json.channels as Channel[]).find(c => !deadSet.has(c.url))
       if (firstPlayable) {
         setCurrentChannel(firstPlayable)
       } else if (json.channels?.length > 0) {
@@ -160,7 +170,7 @@ export default function Home() {
     } finally {
       setLoading(false)
     }
-  }, [activeProvider, activeCategory, activePlaylistId, deadChannels])
+  }, [activeProvider, activeCategory, activePlaylistId])
 
   useEffect(() => {
     fetchPlaylist()
@@ -200,24 +210,30 @@ export default function Home() {
     })
   }, [])
 
-  // Auto-skip to next channel
+  // Auto-skip to next channel (uses refs to avoid recreating on every dead-channel update)
+  const currentChannelRef = useRef<Channel | null>(null)
+  useEffect(() => { currentChannelRef.current = currentChannel }, [currentChannel])
+
   const goToNextChannel = useCallback(() => {
-    if (!data || !currentChannel) return
     const list = filteredChannelsRef.current
-    const idx = list.findIndex(c => c.url === currentChannel.url)
+    const cur = currentChannelRef.current
+    if (!list || list.length === 0 || !cur) return
+    const deadSet = deadChannelsRef.current
+    const idx = list.findIndex(c => c.url === cur.url)
+    if (idx === -1) return
     for (let i = idx + 1; i < list.length; i++) {
-      if (!deadChannels.has(list[i].url)) {
+      if (!deadSet.has(list[i].url)) {
         setCurrentChannel(list[i])
         return
       }
     }
     for (let i = 0; i < idx; i++) {
-      if (!deadChannels.has(list[i].url)) {
+      if (!deadSet.has(list[i].url)) {
         setCurrentChannel(list[i])
         return
       }
     }
-  }, [data, currentChannel, deadChannels])
+  }, [])
 
   const handleSelectChannel = useCallback((channel: Channel) => {
     setCurrentChannel(channel)
@@ -228,10 +244,11 @@ export default function Home() {
   }, [recordRecent])
 
   const handlePlayerError = useCallback((_msg: string) => {
-    if (currentChannel) {
-      markDead(currentChannel)
+    const cur = currentChannelRef.current
+    if (cur) {
+      markDead(cur)
     }
-  }, [currentChannel, markDead])
+  }, [markDead])
 
   // ─── Filtering & sorting ────────────────────────────────────────────────
   const recentSet = useMemo(() => new Set(recentChannels), [recentChannels])
