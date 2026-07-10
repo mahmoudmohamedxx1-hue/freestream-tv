@@ -1,28 +1,53 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Hls from 'hls.js'
-import { AlertCircle, Loader2, Volume2, VolumeX, Maximize, Play, Pause } from 'lucide-react'
+import { AlertCircle, Loader2, Volume2, VolumeX, Maximize, Play, Pause, SkipForward } from 'lucide-react'
 
 type VideoPlayerProps = {
   src: string
   poster?: string
   channelName?: string
   onError?: (msg: string) => void
+  /** Called when user clicks "Skip to next" */
+  onNext?: () => void
+  /** If true, automatically calls onNext after a short delay when an error occurs */
+  autoSkip?: boolean
 }
 
-export function VideoPlayer({ src, poster, channelName, onError }: VideoPlayerProps) {
+export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSkip = false }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const hlsRef = useRef<Hls | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const errorCountRef = useRef(0)
+  const skipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [playing, setPlaying] = useState(false)
   const [muted, setMuted] = useState(false)
 
+  const triggerError = useCallback((msg: string) => {
+    setError(msg)
+    setLoading(false)
+    onError?.(msg)
+    // Schedule auto-skip if enabled and we have a next handler
+    if (autoSkip && onNext) {
+      if (skipTimerRef.current) clearTimeout(skipTimerRef.current)
+      skipTimerRef.current = setTimeout(() => {
+        onNext()
+      }, 1800)
+    }
+  }, [autoSkip, onNext, onError])
+
   useEffect(() => {
     const video = videoRef.current
     if (!video || !src) return
+
+    errorCountRef.current = 0
+    if (skipTimerRef.current) {
+      clearTimeout(skipTimerRef.current)
+      skipTimerRef.current = null
+    }
 
     // Defer state updates so we don't trigger them synchronously inside the effect body
     const resetTimer = requestAnimationFrame(() => {
@@ -54,9 +79,7 @@ export function VideoPlayer({ src, poster, channelName, onError }: VideoPlayerPr
     const onWait = () => setLoading(true)
     const onErr = () => {
       const msg = 'Stream could not be loaded. The source may be offline, geo-restricted, or no longer available.'
-      setError(msg)
-      setLoading(false)
-      onError?.(msg)
+      triggerError(msg)
     }
 
     video.addEventListener('loadedmetadata', onLoaded)
@@ -64,25 +87,49 @@ export function VideoPlayer({ src, poster, channelName, onError }: VideoPlayerPr
     video.addEventListener('waiting', onWait)
     video.addEventListener('error', onErr)
 
+    // Safety: if loading takes too long, mark as error
+    const loadTimeout = setTimeout(() => {
+      if (loading) {
+        triggerError('Stream took too long to load. Source may be offline.')
+      }
+    }, 12000)
+
     if (isHls && Hls.isSupported()) {
       const hls = new Hls({
         enableWorker: true,
         lowLatencyMode: true,
         backBufferLength: 30,
+        manifestLoadingTimeOut: 10000,
+        manifestLoadingMaxRetry: 2,
+        levelLoadingTimeOut: 10000,
+        fragLoadingTimeOut: 20000,
       })
       hlsRef.current = hls
       hls.loadSource(src)
       hls.attachMedia(video)
       hls.on(Hls.Events.ERROR, (_event, data) => {
         if (data.fatal) {
+          errorCountRef.current += 1
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
-              hls.startLoad()
+              // Try to recover once, then give up
+              if (errorCountRef.current <= 1) {
+                hls.startLoad()
+              } else {
+                clearTimeout(loadTimeout)
+                onErr()
+              }
               break
             case Hls.ErrorTypes.MEDIA_ERROR:
-              hls.recoverMediaError()
+              if (errorCountRef.current <= 1) {
+                hls.recoverMediaError()
+              } else {
+                clearTimeout(loadTimeout)
+                onErr()
+              }
               break
             default:
+              clearTimeout(loadTimeout)
               onErr()
               break
           }
@@ -98,6 +145,11 @@ export function VideoPlayer({ src, poster, channelName, onError }: VideoPlayerPr
 
     return () => {
       cancelAnimationFrame(resetTimer)
+      clearTimeout(loadTimeout)
+      if (skipTimerRef.current) {
+        clearTimeout(skipTimerRef.current)
+        skipTimerRef.current = null
+      }
       video.removeEventListener('loadedmetadata', onLoaded)
       video.removeEventListener('playing', onPlaying)
       video.removeEventListener('waiting', onWait)
@@ -107,7 +159,22 @@ export function VideoPlayer({ src, poster, channelName, onError }: VideoPlayerPr
         hlsRef.current = null
       }
     }
-  }, [src, onError])
+  }, [src])
+
+  // Re-evaluate auto-skip scheduling if the autoSkip flag or onNext changes
+  useEffect(() => {
+    if (!error || !autoSkip || !onNext) return
+    if (skipTimerRef.current) clearTimeout(skipTimerRef.current)
+    skipTimerRef.current = setTimeout(() => {
+      onNext()
+    }, 1800)
+    return () => {
+      if (skipTimerRef.current) {
+        clearTimeout(skipTimerRef.current)
+        skipTimerRef.current = null
+      }
+    }
+  }, [error, autoSkip, onNext])
 
   const togglePlay = () => {
     const v = videoRef.current
@@ -170,6 +237,20 @@ export function VideoPlayer({ src, poster, channelName, onError }: VideoPlayerPr
             <AlertCircle className="w-10 h-10 text-red-500" />
             <h3 className="text-white font-semibold text-lg">Stream unavailable</h3>
             <p className="text-white/70 text-sm">{error}</p>
+            {autoSkip && onNext && (
+              <p className="text-white/50 text-xs">
+                Automatically skipping to next channel…
+              </p>
+            )}
+            {onNext && (
+              <button
+                onClick={onNext}
+                className="mt-2 flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition text-sm font-medium"
+              >
+                <SkipForward className="w-4 h-4" />
+                Skip to next channel
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -196,6 +277,16 @@ export function VideoPlayer({ src, poster, channelName, onError }: VideoPlayerPr
               <span className="text-white/90 text-sm font-medium truncate flex-1">
                 {channelName}
               </span>
+            )}
+            {onNext && (
+              <button
+                onClick={onNext}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition text-white pointer-events-auto"
+                aria-label="Next channel"
+                title="Next channel"
+              >
+                <SkipForward className="w-5 h-5" />
+              </button>
             )}
             <button
               onClick={goFullscreen}
