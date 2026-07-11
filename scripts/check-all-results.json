@@ -1,0 +1,14 @@
+[
+  {
+    "name": "World IPTV Verified",
+    "provider": "world-iptv",
+    "category": "verified-all",
+    "playlist": null,
+    "url": "https://romaxa55.github.io/world_ip_tv/output/index.m3u",
+    "output_file": "world-iptv-verified-all.m3u",
+    "total": 14148,
+    "tested": 500,
+    "working": 342,
+    "dead": 158
+  }
+]

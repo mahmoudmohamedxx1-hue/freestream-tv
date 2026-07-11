@@ -82,31 +82,65 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
       triggerError(msg)
     }
 
+    // Safety: if NO progress events fire for 30s, mark as error.
+    // This timeout resets whenever the player emits progress/loaded/warning events,
+    // so a slow-but-progressing stream won't trigger a false error.
+    // NOTE: loadTimeout and resetLoadTimeout must be declared BEFORE the
+    // addEventListener calls below, otherwise we hit a temporal dead zone error.
+    let loadTimeout: ReturnType<typeof setTimeout> | null = setTimeout(() => {
+      if (loading) {
+        triggerError('Stream took too long to load. Source may be offline.')
+      }
+    }, 30000)
+
+    const resetLoadTimeout = () => {
+      if (loadTimeout) clearTimeout(loadTimeout)
+      // After we've successfully started playing, no more timeout needed
+      if (!loading) return
+      loadTimeout = setTimeout(() => {
+        if (loading) {
+          triggerError('Stream took too long to load. Source may be offline.')
+        }
+      }, 30000)
+    }
+
+    // Listen for HLS manifest/fragment loaded events to reset the timeout
+    const onManifestParsed = () => resetLoadTimeout()
+    const onLevelLoaded = () => resetLoadTimeout()
+    const onFragLoaded = () => resetLoadTimeout()
+    const onFragLoading = () => resetLoadTimeout()
+    const onBufferAppended = () => resetLoadTimeout()
+
     video.addEventListener('loadedmetadata', onLoaded)
     video.addEventListener('playing', onPlaying)
     video.addEventListener('waiting', onWait)
     video.addEventListener('error', onErr)
-
-    // Safety: if loading takes too long, mark as error
-    const loadTimeout = setTimeout(() => {
-      if (loading) {
-        triggerError('Stream took too long to load. Source may be offline.')
-      }
-    }, 12000)
+    // Reset the load timeout on video progress events too
+    video.addEventListener('progress', resetLoadTimeout)
+    video.addEventListener('canplay', resetLoadTimeout)
+    video.addEventListener('canplaythrough', resetLoadTimeout)
 
     if (isHls && Hls.isSupported()) {
       const hls = new Hls({
         enableWorker: true,
         lowLatencyMode: true,
         backBufferLength: 30,
-        manifestLoadingTimeOut: 10000,
-        manifestLoadingMaxRetry: 2,
-        levelLoadingTimeOut: 10000,
-        fragLoadingTimeOut: 20000,
+        manifestLoadingTimeOut: 20000,
+        manifestLoadingMaxRetry: 3,
+        levelLoadingTimeOut: 20000,
+        levelLoadingMaxRetry: 4,
+        fragLoadingTimeOut: 30000,
+        fragLoadingMaxRetry: 6,
       })
       hlsRef.current = hls
       hls.loadSource(src)
       hls.attachMedia(video)
+      // Reset the load timeout whenever HLS makes progress
+      hls.on(Hls.Events.MANIFEST_PARSED, onManifestParsed)
+      hls.on(Hls.Events.LEVEL_LOADED, onLevelLoaded)
+      hls.on(Hls.Events.FRAG_LOADED, onFragLoaded)
+      hls.on(Hls.Events.FRAG_LOADING, onFragLoading)
+      hls.on(Hls.Events.BUFFER_APPENDED, onBufferAppended)
       hls.on(Hls.Events.ERROR, (_event, data) => {
         if (data.fatal) {
           errorCountRef.current += 1
@@ -145,7 +179,7 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
 
     return () => {
       cancelAnimationFrame(resetTimer)
-      clearTimeout(loadTimeout)
+      if (loadTimeout) clearTimeout(loadTimeout)
       if (skipTimerRef.current) {
         clearTimeout(skipTimerRef.current)
         skipTimerRef.current = null
@@ -154,6 +188,9 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
       video.removeEventListener('playing', onPlaying)
       video.removeEventListener('waiting', onWait)
       video.removeEventListener('error', onErr)
+      video.removeEventListener('progress', resetLoadTimeout)
+      video.removeEventListener('canplay', resetLoadTimeout)
+      video.removeEventListener('canplaythrough', resetLoadTimeout)
       if (hlsRef.current) {
         hlsRef.current.destroy()
         hlsRef.current = null

@@ -148,32 +148,32 @@ export const PROVIDERS: Provider[] = [
   {
     id: 'free-tv',
     name: 'Free-TV',
-    description: 'Pluto TV, Plex TV, Samsung TV Plus — official free channels',
+    description: 'Pluto TV, Plex TV, Samsung TV Plus — official free channels (filtered: 731 working)',
     flag: '📺',
     categories: [
       {
         id: 'all',
         name: 'All Free-TV',
         flag: '📺',
-        directUrl: 'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8',
+        directUrl: '/filtered/free-tv-all.m3u',
       },
     ],
   },
 
   // ─────────────────────────────────────────────────────────────────────────
-  // IPTV4ON — uploaded local playlist (172 channels: Arabic, beIN Sports, France, World Cup 2026)
+  // IPTV4ON — uploaded local playlist (filtered: 165 working out of 172)
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'iptv4on',
     name: 'IPTV4ON',
-    description: 'Arabic, beIN Sports, France, World Cup 2026 — 172 channels',
+    description: 'Arabic, beIN Sports, France, World Cup 2026 — verified working',
     flag: '🎬',
     categories: [
       {
         id: 'all',
         name: 'All Channels',
         flag: '📺',
-        directUrl: '/iptv4on.m3u',
+        directUrl: '/filtered/iptv4on-all.m3u',
       },
     ],
   },
@@ -193,7 +193,7 @@ export const PROVIDERS: Provider[] = [
         id: 'verified-all',
         name: 'Verified (All)',
         flag: '🌐',
-        directUrl: 'https://romaxa55.github.io/world_ip_tv/output/index.m3u',
+        directUrl: '/filtered/world-iptv-verified-all.m3u',
       },
       {
         id: 'arabic',
@@ -373,15 +373,15 @@ export const PROVIDERS: Provider[] = [
         name: 'Samsung TV Plus',
         flag: '📱',
         playlists: [
-          { id: 's-us-samsung', name: 'Samsung TV USA', flag: '🇺🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/us_samsung.m3u' },
-          { id: 's-uk-samsung', name: 'Samsung TV UK', flag: '🇬🇧', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/uk_samsung.m3u' },
+          { id: 's-us-samsung', name: 'Samsung TV USA (252✓)', flag: '🇺🇸', url: '/filtered/iptv-streams-samsung-tv-us-samsung.m3u' },
+          { id: 's-uk-samsung', name: 'Samsung TV UK (120✓)', flag: '🇬🇧', url: '/filtered/iptv-streams-samsung-tv-uk-samsung.m3u' },
           { id: 's-at-samsung', name: 'Samsung TV Austria', flag: '🇦🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/at_samsung.m3u' },
           { id: 's-au-samsung', name: 'Samsung TV Australia', flag: '🇦🇺', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/au_samsung.m3u' },
           { id: 's-be-samsung', name: 'Samsung TV Belgium', flag: '🇧🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/be_samsung.m3u' },
           { id: 's-br-samsung', name: 'Samsung TV Brazil', flag: '🇧🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/br_samsung.m3u' },
           { id: 's-ca-samsung', name: 'Samsung TV Canada', flag: '🇨🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca_samsung.m3u' },
           { id: 's-ch-samsung', name: 'Samsung TV Switzerland', flag: '🇨🇭', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ch_samsung.m3u' },
-          { id: 's-de-samsung', name: 'Samsung TV Germany', flag: '🇩🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/de_samsung.m3u' },
+          { id: 's-de-samsung', name: 'Samsung TV Germany (1✓)', flag: '🇩🇪', url: '/filtered/iptv-streams-samsung-tv-de-samsung.m3u' },
           { id: 's-dk-samsung', name: 'Samsung TV Denmark', flag: '🇩🇰', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/dk_samsung.m3u' },
           { id: 's-es-samsung', name: 'Samsung TV Spain', flag: '🇪🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es_samsung.m3u' },
           { id: 's-fi-samsung', name: 'Samsung TV Finland', flag: '🇫🇮', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fi_samsung.m3u' },
@@ -443,7 +443,7 @@ export const PROVIDERS: Provider[] = [
         id: 'verified',
         name: 'Verified Working',
         flag: '✅',
-        directUrl: '/bein-working.m3u',
+        directUrl: '/filtered/bein-verified.m3u',
       },
       {
         id: 'iptv-org-sports',
