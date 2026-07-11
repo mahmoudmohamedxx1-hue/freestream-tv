@@ -3,31 +3,27 @@
     "id": "premier-league",
     "name": "Premier League",
     "flag": "\ud83e\udd81",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Premier_League_Logo.svg/512px-Premier_League_Logo.svg.png",
-    "candidates": 22,
-    "working": 21
+    "candidates": 16,
+    "working": 16
   },
   {
     "id": "la-liga",
     "name": "La Liga",
     "flag": "\ud83c\uddea\ud83c\uddf8",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/LaLiga_logo_2023.svg/512px-LaLiga_logo_2023.svg.png",
-    "candidates": 3,
-    "working": 3
+    "candidates": 6,
+    "working": 5
   },
   {
     "id": "serie-a",
     "name": "Serie A",
     "flag": "\ud83c\uddee\ud83c\uddf9",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0d/Serie_A_logo_2022.svg/512px-Serie_A_logo_2022.svg.png",
-    "candidates": 32,
-    "working": 27
+    "candidates": 1,
+    "working": 0
   },
   {
     "id": "bundesliga",
     "name": "Bundesliga",
     "flag": "\ud83c\udde9\ud83c\uddea",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d7/Bundesliga_logo_%282017%29.svg/512px-Bundesliga_logo_%282017%29.svg.png",
     "candidates": 0,
     "working": 0
   },
@@ -35,7 +31,6 @@
     "id": "ligue-1",
     "name": "Ligue 1",
     "flag": "\ud83c\uddeb\ud83c\uddf7",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/Ligue_1_Uber_Eats.svg/512px-Ligue_1_Uber_Eats.svg.png",
     "candidates": 0,
     "working": 0
   },
@@ -43,80 +38,77 @@
     "id": "champions-league",
     "name": "Champions League",
     "flag": "\ud83c\udfc6",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/b/bf/UEFA_Champions_League.svg/512px-UEFA_Champions_League.svg.png",
-    "candidates": 6,
-    "working": 5
+    "candidates": 5,
+    "working": 4
   },
   {
     "id": "europa-league",
     "name": "Europa League",
     "flag": "\ud83e\udd48",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c4/UEFA_Europa_League.svg/512px-UEFA_Europa_League.svg.png",
-    "candidates": 12,
-    "working": 12
+    "candidates": 5,
+    "working": 5
   },
   {
     "id": "world-cup-2026",
     "name": "World Cup 2026",
     "flag": "\ud83c\udfc6",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/2026_FIFA_World_Cup.svg/512px-2026_FIFA_World_Cup.svg.png",
-    "candidates": 53,
+    "candidates": 54,
     "working": 50
   },
   {
     "id": "nfl",
     "name": "NFL (American Football)",
     "flag": "\ud83c\udfc8",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/NFL_logo.svg/512px-NFL_logo.svg.png",
-    "candidates": 7,
-    "working": 7
+    "candidates": 8,
+    "working": 6
   },
   {
     "id": "nba",
     "name": "NBA (Basketball)",
     "flag": "\ud83c\udfc0",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Nba_logo.svg/512px-Nba_logo.svg.png",
-    "candidates": 3,
-    "working": 3
+    "candidates": 6,
+    "working": 2
   },
   {
     "id": "mlb",
     "name": "MLB (Baseball)",
     "flag": "\u26be",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a6/Major_League_Baseball_logo.svg/512px-Major_League_Baseball_logo.svg.png",
-    "candidates": 2,
-    "working": 2
+    "candidates": 6,
+    "working": 4
   },
   {
     "id": "nhl",
     "name": "NHL (Hockey)",
     "flag": "\ud83c\udfd2",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0d/NHL_Logo.svg/512px-NHL_Logo.svg.png",
-    "candidates": 2,
-    "working": 1
+    "candidates": 3,
+    "working": 2
   },
   {
     "id": "ufc-mma",
     "name": "UFC & MMA",
     "flag": "\ud83e\udd4a",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/UFC_Logo_2022.svg/512px-UFC_Logo_2022.svg.png",
-    "candidates": 28,
-    "working": 26
+    "candidates": 37,
+    "working": 30
   },
   {
     "id": "f1-racing",
     "name": "F1 & Motorsport",
     "flag": "\ud83c\udfce\ufe0f",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0d/F1_Logo_2023.svg/512px-F1_Logo_2023.svg.png",
-    "candidates": 13,
-    "working": 11
+    "candidates": 11,
+    "working": 7
   },
   {
     "id": "college-sports",
     "name": "College Sports (NCAA)",
     "flag": "\ud83c\udf93",
-    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2c/NCAA_logo.svg/512px-NCAA_logo.svg.png",
     "candidates": 2,
     "working": 2
+  },
+  {
+    "id": "other-football",
+    "name": "Other Football (Soccer)",
+    "flag": "\u26bd",
+    "candidates": 194,
+    "working": 50
   }
 ]

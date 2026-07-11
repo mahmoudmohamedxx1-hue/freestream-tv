@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Hls from 'hls.js'
-import { AlertCircle, Loader2, Volume2, VolumeX, Maximize, Play, Pause, SkipForward, Settings } from 'lucide-react'
+import { AlertCircle, Loader2, Volume2, VolumeX, Maximize, Play, Pause, SkipForward, Settings, Subtitles } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 type QualityLevel = {
   id: number
@@ -37,6 +38,9 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
   const [levels, setLevels] = useState<QualityLevel[]>([])
   const [currentLevel, setCurrentLevel] = useState<number>(-1) // -1 = auto
   const [showQualityMenu, setShowQualityMenu] = useState(false)
+  const [subtitleTracks, setSubtitleTracks] = useState<any[]>([])
+  const [activeSubtitle, setActiveSubtitle] = useState<number>(-1) // -1 = off
+  const [showSubtitleMenu, setShowSubtitleMenu] = useState(false)
 
   const triggerError = useCallback((msg: string) => {
     setError(msg)
@@ -187,6 +191,24 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
       hls.on(Hls.Events.LEVEL_SWITCHED, (_event, data) => {
         setCurrentLevel(hls.autoLevelEnabled ? -1 : data.level)
       })
+      // Track subtitle tracks
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        const subs = hls.subtitleTracks.map((tr, i) => ({
+          id: i,
+          name: tr.name || tr.lang || `Track ${i + 1}`,
+          lang: tr.lang || '',
+        }))
+        setSubtitleTracks(subs)
+        setActiveSubtitle(-1) // off by default
+      })
+      hls.on(Hls.Events.SUBTITLE_TRACKS_UPDATED, () => {
+        const subs = hls.subtitleTracks.map((tr, i) => ({
+          id: i,
+          name: tr.name || tr.lang || `Track ${i + 1}`,
+          lang: tr.lang || '',
+        }))
+        setSubtitleTracks(subs)
+      })
       hls.on(Hls.Events.ERROR, (_event, data) => {
         if (data.fatal) {
           errorCountRef.current += 1
@@ -285,6 +307,13 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
     setShowQualityMenu(false)
   }
 
+  const setSubtitle = (trackId: number) => {
+    if (!hlsRef.current) return
+    hlsRef.current.subtitleTrack = trackId // -1 = off
+    setActiveSubtitle(trackId)
+    setShowSubtitleMenu(false)
+  }
+
   const goFullscreen = () => {
     const c = containerRef.current
     if (!c) return
@@ -378,39 +407,79 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
                 <SkipForward className="w-5 h-5" />
               </button>
             )}
-            {/* Quality selector */}
-            {levels.length > 0 && (
-              <div className="relative ml-auto">
+            {/* Subtitle selector — only shows if subtitles are available */}
+            {subtitleTracks.length > 0 && (
+              <div className="relative">
                 <button
-                  onClick={() => setShowQualityMenu(v => !v)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition text-white text-xs font-medium pointer-events-auto"
-                  aria-label="Quality"
-                  title="Stream quality"
+                  onClick={() => setShowSubtitleMenu(v => !v)}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-white/20 transition text-white text-xs font-medium pointer-events-auto',
+                    activeSubtitle !== -1 ? 'bg-primary/80' : 'bg-white/10',
+                  )}
+                  aria-label="Subtitles"
+                  title="Subtitles / Captions"
                 >
-                  <Settings className="w-4 h-4" />
-                  <span>{currentLevel === -1 ? 'Auto' : levels.find(l => l.id === currentLevel)?.label || 'Auto'}</span>
+                  <Subtitles className="w-4 h-4" />
+                  <span className="hidden sm:inline">{activeSubtitle === -1 ? 'CC' : subtitleTracks.find(s => s.id === activeSubtitle)?.name || 'CC'}</span>
                 </button>
-                {showQualityMenu && (
-                  <div className="absolute bottom-full right-0 mb-2 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-[120px] shadow-xl pointer-events-auto">
+                {showSubtitleMenu && (
+                  <div className="absolute bottom-full right-0 mb-2 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-[140px] shadow-xl pointer-events-auto">
                     <button
-                      onClick={() => setQuality(-1)}
-                      className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${currentLevel === -1 ? 'text-primary bg-primary/10' : 'text-white'}`}
+                      onClick={() => setSubtitle(-1)}
+                      className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${activeSubtitle === -1 ? 'text-primary bg-primary/10' : 'text-white'}`}
                     >
-                      Auto
+                      Off
                     </button>
-                    {levels.slice().reverse().map(lvl => (
+                    {subtitleTracks.map(sub => (
                       <button
-                        key={lvl.id}
-                        onClick={() => setQuality(lvl.id)}
-                        className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${currentLevel === lvl.id ? 'text-primary bg-primary/10' : 'text-white'}`}
+                        key={sub.id}
+                        onClick={() => setSubtitle(sub.id)}
+                        className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${activeSubtitle === sub.id ? 'text-primary bg-primary/10' : 'text-white'}`}
                       >
-                        {lvl.label}
+                        {sub.name}{sub.lang && ` (${sub.lang})`}
                       </button>
                     ))}
                   </div>
                 )}
               </div>
             )}
+            {/* Quality selector — always visible, shows available levels or "Single" */}
+            <div className="relative ml-auto">
+              <button
+                onClick={() => levels.length > 1 && setShowQualityMenu(v => !v)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition text-white text-xs font-medium pointer-events-auto"
+                aria-label="Quality"
+                title={levels.length > 1 ? 'Stream quality' : 'Single quality stream'}
+              >
+                <Settings className="w-4 h-4" />
+                <span>
+                  {levels.length === 0
+                    ? 'Auto'
+                    : currentLevel === -1
+                      ? 'Auto'
+                      : levels.find(l => l.id === currentLevel)?.label || 'Auto'}
+                </span>
+              </button>
+              {showQualityMenu && levels.length > 1 && (
+                <div className="absolute bottom-full right-0 mb-2 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-[120px] shadow-xl pointer-events-auto">
+                  <button
+                    onClick={() => setQuality(-1)}
+                    className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${currentLevel === -1 ? 'text-primary bg-primary/10' : 'text-white'}`}
+                  >
+                    Auto
+                  </button>
+                  {levels.slice().reverse().map(lvl => (
+                    <button
+                      key={lvl.id}
+                      onClick={() => setQuality(lvl.id)}
+                      className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${currentLevel === lvl.id ? 'text-primary bg-primary/10' : 'text-white'}`}
+                    >
+                      {lvl.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
               onClick={goFullscreen}
               className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition text-white pointer-events-auto"

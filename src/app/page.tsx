@@ -69,6 +69,8 @@ export default function Home() {
   const [currentChannel, setCurrentChannel] = useState<Channel | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [providerGridOpen, setProviderGridOpen] = useState(false)
+  const [language, setLanguage] = useState<'en' | 'ar'>('en')
   const [sidebarView, setSidebarView] = useState<SidebarView>('channels')
   const [tvGuide, setTvGuide] = useState<any[]>([])
   const [guideLoading, setGuideLoading] = useState(false)
@@ -82,6 +84,13 @@ export default function Home() {
   useEffect(() => { favoritesRef.current = favorites }, [favorites])
   useEffect(() => { recentChannelsRef.current = recentChannels }, [recentChannels])
   useEffect(() => { currentChannelRef.current = currentChannel }, [currentChannel])
+
+  // ─── Apply language direction (RTL for Arabic) ──────────────────────────
+  useEffect(() => {
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
+    document.documentElement.lang = language
+    try { localStorage.setItem('freestream.language', language) } catch {}
+  }, [language])
 
   // ─── Load persisted state on mount ──────────────────────────────────────
   useEffect(() => {
@@ -100,6 +109,8 @@ export default function Home() {
       if (hb !== null) setHideBad(hb === '1')
       const mq = localStorage.getItem(MAX_QUALITY_KEY) as MaxQuality | null
       if (mq) setMaxQuality(mq)
+      const savedLang = localStorage.getItem('freestream.language') as 'en' | 'ar' | null
+      if (savedLang) setLanguage(savedLang)
       const pathRaw = localStorage.getItem(ACTIVE_PATH_KEY)
       if (pathRaw) {
         const path = JSON.parse(pathRaw)
@@ -392,7 +403,7 @@ export default function Home() {
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg font-bold tracking-tight">FreeStream TV</h1>
-              <p className="text-xs text-muted-foreground -mt-0.5">Free live TV — no signup</p>
+              <p className="text-xs text-muted-foreground -mt-0.5">{language === 'ar' ? 'تلفزيون مجاني — بدون تسجيل' : 'Free live TV — no signup'}</p>
             </div>
           </div>
 
@@ -432,6 +443,17 @@ export default function Home() {
             )}
           </Button>
 
+          {/* Language toggle */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setLanguage(l => l === 'en' ? 'ar' : 'en')}
+            className="gap-1.5 font-bold"
+            title={language === 'en' ? 'التبديل إلى العربية' : 'Switch to English'}
+          >
+            {language === 'en' ? '🇸🇦 AR' : '🇬🇧 EN'}
+          </Button>
+
           <Button
             variant="outline"
             size="sm"
@@ -440,7 +462,7 @@ export default function Home() {
             aria-label="Settings"
           >
             <Settings className="w-4 h-4" />
-            <span className="hidden sm:inline">Settings</span>
+            <span className="hidden sm:inline">{language === 'ar' ? 'الإعدادات' : 'Settings'}</span>
           </Button>
         </div>
 
@@ -515,46 +537,85 @@ export default function Home() {
           </div>
         )}
 
-        {/* ─── Row 1: Provider tabs ─── */}
-        <div className="px-4 md:px-6 pb-2 flex gap-2 overflow-x-auto no-scrollbar">
-          {PROVIDERS.map(prov => (
-            <button
-              key={prov.id}
-              onClick={() => switchProvider(prov)}
-              className={cn(
-                'flex items-center gap-2 px-4 py-1.5 rounded-full whitespace-nowrap text-sm font-medium transition border',
-                activeProvider.id === prov.id
-                  ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/30'
-                  : 'bg-secondary/50 text-foreground hover:bg-secondary border-transparent',
-              )}
-            >
-              {prov.logo ? (
-                <img
-                  src={prov.logo}
-                  alt={prov.name}
-                  className={cn(
-                    'w-5 h-5 object-contain',
-                    activeProvider.id === prov.id && 'brightness-0 invert',
-                  )}
-                  onError={(e) => {
-                    // Fallback to flag emoji if logo fails to load
-                    const target = e.target as HTMLImageElement
-                    target.style.display = 'none'
-                    const parent = target.parentElement
-                    if (parent && !parent.querySelector('.fallback-flag')) {
-                      const span = document.createElement('span')
-                      span.className = 'fallback-flag'
-                      span.textContent = prov.flag
-                      parent.insertBefore(span, parent.firstChild)
-                    }
+        {/* ─── Provider selector — collapsible grid with logos ─── */}
+        <div className="px-4 md:px-6 pb-2">
+          {/* Active provider bar (click to expand grid) */}
+          <button
+            onClick={() => setProviderGridOpen(v => !v)}
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl bg-secondary/60 hover:bg-secondary transition border border-border"
+          >
+            {activeProvider.logo ? (
+              <img
+                src={activeProvider.logo}
+                alt={activeProvider.name}
+                className="w-7 h-7 object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement
+                  target.style.display = 'none'
+                  const parent = target.parentElement
+                  if (parent && !parent.querySelector('.fallback-flag')) {
+                    const span = document.createElement('span')
+                    span.className = 'fallback-flag text-2xl'
+                    span.textContent = activeProvider.flag
+                    parent.insertBefore(span, parent.firstChild)
+                  }
+                }}
+              />
+            ) : (
+              <span className="text-2xl">{activeProvider.flag}</span>
+            )}
+            <div className="flex-1 text-left">
+              <p className="text-sm font-bold">{activeProvider.name}</p>
+              <p className="text-xs text-muted-foreground truncate">{activeProvider.description}</p>
+            </div>
+            <ChevronDown className={cn('w-5 h-5 text-muted-foreground transition', providerGridOpen && 'rotate-180')} />
+          </button>
+
+          {/* Provider grid — expands when bar is clicked */}
+          {providerGridOpen && (
+            <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 p-2 rounded-xl bg-card/60 border border-border">
+              {PROVIDERS.map(prov => (
+                <button
+                  key={prov.id}
+                  onClick={() => {
+                    switchProvider(prov)
+                    setProviderGridOpen(false)
                   }}
-                />
-              ) : (
-                <span>{prov.flag}</span>
-              )}
-              <span>{prov.name}</span>
-            </button>
-          ))}
+                  className={cn(
+                    'flex flex-col items-center gap-1.5 p-3 rounded-lg transition border',
+                    activeProvider.id === prov.id
+                      ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/30'
+                      : 'bg-secondary/30 hover:bg-secondary border-transparent',
+                  )}
+                >
+                  {prov.logo ? (
+                    <img
+                      src={prov.logo}
+                      alt={prov.name}
+                      className={cn(
+                        'w-8 h-8 object-contain',
+                        activeProvider.id === prov.id && 'brightness-0 invert',
+                      )}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                        const parent = target.parentElement
+                        if (parent && !parent.querySelector('.fallback-flag')) {
+                          const span = document.createElement('span')
+                          span.className = 'fallback-flag text-xl'
+                          span.textContent = prov.flag
+                          parent.insertBefore(span, parent.firstChild)
+                        }
+                      }}
+                    />
+                  ) : (
+                    <span className="text-xl">{prov.flag}</span>
+                  )}
+                  <span className="text-xs font-medium text-center leading-tight">{prov.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ─── Row 2: Category chips for active provider ─── */}

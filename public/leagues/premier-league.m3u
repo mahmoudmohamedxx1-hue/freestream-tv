@@ -1,9 +1,5 @@
 #EXTM3U
-# Premier League — 21 verified channels
-#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/933/lg/e1bbfd/LG-Logo-PNG-100x100_v3.png",215 Cine Peplum
-https://da89dbed.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctaXRfV1AtMV9ITFM/playlist.m3u8
-#EXTINF:-1 tvg-id="",Fireplace Vibes (2160p) [Geo-blocked]
-https://pb-rhq7yj8tne4rm.akamaized.net/Fireplace_4K_SONO20.m3u8
+# Premier League — 16 verified channels
 #EXTINF:-1 tvg-id="2085222" tvg-name="WORLD CUP 2026 REPLAY INFO ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY INFO ᴴᴰ
 http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085222
 #EXTINF:-1 tvg-id="2085221" tvg-name="WORLD CUP 2026 REPLAY 1 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 1 ᴴᴰ
@@ -36,9 +32,3 @@ http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085209
 http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085208
 #EXTINF:-1 tvg-id="2085207" tvg-name="WORLD CUP 2026 REPLAY 15 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 15 ᴴᴰ
 http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085207
-#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg"group-title="Football World Cup 2026" group-title="",Football World Cup 2026 ENGLISH
-http://114.130.57.233:8080/unitedsports-bdixbd.net/tracks-v1a1/mono.m3u8?token=SkQuhAXZxgBan1
-#EXTINF:-1 tvg-id="colors-cineplex-superhit" tvg-name="Colors Cineplex Superhit" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="BDIX 1",Colors Cineplex Superhit
-https://djplabon.aminmuaz636.workers.dev/live.php?id=1450
-#EXTINF:-1 tvg-id="ColorsCineplex4K" tvg-name="Colors Cineplex 4K" tvg-logo="" group-title="Movies",Colors Cineplex 4K
-http://starhub.pro/live/Anthony2/Anthony123/9378.ts
