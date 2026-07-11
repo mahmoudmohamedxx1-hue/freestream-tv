@@ -5,7 +5,7 @@ import {
   Search, Heart, Tv, Loader2, AlertCircle, Menu, X, Radio,
   Globe, ChevronRight, Star, Zap, Filter, ZapOff, EyeOff,
   Settings, RotateCcw, Clock, ArrowDownAZ, ArrowUpAZ, Flame,
-  ChevronDown, CheckCircle2,
+  CheckCircle2, Calendar, Play, ChevronDown,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,7 +19,7 @@ import {
 import { VideoPlayer } from '@/components/video-player'
 import { PROVIDERS, type Provider, type ProviderCategory } from '@/lib/playlists'
 import type { Channel } from '@/lib/m3u-parser'
-import { flagForCountry, deriveCountryGroup } from '@/lib/countries'
+import { flagForCountry } from '@/lib/countries'
 import { cn } from '@/lib/utils'
 
 type PlaylistData = {
@@ -31,15 +31,17 @@ type PlaylistData = {
 
 type SortMode = 'az' | 'za' | 'recent' | 'quality'
 type QualityFilter = 'all' | '4k' | '1080p' | '720p' | 'sd'
+type MaxQuality = 'auto' | '480p' | '720p' | '1080p'
+type SidebarView = 'channels' | 'guide'
 
-const FAV_KEY = 'streamdeck.favorites'
-const DEAD_KEY = 'streamdeck.deadChannels'
-const RECENT_KEY = 'streamdeck.recentChannels'
-const ACTIVE_PATH_KEY = 'streamdeck.activePath'
-const AUTOSKIP_KEY = 'streamdeck.autoSkip'
-const HIDE_DEAD_KEY = 'streamdeck.hideDead'
-const HIDE_BAD_KEY = 'streamdeck.hideBad'
-const SETTINGS_KEY = 'streamdeck.settingsOpen'
+const FAV_KEY = 'freestream.favorites'
+const DEAD_KEY = 'freestream.deadChannels'
+const RECENT_KEY = 'freestream.recentChannels'
+const ACTIVE_PATH_KEY = 'freestream.activePath'
+const AUTOSKIP_KEY = 'freestream.autoSkip'
+const HIDE_DEAD_KEY = 'freestream.hideDead'
+const HIDE_BAD_KEY = 'freestream.hideBad'
+const MAX_QUALITY_KEY = 'freestream.maxQuality'
 
 export default function Home() {
   // Active provider + category + playlist path
@@ -63,18 +65,23 @@ export default function Home() {
   const [autoSkip, setAutoSkip] = useState(true)
   const [qualityFilter, setQualityFilter] = useState<QualityFilter>('all')
   const [sortMode, setSortMode] = useState<SortMode>('az')
+  const [maxQuality, setMaxQuality] = useState<MaxQuality>('auto')
   const [currentChannel, setCurrentChannel] = useState<Channel | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [sidebarView, setSidebarView] = useState<SidebarView>('channels')
+  const [tvGuide, setTvGuide] = useState<any[]>([])
+  const [guideLoading, setGuideLoading] = useState(false)
 
-  // ─── Refs that mirror state, so callbacks can read latest values
-  //    without being recreated (and without triggering refetches). ────────
+  // ─── Refs that mirror state ────────────────────────────────────────────
   const deadChannelsRef = useRef<Set<string>>(new Set())
   const favoritesRef = useRef<Set<string>>(new Set())
   const recentChannelsRef = useRef<string[]>([])
+  const currentChannelRef = useRef<Channel | null>(null)
   useEffect(() => { deadChannelsRef.current = deadChannels }, [deadChannels])
   useEffect(() => { favoritesRef.current = favorites }, [favorites])
   useEffect(() => { recentChannelsRef.current = recentChannels }, [recentChannels])
+  useEffect(() => { currentChannelRef.current = currentChannel }, [currentChannel])
 
   // ─── Load persisted state on mount ──────────────────────────────────────
   useEffect(() => {
@@ -91,6 +98,8 @@ export default function Home() {
       if (hd !== null) setHideDead(hd === '1')
       const hb = localStorage.getItem(HIDE_BAD_KEY)
       if (hb !== null) setHideBad(hb === '1')
+      const mq = localStorage.getItem(MAX_QUALITY_KEY) as MaxQuality | null
+      if (mq) setMaxQuality(mq)
       const pathRaw = localStorage.getItem(ACTIVE_PATH_KEY)
       if (pathRaw) {
         const path = JSON.parse(pathRaw)
@@ -108,24 +117,13 @@ export default function Home() {
   }, [])
 
   // ─── Persist state ──────────────────────────────────────────────────────
-  useEffect(() => {
-    try { localStorage.setItem(FAV_KEY, JSON.stringify(Array.from(favorites))) } catch {}
-  }, [favorites])
-  useEffect(() => {
-    try { localStorage.setItem(DEAD_KEY, JSON.stringify(Array.from(deadChannels))) } catch {}
-  }, [deadChannels])
-  useEffect(() => {
-    try { localStorage.setItem(RECENT_KEY, JSON.stringify(recentChannels)) } catch {}
-  }, [recentChannels])
-  useEffect(() => {
-    try { localStorage.setItem(AUTOSKIP_KEY, autoSkip ? '1' : '0') } catch {}
-  }, [autoSkip])
-  useEffect(() => {
-    try { localStorage.setItem(HIDE_DEAD_KEY, hideDead ? '1' : '0') } catch {}
-  }, [hideDead])
-  useEffect(() => {
-    try { localStorage.setItem(HIDE_BAD_KEY, hideBad ? '1' : '0') } catch {}
-  }, [hideBad])
+  useEffect(() => { try { localStorage.setItem(FAV_KEY, JSON.stringify(Array.from(favorites))) } catch {} }, [favorites])
+  useEffect(() => { try { localStorage.setItem(DEAD_KEY, JSON.stringify(Array.from(deadChannels))) } catch {} }, [deadChannels])
+  useEffect(() => { try { localStorage.setItem(RECENT_KEY, JSON.stringify(recentChannels)) } catch {} }, [recentChannels])
+  useEffect(() => { try { localStorage.setItem(AUTOSKIP_KEY, autoSkip ? '1' : '0') } catch {} }, [autoSkip])
+  useEffect(() => { try { localStorage.setItem(HIDE_DEAD_KEY, hideDead ? '1' : '0') } catch {} }, [hideDead])
+  useEffect(() => { try { localStorage.setItem(HIDE_BAD_KEY, hideBad ? '1' : '0') } catch {} }, [hideBad])
+  useEffect(() => { try { localStorage.setItem(MAX_QUALITY_KEY, maxQuality) } catch {} }, [maxQuality])
   useEffect(() => {
     if (activeProvider && activeCategory) {
       try {
@@ -156,7 +154,6 @@ export default function Home() {
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Failed to load playlist')
       setData(json)
-      // Pick first non-dead channel as initial preview (use ref to avoid deps)
       const deadSet = deadChannelsRef.current
       const firstPlayable = (json.channels as Channel[]).find(c => !deadSet.has(c.url))
       if (firstPlayable) {
@@ -175,6 +172,22 @@ export default function Home() {
   useEffect(() => {
     fetchPlaylist()
   }, [fetchPlaylist])
+
+  // ─── Fetch TV Guide ─────────────────────────────────────────────────────
+  const fetchGuide = useCallback(async () => {
+    setGuideLoading(true)
+    try {
+      const res = await fetch('/api/tv-guide?limit=40')
+      const json = await res.json()
+      setTvGuide(json.channels || [])
+    } catch {
+      setTvGuide([])
+    } finally {
+      setGuideLoading(false)
+    }
+  }, [])
+
+  useEffect(() => { fetchGuide() }, [fetchGuide])
 
   // ─── Channel actions ────────────────────────────────────────────────────
   const toggleFav = useCallback((channel: Channel) => {
@@ -210,10 +223,7 @@ export default function Home() {
     })
   }, [])
 
-  // Auto-skip to next channel (uses refs to avoid recreating on every dead-channel update)
-  const currentChannelRef = useRef<Channel | null>(null)
-  useEffect(() => { currentChannelRef.current = currentChannel }, [currentChannel])
-
+  // Auto-skip to next channel
   const goToNextChannel = useCallback(() => {
     const list = filteredChannelsRef.current
     const cur = currentChannelRef.current
@@ -260,7 +270,6 @@ export default function Home() {
     if (showRecentOnly) list = list.filter(c => recentSet.has(c.url))
     if (activeGroup !== '__all') list = list.filter(c => c.group === activeGroup)
 
-    // Quality filter
     if (qualityFilter !== 'all') {
       list = list.filter(c => {
         const q = (c.quality || '').toLowerCase()
@@ -272,16 +281,13 @@ export default function Home() {
       })
     }
 
-    // Auto-hide bad sources
     if (hideBad) {
       list = list.filter(c => !c.not247 && !c.geoBlocked)
     }
-    // Hide dead
     if (hideDead) {
       list = list.filter(c => !deadChannels.has(c.url))
     }
 
-    // Search
     const q = search.trim().toLowerCase()
     if (q) {
       list = list.filter(c =>
@@ -292,7 +298,6 @@ export default function Home() {
       )
     }
 
-    // Sort
     const sorted = [...list]
     if (sortMode === 'az') {
       sorted.sort((a, b) => a.displayName.localeCompare(b.displayName))
@@ -318,7 +323,7 @@ export default function Home() {
     filteredChannelsRef.current = filteredChannels
   }, [filteredChannels])
 
-  // Group counts (respecting current filters except group)
+  // Group counts
   const groupCounts = useMemo(() => {
     if (!data) return new Map<string, number>()
     const m = new Map<string, number>()
@@ -334,7 +339,6 @@ export default function Home() {
     return m
   }, [data, showFavsOnly, showRecentOnly, favorites, deadChannels, hideDead, hideBad, recentSet])
 
-  // Total visible count (respecting dead/bad filters, but not search/group/fav/recent)
   const totalVisibleCount = useMemo(() => {
     if (!data) return 0
     let list = data.channels
@@ -349,7 +353,6 @@ export default function Home() {
   const switchProvider = useCallback((provider: Provider) => {
     setActiveProvider(provider)
     setActiveCategory(provider.categories[0])
-    // If first category has direct URL, no playlistId needed; else pick first playlist
     const firstCat = provider.categories[0]
     setActivePlaylistId(firstCat.playlists && firstCat.playlists.length > 0 ? firstCat.playlists[0].id : undefined)
   }, [])
@@ -377,8 +380,8 @@ export default function Home() {
               <Radio className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg font-bold tracking-tight">StreamDeck</h1>
-              <p className="text-xs text-muted-foreground -mt-0.5">M3U Playlist Player</p>
+              <h1 className="text-lg font-bold tracking-tight">FreeStream TV</h1>
+              <p className="text-xs text-muted-foreground -mt-0.5">Free live TV — no signup</p>
             </div>
           </div>
 
@@ -467,6 +470,27 @@ export default function Home() {
                 <Switch checked={hideBad} onCheckedChange={setHideBad} />
               </label>
 
+              <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-secondary/40">
+                <div className="flex items-center gap-2">
+                  <Flame className="w-4 h-4 text-primary" />
+                  <div>
+                    <p className="text-sm font-medium">Max stream quality</p>
+                    <p className="text-xs text-muted-foreground">For slow connections</p>
+                  </div>
+                </div>
+                <Select value={maxQuality} onValueChange={(v) => setMaxQuality(v as MaxQuality)}>
+                  <SelectTrigger className="w-28 h-8 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="auto">Auto</SelectItem>
+                    <SelectItem value="480p">480p max</SelectItem>
+                    <SelectItem value="720p">720p max</SelectItem>
+                    <SelectItem value="1080p">1080p max</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
               {deadChannels.size > 0 && (
                 <button
                   onClick={() => setDeadChannels(new Set())}
@@ -518,7 +542,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* ─── Row 3: Playlist chips (if category has multiple playlists) ─── */}
+        {/* ─── Row 3: Playlist chips ─── */}
         {activeCategory?.playlists && activeCategory.playlists.length > 0 && (
           <div className="px-4 md:px-6 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
             {activeCategory.playlists.map(pl => (
@@ -542,108 +566,175 @@ export default function Home() {
 
       {/* ─── Main ─── */}
       <div className="flex-1 flex relative">
-        {/* ─── Sidebar ─── */}
+        {/* ─── Sidebar (pro layout) ─── */}
         <aside
           className={cn(
-            'absolute lg:static inset-y-0 left-0 z-20 w-64 bg-sidebar border-r border-border transition-transform duration-200',
+            'absolute lg:static inset-y-0 left-0 z-20 w-72 bg-sidebar border-r border-border transition-transform duration-200 flex flex-col',
             sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
           )}
         >
-          <div className="p-4 border-b border-border">
-            <div className="flex items-center gap-2 mb-1">
-              <Filter className="w-4 h-4 text-muted-foreground" />
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                Groups
-              </h2>
-            </div>
-            {data && (
-              <p className="text-xs text-muted-foreground">
-                {data.totalCount.toLocaleString()} channels · {data.groups.length} groups
-                {deadChannels.size > 0 && (
-                  <span className="text-primary/80"> · {deadChannels.size} dead</span>
+          {/* Sidebar header with view toggle */}
+          <div className="p-3 border-b border-border">
+            <div className="flex items-center gap-1 mb-2">
+              <button
+                onClick={() => setSidebarView('channels')}
+                className={cn(
+                  'flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition',
+                  sidebarView === 'channels' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-secondary',
                 )}
-              </p>
+              >
+                <Filter className="w-3.5 h-3.5" />
+                Channel Types
+              </button>
+              <button
+                onClick={() => setSidebarView('guide')}
+                className={cn(
+                  'flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition',
+                  sidebarView === 'guide' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-secondary',
+                )}
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                TV Guide
+              </button>
+            </div>
+
+            {sidebarView === 'channels' && (
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <Select value={qualityFilter} onValueChange={(v) => setQualityFilter(v as QualityFilter)}>
+                    <SelectTrigger className="h-8 text-xs">
+                      <SelectValue placeholder="Quality" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All qualities</SelectItem>
+                      <SelectItem value="4k">4K / 8K only</SelectItem>
+                      <SelectItem value="1080p">1080p+</SelectItem>
+                      <SelectItem value="720p">720p+</SelectItem>
+                      <SelectItem value="sd">Any known</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex-1">
+                  <Select value={sortMode} onValueChange={(v) => setSortMode(v as SortMode)}>
+                    <SelectTrigger className="h-8 text-xs">
+                      <SelectValue placeholder="Sort" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="az">A → Z</SelectItem>
+                      <SelectItem value="za">Z → A</SelectItem>
+                      <SelectItem value="recent">Recently watched</SelectItem>
+                      <SelectItem value="quality">Best quality first</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             )}
           </div>
 
-          {/* Filter & sort controls */}
-          <div className="p-3 border-b border-border space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground shrink-0 w-12">Quality</span>
-              <Select value={qualityFilter} onValueChange={(v) => setQualityFilter(v as QualityFilter)}>
-                <SelectTrigger className="h-8 text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All qualities</SelectItem>
-                  <SelectItem value="4k">4K / 8K only</SelectItem>
-                  <SelectItem value="1080p">1080p or better</SelectItem>
-                  <SelectItem value="720p">720p or better</SelectItem>
-                  <SelectItem value="sd">Any known</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground shrink-0 w-12">Sort</span>
-              <Select value={sortMode} onValueChange={(v) => setSortMode(v as SortMode)}>
-                <SelectTrigger className="h-8 text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="az">A → Z</SelectItem>
-                  <SelectItem value="za">Z → A</SelectItem>
-                  <SelectItem value="recent">Recently watched</SelectItem>
-                  <SelectItem value="quality">Best quality first</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <ScrollArea className="h-[calc(100vh-18rem)] thin-scroll">
-            <div className="p-2 space-y-0.5">
-              <GroupButton
-                label="All Channels"
-                count={totalVisibleCount}
-                active={activeGroup === '__all' && !showFavsOnly && !showRecentOnly}
-                onClick={() => { setActiveGroup('__all'); setShowFavsOnly(false); setShowRecentOnly(false); setSidebarOpen(false) }}
-                icon={<Globe className="w-4 h-4" />}
-              />
-              <GroupButton
-                label="Favorites"
-                count={favorites.size}
-                active={showFavsOnly}
-                onClick={() => { setShowFavsOnly(true); setShowRecentOnly(false); setActiveGroup('__all'); setSidebarOpen(false) }}
-                icon={<Star className="w-4 h-4" />}
-              />
-              <GroupButton
-                label="Recently Watched"
-                count={recentChannels.length}
-                active={showRecentOnly}
-                onClick={() => { setShowRecentOnly(true); setShowFavsOnly(false); setActiveGroup('__all'); setSidebarOpen(false) }}
-                icon={<Clock className="w-4 h-4" />}
-              />
-              <div className="my-2 h-px bg-border" />
-              {loading ? (
-                Array.from({ length: 8 }).map((_, i) => (
-                  <Skeleton key={i} className="h-9 mx-2" />
-                ))
-              ) : (
-                data?.groups
-                  .map(group => ({ group, count: groupCounts.get(group) ?? 0 }))
-                  .filter(({ count }) => count > 0)
-                  .sort((a, b) => b.count - a.count)
-                  .map(({ group, count }) => (
-                    <GroupButton
-                      key={group}
-                      label={group}
-                      count={count}
-                      active={activeGroup === group && !showFavsOnly && !showRecentOnly}
-                      onClick={() => { setActiveGroup(group); setShowFavsOnly(false); setShowRecentOnly(false); setSidebarOpen(false) }}
-                    />
+          {sidebarView === 'guide' ? (
+            /* TV Guide view */
+            <ScrollArea className="flex-1 thin-scroll">
+              <div className="p-3">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Free TV Guide</h3>
+                  {guideLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />}
+                </div>
+                {!guideLoading && tvGuide.length > 0 && (
+                  <p className="text-[10px] text-muted-foreground mb-2">
+                    {tvGuide.length} free channels from Pluto, Samsung, LG, Tubi, Roku, beIN, FIFA & more
+                  </p>
+                )}
+                {guideLoading ? (
+                  Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-14 mb-2" />)
+                ) : tvGuide.length === 0 ? (
+                  <p className="text-xs text-muted-foreground text-center py-4">No guide data available</p>
+                ) : (
+                  <div className="space-y-1">
+                    {tvGuide.map((ch, i) => (
+                      <div key={i} className="p-2 rounded-md hover:bg-secondary/60 transition cursor-pointer">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          {ch.logo ? (
+                            <img src={ch.logo} alt="" className="w-5 h-5 object-contain rounded-sm bg-white/5" />
+                          ) : (
+                            <Tv className="w-4 h-4 text-muted-foreground" />
+                          )}
+                          <span className="text-xs font-medium truncate flex-1">{ch.name}</span>
+                          <Badge variant="outline" className="text-[10px] px-1 py-0 gap-0.5">
+                            <span className="relative flex h-1.5 w-1.5">
+                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+                            </span>
+                            LIVE
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-foreground/70 truncate pl-7">
+                          {ch.network ? `${ch.network} · ` : ''}
+                          {(ch.categories || []).join(', ')}
+                          {ch.country ? ` · ${ch.country}` : ''}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          ) : (
+            /* Channel types view */
+            <ScrollArea className="flex-1 thin-scroll">
+              <div className="p-2 space-y-0.5">
+                {data && (
+                  <p className="px-3 py-1 text-xs text-muted-foreground">
+                    {data.totalCount.toLocaleString()} channels · {data.groups.length} types
+                    {deadChannels.size > 0 && (
+                      <span className="text-primary/80"> · {deadChannels.size} dead</span>
+                    )}
+                  </p>
+                )}
+                <GroupButton
+                  label="All Channels"
+                  count={totalVisibleCount}
+                  active={activeGroup === '__all' && !showFavsOnly && !showRecentOnly}
+                  onClick={() => { setActiveGroup('__all'); setShowFavsOnly(false); setShowRecentOnly(false); setSidebarOpen(false) }}
+                  icon={<Globe className="w-4 h-4" />}
+                />
+                <GroupButton
+                  label="Favorites"
+                  count={favorites.size}
+                  active={showFavsOnly}
+                  onClick={() => { setShowFavsOnly(true); setShowRecentOnly(false); setActiveGroup('__all'); setSidebarOpen(false) }}
+                  icon={<Star className="w-4 h-4" />}
+                />
+                <GroupButton
+                  label="Recently Watched"
+                  count={recentChannels.length}
+                  active={showRecentOnly}
+                  onClick={() => { setShowRecentOnly(true); setShowFavsOnly(false); setActiveGroup('__all'); setSidebarOpen(false) }}
+                  icon={<Clock className="w-4 h-4" />}
+                />
+                <div className="my-2 h-px bg-border" />
+                <p className="px-3 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Channel Types</p>
+                {loading ? (
+                  Array.from({ length: 8 }).map((_, i) => (
+                    <Skeleton key={i} className="h-9 mx-2" />
                   ))
-              )}
-            </div>
-          </ScrollArea>
+                ) : (
+                  data?.groups
+                    .map(group => ({ group, count: groupCounts.get(group) ?? 0 }))
+                    .filter(({ count }) => count > 0)
+                    .sort((a, b) => b.count - a.count)
+                    .map(({ group, count }) => (
+                      <GroupButton
+                        key={group}
+                        label={group}
+                        count={count}
+                        active={activeGroup === group && !showFavsOnly && !showRecentOnly}
+                        onClick={() => { setActiveGroup(group); setShowFavsOnly(false); setShowRecentOnly(false); setSidebarOpen(false) }}
+                      />
+                    ))
+                )}
+              </div>
+            </ScrollArea>
+          )}
         </aside>
 
         {/* Mobile backdrop */}
@@ -667,6 +758,7 @@ export default function Home() {
                   onError={handlePlayerError}
                   onNext={goToNextChannel}
                   autoSkip={autoSkip}
+                  maxQuality={maxQuality}
                 />
                 <div className="flex items-start gap-4">
                   <div className="flex-1 min-w-0">

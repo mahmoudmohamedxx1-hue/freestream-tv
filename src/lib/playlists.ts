@@ -1,19 +1,23 @@
-// Playlist provider catalog
-// Organized by PROVIDER (IPTV-org, Free-TV, Ustream, Arab-IPTV), each with its own
-// internal categories. This replaces the old flat 10-category structure.
+// Playlist catalog — organized by PLATFORM
+// Each platform (Pluto TV, Samsung TV Plus, LG Channels, Tubi, Roku, etc.)
+// is a Provider with sub-playlists grouped under categories like
+// "By Country" or "All Channels". Channel-type filtering (Sports/News/Movies/etc.)
+// happens in the sidebar via the M3U group-title field, not at the provider level.
 
 export type PlaylistItem = {
   id: string
   name: string
   flag?: string
   url: string
+  /** Channel count hint shown in UI */
+  count?: number
 }
 
 export type ProviderCategory = {
   id: string
   name: string
   flag?: string
-  /** If set, clicking this category loads this URL directly (no playlist picker) */
+  /** If set, clicking this category loads this URL directly (no sub-playlist picker) */
   directUrl?: string
   /** If set, this category contains multiple sub-playlists to pick from */
   playlists?: PlaylistItem[]
@@ -29,16 +33,377 @@ export type Provider = {
 
 export const PROVIDERS: Provider[] = [
   // ─────────────────────────────────────────────────────────────────────────
-  // IPTV-org — the main public IPTV directory
+  // Pluto TV — via iptv-org/iptv/streams/
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'pluto-tv',
+    name: 'Pluto TV',
+    description: 'Free ad-supported TV by Paramount — 12 countries',
+    flag: '🆓',
+    categories: [
+      {
+        id: 'by-country',
+        name: 'By Country',
+        flag: '🗺️',
+        playlists: [
+          { id: 'us', name: 'USA', flag: '🇺🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/us_pluto.m3u', count: 410 },
+          { id: 'uk', name: 'UK', flag: '🇬🇧', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/uk_pluto.m3u', count: 192 },
+          { id: 'at', name: 'Austria', flag: '🇦🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/at_pluto.m3u' },
+          { id: 'br', name: 'Brazil', flag: '🇧🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/br_pluto.m3u' },
+          { id: 'ca', name: 'Canada', flag: '🇨🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca_pluto.m3u' },
+          { id: 'ch', name: 'Switzerland', flag: '🇨🇭', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ch_pluto.m3u' },
+          { id: 'de', name: 'Germany', flag: '🇩🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/de_pluto.m3u', count: 195 },
+          { id: 'dk', name: 'Denmark', flag: '🇩🇰', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/dk_pluto.m3u' },
+          { id: 'es', name: 'Spain', flag: '🇪🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es_pluto.m3u', count: 144 },
+          { id: 'fr', name: 'France', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_pluto.m3u', count: 134 },
+          { id: 'it', name: 'Italy', flag: '🇮🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/it_pluto.m3u' },
+          { id: 'se', name: 'Sweden', flag: '🇸🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/se_pluto.m3u' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Samsung TV Plus — via iptv-org/iptv/streams/ (filtered)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'samsung-tv',
+    name: 'Samsung TV Plus',
+    description: 'Free TV by Samsung — 15 countries (filtered)',
+    flag: '📱',
+    categories: [
+      {
+        id: 'by-country',
+        name: 'By Country',
+        flag: '🗺️',
+        playlists: [
+          { id: 'us', name: 'USA (252✓)', flag: '🇺🇸', url: '/filtered/iptv-streams-samsung-tv-us-samsung.m3u', count: 252 },
+          { id: 'uk', name: 'UK (120✓)', flag: '🇬🇧', url: '/filtered/iptv-streams-samsung-tv-uk-samsung.m3u', count: 120 },
+          { id: 'de', name: 'Germany (1✓)', flag: '🇩🇪', url: '/filtered/iptv-streams-samsung-tv-de-samsung.m3u', count: 1 },
+          { id: 'at', name: 'Austria', flag: '🇦🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/at_samsung.m3u' },
+          { id: 'au', name: 'Australia', flag: '🇦🇺', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/au_samsung.m3u' },
+          { id: 'be', name: 'Belgium', flag: '🇧🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/be_samsung.m3u' },
+          { id: 'br', name: 'Brazil', flag: '🇧🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/br_samsung.m3u' },
+          { id: 'ca', name: 'Canada', flag: '🇨🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca_samsung.m3u' },
+          { id: 'ch', name: 'Switzerland', flag: '🇨🇭', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ch_samsung.m3u' },
+          { id: 'dk', name: 'Denmark', flag: '🇩🇰', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/dk_samsung.m3u' },
+          { id: 'es', name: 'Spain', flag: '🇪🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es_samsung.m3u' },
+          { id: 'fi', name: 'Finland', flag: '🇫🇮', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fi_samsung.m3u' },
+          { id: 'fr', name: 'France', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_samsung.m3u' },
+          { id: 'it', name: 'Italy', flag: '🇮🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/it_samsung.m3u' },
+          { id: 'se', name: 'Sweden', flag: '🇸🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/se_samsung.m3u' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // LG Channels — via apsattv.com (32 countries)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'lg-channels',
+    name: 'LG Channels',
+    description: 'Free TV by LG Electronics — 32 countries',
+    flag: '📺',
+    categories: [
+      {
+        id: 'by-country',
+        name: 'By Country',
+        flag: '🗺️',
+        playlists: [
+          { id: 'us', name: 'USA (445)', flag: '🇺🇸', url: 'https://www.apsattv.com/uslg.m3u', count: 445 },
+          { id: 'gb', name: 'UK (300)', flag: '🇬🇧', url: 'https://www.apsattv.com/gblg.m3u', count: 300 },
+          { id: 'de', name: 'Germany (210)', flag: '🇩🇪', url: 'https://www.apsattv.com/delg.m3u', count: 210 },
+          { id: 'fr', name: 'France (182)', flag: '🇫🇷', url: 'https://www.apsattv.com/frlg.m3u', count: 182 },
+          { id: 'es', name: 'Spain', flag: '🇪🇸', url: 'https://www.apsattv.com/eslg.m3u' },
+          { id: 'it', name: 'Italy', flag: '🇮🇹', url: 'https://www.apsattv.com/itlg.m3u' },
+          { id: 'au', name: 'Australia', flag: '🇦🇺', url: 'https://www.apsattv.com/aulg.m3u' },
+          { id: 'ca', name: 'Canada', flag: '🇨🇦', url: 'https://www.apsattv.com/calg.m3u' },
+          { id: 'br', name: 'Brazil', flag: '🇧🇷', url: 'https://www.apsattv.com/brlg.m3u' },
+          { id: 'mx', name: 'Mexico', flag: '🇲🇽', url: 'https://www.apsattv.com/mxlg.m3u' },
+          { id: 'jp', name: 'Japan', flag: '🇯🇵', url: 'https://www.apsattv.com/jplg.m3u' },
+          { id: 'kr', name: 'Korea', flag: '🇰🇷', url: 'https://www.apsattv.com/krlg.m3u' },
+          { id: 'in', name: 'India', flag: '🇮🇳', url: 'https://www.apsattv.com/inlg.m3u' },
+          { id: 'ae', name: 'UAE', flag: '🇦🇪', url: 'https://www.apsattv.com/aelg.m3u' },
+          { id: 'ar', name: 'Argentina', flag: '🇦🇷', url: 'https://www.apsattv.com/arlg.m3u' },
+          { id: 'cl', name: 'Chile', flag: '🇨🇱', url: 'https://www.apsattv.com/cllg.m3u' },
+          { id: 'co', name: 'Colombia', flag: '🇨🇴', url: 'https://www.apsattv.com/colg.m3u' },
+          { id: 'nl', name: 'Netherlands', flag: '🇳🇱', url: 'https://www.apsattv.com/nllg.m3u' },
+          { id: 'se', name: 'Sweden', flag: '🇸🇪', url: 'https://www.apsattv.com/selg.m3u' },
+          { id: 'no', name: 'Norway', flag: '🇳🇴', url: 'https://www.apsattv.com/nolg.m3u' },
+          { id: 'dk', name: 'Denmark', flag: '🇩🇰', url: 'https://www.apsattv.com/dklg.m3u' },
+          { id: 'fi', name: 'Finland', flag: '🇫🇮', url: 'https://www.apsattv.com/filg.m3u' },
+          { id: 'pl', name: 'Poland', flag: '🇵🇱', url: 'https://www.apsattv.com/pllg.m3u' },
+          { id: 'pt', name: 'Portugal', flag: '🇵🇹', url: 'https://www.apsattv.com/ptlg.m3u' },
+          { id: 'at', name: 'Austria', flag: '🇦🇹', url: 'https://www.apsattv.com/atlg.m3u' },
+          { id: 'be', name: 'Belgium', flag: '🇧🇪', url: 'https://www.apsattv.com/belg.m3u' },
+          { id: 'ch', name: 'Switzerland', flag: '🇨🇭', url: 'https://www.apsattv.com/chlg.m3u' },
+          { id: 'ie', name: 'Ireland', flag: '🇮🇪', url: 'https://www.apsattv.com/ielg.m3u' },
+          { id: 'lu', name: 'Luxembourg', flag: '🇱🇺', url: 'https://www.apsattv.com/lulg.m3u' },
+          { id: 'nz', name: 'New Zealand', flag: '🇳🇿', url: 'https://www.apsattv.com/nzlg.m3u' },
+          { id: 'pe', name: 'Peru', flag: '🇵🇪', url: 'https://www.apsattv.com/pelg.m3u' },
+          { id: 'sg', name: 'Singapore', flag: '🇸🇬', url: 'https://www.apsattv.com/sglg.m3u' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Tubi TV — via BuddyChewChew GitHub
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'tubi',
+    name: 'Tubi TV',
+    description: 'Free ad-supported TV by Fox — 176 channels',
+    flag: '🦊',
+    categories: [
+      {
+        id: 'all',
+        name: 'All Channels',
+        flag: '📺',
+        directUrl: 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/tubi_all.m3u',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Roku Channel — via BuddyChewChew GitHub
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'roku',
+    name: 'Roku Channel',
+    description: 'Free ad-supported TV by Roku — 352 channels',
+    flag: '🔴',
+    categories: [
+      {
+        id: 'all',
+        name: 'All Channels',
+        flag: '📺',
+        directUrl: 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/roku_all.m3u',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Vizio TV — via apsattv.com
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'vizio',
+    name: 'Vizio WatchFree+',
+    description: 'Free ad-supported TV by Vizio — 433 channels',
+    flag: '📺',
+    categories: [
+      {
+        id: 'all',
+        name: 'All Channels',
+        flag: '📺',
+        directUrl: 'https://www.apsattv.com/vizio.m3u',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Xumo TV — via apsattv.com
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'xumo',
+    name: 'Xumo TV',
+    description: 'Free ad-supported TV by Xumo — 389 channels',
+    flag: '📺',
+    categories: [
+      {
+        id: 'all',
+        name: 'All Channels',
+        flag: '📺',
+        directUrl: 'https://www.apsattv.com/xumo.m3u',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Rakuten TV — via apsattv.com
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'rakuten',
+    name: 'Rakuten TV',
+    description: 'Free ad-supported TV by Rakuten — UK & France',
+    flag: '🇯🇵',
+    categories: [
+      {
+        id: 'by-country',
+        name: 'By Country',
+        flag: '🗺️',
+        playlists: [
+          { id: 'uk', name: 'UK (169)', flag: '🇬🇧', url: 'https://www.apsattv.com/rakutentv-uk.m3u', count: 169 },
+          { id: 'fr', name: 'France', flag: '🇫🇷', url: 'https://www.apsattv.com/rakutentv-fr.m3u' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Other FAST Platforms — via apsattv.com (single-playlist platforms)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'other-fast',
+    name: 'More FAST',
+    description: 'TCL, HP, LocalNow, Cineverse, Whale TV, Distro & more',
+    flag: '📡',
+    categories: [
+      {
+        id: 'all',
+        name: 'All Platforms',
+        flag: '📺',
+        playlists: [
+          { id: 'tcl', name: 'TCL TV Plus (494)', flag: '📺', url: 'https://www.apsattv.com/tclplus.m3u', count: 494 },
+          { id: 'localnow', name: 'LocalNow (447)', flag: '🇺🇸', url: 'https://www.apsattv.com/localnow.m3u', count: 447 },
+          { id: 'whale', name: 'Whale TV Plus (360)', flag: '🐋', url: 'https://www.apsattv.com/whaletvplus_all.m3u', count: 360 },
+          { id: 'hp', name: 'HP Fast (134)', flag: '💻', url: 'https://www.apsattv.com/hp.m3u', count: 134 },
+          { id: 'cineverse', name: 'Cineverse (30)', flag: '🎬', url: 'https://www.apsattv.com/cineverse.m3u', count: 30 },
+          { id: 'vidaa', name: 'Vidaa TV', flag: '📺', url: 'https://www.apsattv.com/vidaa.m3u' },
+          { id: 'orka', name: 'Orka TV', flag: '📺', url: 'https://www.apsattv.com/orka.m3u' },
+          { id: 'kogan', name: 'Kogan TV Plus (AU)', flag: '🇦🇺', url: 'https://www.apsattv.com/kogantvplus.m3u' },
+          { id: 'metax', name: 'Metax', flag: '📺', url: 'https://www.apsattv.com/metax.m3u' },
+          { id: 'galxy', name: 'Galaxy.TV', flag: '📺', url: 'https://www.apsattv.com/galxytv.m3u' },
+          { id: 'igocast', name: 'Igocast', flag: '📺', url: 'https://www.apsattv.com/igocast.m3u' },
+          { id: 'rewarded', name: 'Rewarded TV', flag: '🎁', url: 'https://www.apsattv.com/rewardedtv.m3u' },
+          { id: 'distro', name: 'Distro', flag: '📦', url: 'https://www.apsattv.com/distro.m3u' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // beIN Sports — verified working free streams
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'bein',
+    name: 'beIN Sports',
+    description: 'Verified working beIN streams — XTRA, XTRA Ñ, Haber',
+    flag: '⚽',
+    categories: [
+      {
+        id: 'verified',
+        name: 'Verified Working',
+        flag: '✅',
+        directUrl: '/filtered/bein-verified.m3u',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // FAST IPTV (ahan443) — Indonesian, Bangladeshi, Indian, World Cup 2026
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'fast-iptv',
+    name: 'FAST IPTV',
+    description: 'South Asian TV + World Cup 2026 — 744 verified working',
+    flag: '⚡',
+    categories: [
+      {
+        id: 'world-cup',
+        name: 'World Cup 2026',
+        flag: '🏆',
+        playlists: [
+          { id: 'fifa', name: 'FIFA BDIX (12✓)', flag: '⚽', url: '/filtered/fast-iptv-world-cup-f-fifa.m3u', count: 12 },
+          { id: 'combined', name: 'Combined Sports (117✓)', flag: '🏅', url: '/filtered/fast-iptv-world-cup-f-combined.m3u', count: 117 },
+        ],
+      },
+      {
+        id: 'by-country',
+        name: 'By Country',
+        flag: '🗺️',
+        playlists: [
+          { id: 'indian', name: 'Indian (28✓)', flag: '🇮🇳', url: '/filtered/fast-iptv-countries-f-indian.m3u', count: 28 },
+          { id: 'world-4k', name: 'Bangladesh 4K (60)', flag: '🇧🇩', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/m3u_world_4k.m3u8', count: 60 },
+          { id: 'play', name: 'Indonesia Play (151✓)', flag: '🇮🇩', url: '/filtered/fast-iptv-countries-f-play.m3u', count: 151 },
+        ],
+      },
+      {
+        id: 'content',
+        name: 'Movies & Shows',
+        flag: '🎬',
+        playlists: [
+          { id: 'movies', name: 'Movies (78✓)', flag: '🎬', url: '/filtered/fast-iptv-content-f-movies.m3u', count: 78 },
+          { id: 'animation', name: 'Animation (6)', flag: '🎨', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/animation.m3u' },
+          { id: 'direct', name: 'Direct M3U (220✓)', flag: '📺', url: '/filtered/fast-iptv-content-f-direct.m3u', count: 220 },
+          { id: 'channels', name: 'Channels (138✓)', flag: '📡', url: '/filtered/fast-iptv-content-f-channels.m3u', count: 138 },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // IPTV4ON — user's uploaded local playlist (filtered: 165 working)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'iptv4on',
+    name: 'IPTV4ON',
+    description: 'Arabic, beIN, France, World Cup — verified working',
+    flag: '🎬',
+    categories: [
+      {
+        id: 'all',
+        name: 'All Channels',
+        flag: '📺',
+        directUrl: '/filtered/iptv4on-all.m3u',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Free-TV — aggregated Pluto/Plex/Samsung (filtered: 731 working)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'free-tv',
+    name: 'Free-TV Aggregated',
+    description: 'Pluto + Plex + Samsung combined — 731 verified working',
+    flag: '📺',
+    categories: [
+      {
+        id: 'all',
+        name: 'All Channels',
+        flag: '📺',
+        directUrl: '/filtered/free-tv-all.m3u',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // World IPTV (Romaxa55) — auto-verified every 6 hours
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'world-iptv',
+    name: 'World IPTV',
+    description: 'Auto-verified every 6 hours — 14,148 channels filtered to 261✓',
+    flag: '✅',
+    categories: [
+      {
+        id: 'verified',
+        name: 'Verified (filtered)',
+        flag: '🌐',
+        directUrl: '/filtered/world-iptv-verified-all.m3u',
+      },
+      {
+        id: 'full',
+        name: 'Full Playlist',
+        flag: '🌍',
+        directUrl: 'https://romaxa55.github.io/world_ip_tv/output/index.m3u',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // IPTV-org — main public directory
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'iptv-org',
     name: 'IPTV-org',
-    description: 'Public IPTV directory — 8000+ channels',
+    description: 'Main public IPTV directory — 8,000+ channels worldwide',
     flag: '🌍',
     categories: [
       {
-        id: 'languages',
+        id: 'by-language',
         name: 'By Language',
         flag: '🗣️',
         playlists: [
@@ -53,13 +418,12 @@ export const PROVIDERS: Provider[] = [
           { id: 'zho', name: 'Chinese', flag: '🇨🇳', url: 'https://iptv-org.github.io/iptv/languages/zho.m3u' },
           { id: 'fas', name: 'Persian', flag: '🇮🇷', url: 'https://iptv-org.github.io/iptv/languages/per.m3u' },
           { id: 'heb', name: 'Hebrew', flag: '🇮🇱', url: 'https://iptv-org.github.io/iptv/languages/heb.m3u' },
-          { id: 'kur', name: 'Kurdish', flag: '☀️', url: 'https://iptv-org.github.io/iptv/languages/kur.m3u' },
           { id: 'spa', name: 'Spanish', flag: '🇪🇸', url: 'https://iptv-org.github.io/iptv/languages/spa.m3u' },
           { id: 'por', name: 'Portuguese', flag: '🇵🇹', url: 'https://iptv-org.github.io/iptv/languages/por.m3u' },
         ],
       },
       {
-        id: 'countries-arabic',
+        id: 'arabic-countries',
         name: 'Arabic Countries',
         flag: '🇸🇦',
         playlists: [
@@ -70,47 +434,37 @@ export const PROVIDERS: Provider[] = [
           { id: 'kw', name: 'Kuwait', flag: '🇰🇼', url: 'https://iptv-org.github.io/iptv/countries/kw.m3u' },
           { id: 'bh', name: 'Bahrain', flag: '🇧🇭', url: 'https://iptv-org.github.io/iptv/countries/bh.m3u' },
           { id: 'om', name: 'Oman', flag: '🇴🇲', url: 'https://iptv-org.github.io/iptv/countries/om.m3u' },
-          { id: 'ye', name: 'Yemen', flag: '🇾🇪', url: 'https://iptv-org.github.io/iptv/countries/ye.m3u' },
           { id: 'jo', name: 'Jordan', flag: '🇯🇴', url: 'https://iptv-org.github.io/iptv/countries/jo.m3u' },
           { id: 'lb', name: 'Lebanon', flag: '🇱🇧', url: 'https://iptv-org.github.io/iptv/countries/lb.m3u' },
           { id: 'sy', name: 'Syria', flag: '🇸🇾', url: 'https://iptv-org.github.io/iptv/countries/sy.m3u' },
           { id: 'iq', name: 'Iraq', flag: '🇮🇶', url: 'https://iptv-org.github.io/iptv/countries/iq.m3u' },
           { id: 'ps', name: 'Palestine', flag: '🇵🇸', url: 'https://iptv-org.github.io/iptv/countries/ps.m3u' },
-          { id: 'sd', name: 'Sudan', flag: '🇸🇩', url: 'https://iptv-org.github.io/iptv/countries/sd.m3u' },
-          { id: 'ly', name: 'Libya', flag: '🇱🇾', url: 'https://iptv-org.github.io/iptv/countries/ly.m3u' },
           { id: 'tn', name: 'Tunisia', flag: '🇹🇳', url: 'https://iptv-org.github.io/iptv/countries/tn.m3u' },
           { id: 'dz', name: 'Algeria', flag: '🇩🇿', url: 'https://iptv-org.github.io/iptv/countries/dz.m3u' },
           { id: 'ma', name: 'Morocco', flag: '🇲🇦', url: 'https://iptv-org.github.io/iptv/countries/ma.m3u' },
-          { id: 'mr', name: 'Mauritania', flag: '🇲🇷', url: 'https://iptv-org.github.io/iptv/countries/mr.m3u' },
-          { id: 'so', name: 'Somalia', flag: '🇸🇴', url: 'https://iptv-org.github.io/iptv/countries/so.m3u' },
         ],
       },
       {
-        id: 'countries-world',
+        id: 'world-countries',
         name: 'World Countries',
         flag: '🗺️',
         playlists: [
           { id: 'us', name: 'USA', flag: '🇺🇸', url: 'https://iptv-org.github.io/iptv/countries/us.m3u' },
           { id: 'uk', name: 'UK', flag: '🇬🇧', url: 'https://iptv-org.github.io/iptv/countries/uk.m3u' },
-          { id: 'ca', name: 'Canada', flag: '🇨🇦', url: 'https://iptv-org.github.io/iptv/countries/ca.m3u' },
           { id: 'fr', name: 'France', flag: '🇫🇷', url: 'https://iptv-org.github.io/iptv/countries/fr.m3u' },
           { id: 'de', name: 'Germany', flag: '🇩🇪', url: 'https://iptv-org.github.io/iptv/countries/de.m3u' },
           { id: 'tr', name: 'Turkey', flag: '🇹🇷', url: 'https://iptv-org.github.io/iptv/countries/tr.m3u' },
           { id: 'ir', name: 'Iran', flag: '🇮🇷', url: 'https://iptv-org.github.io/iptv/countries/ir.m3u' },
           { id: 'in', name: 'India', flag: '🇮🇳', url: 'https://iptv-org.github.io/iptv/countries/in.m3u' },
-          { id: 'pk', name: 'Pakistan', flag: '🇵🇰', url: 'https://iptv-org.github.io/iptv/countries/pk.m3u' },
-          { id: 'ru', name: 'Russia', flag: '🇷🇺', url: 'https://iptv-org.github.io/iptv/countries/ru.m3u' },
           { id: 'cn', name: 'China', flag: '🇨🇳', url: 'https://iptv-org.github.io/iptv/countries/cn.m3u' },
           { id: 'jp', name: 'Japan', flag: '🇯🇵', url: 'https://iptv-org.github.io/iptv/countries/jp.m3u' },
           { id: 'kr', name: 'Korea', flag: '🇰🇷', url: 'https://iptv-org.github.io/iptv/countries/kr.m3u' },
           { id: 'br', name: 'Brazil', flag: '🇧🇷', url: 'https://iptv-org.github.io/iptv/countries/br.m3u' },
-          { id: 'mx', name: 'Mexico', flag: '🇲🇽', url: 'https://iptv-org.github.io/iptv/countries/mx.m3u' },
-          { id: 'za', name: 'South Africa', flag: '🇿🇦', url: 'https://iptv-org.github.io/iptv/countries/za.m3u' },
-          { id: 'ng', name: 'Nigeria', flag: '🇳🇬', url: 'https://iptv-org.github.io/iptv/countries/ng.m3u' },
+          { id: 'ru', name: 'Russia', flag: '🇷🇺', url: 'https://iptv-org.github.io/iptv/countries/ru.m3u' },
         ],
       },
       {
-        id: 'genres',
+        id: 'by-genre',
         name: 'By Genre',
         flag: '🎬',
         playlists: [
@@ -122,10 +476,6 @@ export const PROVIDERS: Provider[] = [
           { id: 'entertainment', name: 'Entertainment', flag: '🎪', url: 'https://iptv-org.github.io/iptv/categories/entertainment.m3u' },
           { id: 'documentary', name: 'Documentary', flag: '🔬', url: 'https://iptv-org.github.io/iptv/categories/documentary.m3u' },
           { id: 'religious', name: 'Religious', flag: '🕌', url: 'https://iptv-org.github.io/iptv/categories/religious.m3u' },
-          { id: 'culture', name: 'Culture', flag: '🏛️', url: 'https://iptv-org.github.io/iptv/categories/culture.m3u' },
-          { id: 'education', name: 'Education', flag: '🎓', url: 'https://iptv-org.github.io/iptv/categories/education.m3u' },
-          { id: 'series', name: 'Series', flag: '📺', url: 'https://iptv-org.github.io/iptv/categories/series.m3u' },
-          { id: 'business', name: 'Business', flag: '💼', url: 'https://iptv-org.github.io/iptv/categories/business.m3u' },
         ],
       },
       {
@@ -137,481 +487,6 @@ export const PROVIDERS: Provider[] = [
           { id: 'index-category', name: 'Sorted by Category', flag: '🗂️', url: 'https://iptv-org.github.io/iptv/index.category.m3u' },
           { id: 'index-country', name: 'Sorted by Country', flag: '🗺️', url: 'https://iptv-org.github.io/iptv/index.country.m3u' },
           { id: 'index-language', name: 'Sorted by Language', flag: '🗣️', url: 'https://iptv-org.github.io/iptv/index.language.m3u' },
-        ],
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // Free-TV — Pluto TV, Plex TV, Samsung TV Plus (official free channels)
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    id: 'free-tv',
-    name: 'Free-TV',
-    description: 'Pluto TV, Plex TV, Samsung TV Plus — official free channels (filtered: 731 working)',
-    flag: '📺',
-    categories: [
-      {
-        id: 'all',
-        name: 'All Free-TV',
-        flag: '📺',
-        directUrl: '/filtered/free-tv-all.m3u',
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // IPTV4ON — uploaded local playlist (filtered: 165 working out of 172)
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    id: 'iptv4on',
-    name: 'IPTV4ON',
-    description: 'Arabic, beIN Sports, France, World Cup 2026 — verified working',
-    flag: '🎬',
-    categories: [
-      {
-        id: 'all',
-        name: 'All Channels',
-        flag: '📺',
-        directUrl: '/filtered/iptv4on-all.m3u',
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // World IPTV (Romaxa55) — auto-verified every 6 hours, 14000+ working channels
-  // Source: https://github.com/Romaxa55/world_ip_tv
-  // Main playlist: https://romaxa55.github.io/world_ip_tv/output/index.m3u
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    id: 'world-iptv',
-    name: 'World IPTV',
-    description: 'Auto-verified every 6 hours — 14000+ working channels',
-    flag: '✅',
-    categories: [
-      {
-        id: 'verified-all',
-        name: 'Verified (All)',
-        flag: '🌐',
-        directUrl: '/filtered/world-iptv-verified-all.m3u',
-      },
-      {
-        id: 'arabic',
-        name: 'Arabic Countries',
-        flag: '🇸🇦',
-        playlists: [
-          { id: 'w-eg', name: 'Egypt', flag: '🇪🇬', url: 'https://iptv-org.github.io/iptv/countries/eg.m3u' },
-          { id: 'w-sa', name: 'Saudi Arabia', flag: '🇸🇦', url: 'https://iptv-org.github.io/iptv/countries/sa.m3u' },
-          { id: 'w-ae', name: 'UAE', flag: '🇦🇪', url: 'https://iptv-org.github.io/iptv/countries/ae.m3u' },
-          { id: 'w-qa', name: 'Qatar', flag: '🇶🇦', url: 'https://iptv-org.github.io/iptv/countries/qa.m3u' },
-          { id: 'w-kw', name: 'Kuwait', flag: '🇰🇼', url: 'https://iptv-org.github.io/iptv/countries/kw.m3u' },
-          { id: 'w-bh', name: 'Bahrain', flag: '🇧🇭', url: 'https://iptv-org.github.io/iptv/countries/bh.m3u' },
-          { id: 'w-om', name: 'Oman', flag: '🇴🇲', url: 'https://iptv-org.github.io/iptv/countries/om.m3u' },
-          { id: 'w-ye', name: 'Yemen', flag: '🇾🇪', url: 'https://iptv-org.github.io/iptv/countries/ye.m3u' },
-          { id: 'w-jo', name: 'Jordan', flag: '🇯🇴', url: 'https://iptv-org.github.io/iptv/countries/jo.m3u' },
-          { id: 'w-lb', name: 'Lebanon', flag: '🇱🇧', url: 'https://iptv-org.github.io/iptv/countries/lb.m3u' },
-          { id: 'w-sy', name: 'Syria', flag: '🇸🇾', url: 'https://iptv-org.github.io/iptv/countries/sy.m3u' },
-          { id: 'w-iq', name: 'Iraq', flag: '🇮🇶', url: 'https://iptv-org.github.io/iptv/countries/iq.m3u' },
-          { id: 'w-ps', name: 'Palestine', flag: '🇵🇸', url: 'https://iptv-org.github.io/iptv/countries/ps.m3u' },
-          { id: 'w-sd', name: 'Sudan', flag: '🇸🇩', url: 'https://iptv-org.github.io/iptv/countries/sd.m3u' },
-          { id: 'w-ly', name: 'Libya', flag: '🇱🇾', url: 'https://iptv-org.github.io/iptv/countries/ly.m3u' },
-          { id: 'w-tn', name: 'Tunisia', flag: '🇹🇳', url: 'https://iptv-org.github.io/iptv/countries/tn.m3u' },
-          { id: 'w-dz', name: 'Algeria', flag: '🇩🇿', url: 'https://iptv-org.github.io/iptv/countries/dz.m3u' },
-          { id: 'w-ma', name: 'Morocco', flag: '🇲🇦', url: 'https://iptv-org.github.io/iptv/countries/ma.m3u' },
-          { id: 'w-mr', name: 'Mauritania', flag: '🇲🇷', url: 'https://iptv-org.github.io/iptv/countries/mr.m3u' },
-          { id: 'w-so', name: 'Somalia', flag: '🇸🇴', url: 'https://iptv-org.github.io/iptv/countries/so.m3u' },
-        ],
-      },
-      {
-        id: 'middle-east',
-        name: 'Middle East',
-        flag: '🕌',
-        playlists: [
-          { id: 'w-ir', name: 'Iran', flag: '🇮🇷', url: 'https://iptv-org.github.io/iptv/countries/ir.m3u' },
-          { id: 'w-tr', name: 'Turkey', flag: '🇹🇷', url: 'https://iptv-org.github.io/iptv/countries/tr.m3u' },
-          { id: 'w-il', name: 'Israel', flag: '🇮🇱', url: 'https://iptv-org.github.io/iptv/countries/il.m3u' },
-          { id: 'w-af', name: 'Afghanistan', flag: '🇦🇫', url: 'https://iptv-org.github.io/iptv/countries/af.m3u' },
-          { id: 'w-pk', name: 'Pakistan', flag: '🇵🇰', url: 'https://iptv-org.github.io/iptv/countries/pk.m3u' },
-        ],
-      },
-      {
-        id: 'world',
-        name: 'World Countries',
-        flag: '🗺️',
-        playlists: [
-          { id: 'w-us', name: 'USA', flag: '🇺🇸', url: 'https://iptv-org.github.io/iptv/countries/us.m3u' },
-          { id: 'w-uk', name: 'UK', flag: '🇬🇧', url: 'https://iptv-org.github.io/iptv/countries/uk.m3u' },
-          { id: 'w-ca', name: 'Canada', flag: '🇨🇦', url: 'https://iptv-org.github.io/iptv/countries/ca.m3u' },
-          { id: 'w-fr', name: 'France', flag: '🇫🇷', url: 'https://iptv-org.github.io/iptv/countries/fr.m3u' },
-          { id: 'w-de', name: 'Germany', flag: '🇩🇪', url: 'https://iptv-org.github.io/iptv/countries/de.m3u' },
-          { id: 'w-es', name: 'Spain', flag: '🇪🇸', url: 'https://iptv-org.github.io/iptv/countries/es.m3u' },
-          { id: 'w-it', name: 'Italy', flag: '🇮🇹', url: 'https://iptv-org.github.io/iptv/countries/it.m3u' },
-          { id: 'w-ru', name: 'Russia', flag: '🇷🇺', url: 'https://iptv-org.github.io/iptv/countries/ru.m3u' },
-          { id: 'w-in', name: 'India', flag: '🇮🇳', url: 'https://iptv-org.github.io/iptv/countries/in.m3u' },
-          { id: 'w-cn', name: 'China', flag: '🇨🇳', url: 'https://iptv-org.github.io/iptv/countries/cn.m3u' },
-          { id: 'w-jp', name: 'Japan', flag: '🇯🇵', url: 'https://iptv-org.github.io/iptv/countries/jp.m3u' },
-          { id: 'w-kr', name: 'Korea', flag: '🇰🇷', url: 'https://iptv-org.github.io/iptv/countries/kr.m3u' },
-          { id: 'w-br', name: 'Brazil', flag: '🇧🇷', url: 'https://iptv-org.github.io/iptv/countries/br.m3u' },
-          { id: 'w-mx', name: 'Mexico', flag: '🇲🇽', url: 'https://iptv-org.github.io/iptv/countries/mx.m3u' },
-          { id: 'w-ar', name: 'Argentina', flag: '🇦🇷', url: 'https://iptv-org.github.io/iptv/countries/ar.m3u' },
-          { id: 'w-cl', name: 'Chile', flag: '🇨🇱', url: 'https://iptv-org.github.io/iptv/countries/cl.m3u' },
-          { id: 'w-pe', name: 'Peru', flag: '🇵🇪', url: 'https://iptv-org.github.io/iptv/countries/pe.m3u' },
-          { id: 'w-do', name: 'Dominican Rep.', flag: '🇩🇴', url: 'https://iptv-org.github.io/iptv/countries/do.m3u' },
-          { id: 'w-nl', name: 'Netherlands', flag: '🇳🇱', url: 'https://iptv-org.github.io/iptv/countries/nl.m3u' },
-          { id: 'w-ng', name: 'Nigeria', flag: '🇳🇬', url: 'https://iptv-org.github.io/iptv/countries/ng.m3u' },
-          { id: 'w-za', name: 'South Africa', flag: '🇿🇦', url: 'https://iptv-org.github.io/iptv/countries/za.m3u' },
-        ],
-      },
-      {
-        id: 'genres',
-        name: 'By Genre',
-        flag: '🎬',
-        playlists: [
-          { id: 'w-sports', name: 'Sports', flag: '⚽', url: 'https://iptv-org.github.io/iptv/categories/sports.m3u' },
-          { id: 'w-news', name: 'News', flag: '📰', url: 'https://iptv-org.github.io/iptv/categories/news.m3u' },
-          { id: 'w-movies', name: 'Movies', flag: '🎬', url: 'https://iptv-org.github.io/iptv/categories/movies.m3u' },
-          { id: 'w-music', name: 'Music', flag: '🎵', url: 'https://iptv-org.github.io/iptv/categories/music.m3u' },
-          { id: 'w-kids', name: 'Kids', flag: '👶', url: 'https://iptv-org.github.io/iptv/categories/kids.m3u' },
-          { id: 'w-entertainment', name: 'Entertainment', flag: '🎪', url: 'https://iptv-org.github.io/iptv/categories/entertainment.m3u' },
-          { id: 'w-documentary', name: 'Documentary', flag: '🔬', url: 'https://iptv-org.github.io/iptv/categories/documentary.m3u' },
-          { id: 'w-religious', name: 'Religious', flag: '🕌', url: 'https://iptv-org.github.io/iptv/categories/religious.m3u' },
-          { id: 'w-education', name: 'Education', flag: '🎓', url: 'https://iptv-org.github.io/iptv/categories/education.m3u' },
-          { id: 'w-culture', name: 'Culture', flag: '🏛️', url: 'https://iptv-org.github.io/iptv/categories/culture.m3u' },
-        ],
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // IPTV Streams (iptv-org/iptv/streams/) — raw per-country source playlists
-  // Source: https://github.com/iptv-org/iptv/tree/master/streams
-  // These are the raw source files that get aggregated into the countries/*.m3u
-  // playlists. The streams/ directory also includes special sub-source variants
-  // (Pluto TV, Samsung TV Plus, Rakuten, CCTV, etc.) that aren't in the
-  // countries/ folder — these are unique to this provider.
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    id: 'iptv-streams',
-    name: 'IPTV Streams',
-    description: 'Raw per-country source streams from iptv-org/iptv/streams/',
-    flag: '📡',
-    categories: [
-      {
-        id: 'countries',
-        name: 'By Country',
-        flag: '🗺️',
-        playlists: [
-          { id: 's-eg', name: 'Egypt', flag: '🇪🇬', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/eg.m3u' },
-          { id: 's-sa', name: 'Saudi Arabia', flag: '🇸🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/sa.m3u' },
-          { id: 's-ae', name: 'UAE', flag: '🇦🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ae.m3u' },
-          { id: 's-qa', name: 'Qatar', flag: '🇶🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/qa.m3u' },
-          { id: 's-kw', name: 'Kuwait', flag: '🇰🇼', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/kw.m3u' },
-          { id: 's-bh', name: 'Bahrain', flag: '🇧🇭', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/bh.m3u' },
-          { id: 's-om', name: 'Oman', flag: '🇴🇲', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/om.m3u' },
-          { id: 's-ye', name: 'Yemen', flag: '🇾🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ye.m3u' },
-          { id: 's-jo', name: 'Jordan', flag: '🇯🇴', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/jo.m3u' },
-          { id: 's-lb', name: 'Lebanon', flag: '🇱🇧', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/lb.m3u' },
-          { id: 's-sy', name: 'Syria', flag: '🇸🇾', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/sy.m3u' },
-          { id: 's-iq', name: 'Iraq', flag: '🇮🇶', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/iq.m3u' },
-          { id: 's-ps', name: 'Palestine', flag: '🇵🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ps.m3u' },
-          { id: 's-sd', name: 'Sudan', flag: '🇸🇩', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/sd.m3u' },
-          { id: 's-ly', name: 'Libya', flag: '🇱🇾', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ly.m3u' },
-          { id: 's-tn', name: 'Tunisia', flag: '🇹🇳', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/tn.m3u' },
-          { id: 's-dz', name: 'Algeria', flag: '🇩🇿', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/dz.m3u' },
-          { id: 's-ma', name: 'Morocco', flag: '🇲🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ma.m3u' },
-          { id: 's-mr', name: 'Mauritania', flag: '🇲🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/mr.m3u' },
-          { id: 's-so', name: 'Somalia', flag: '🇸🇴', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/so.m3u' },
-          { id: 's-ir', name: 'Iran', flag: '🇮🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ir.m3u' },
-          { id: 's-tr', name: 'Turkey', flag: '🇹🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/tr.m3u' },
-          { id: 's-il', name: 'Israel', flag: '🇮🇱', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/il.m3u' },
-          { id: 's-af', name: 'Afghanistan', flag: '🇦🇫', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/af.m3u' },
-          { id: 's-pk', name: 'Pakistan', flag: '🇵🇰', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/pk.m3u' },
-          { id: 's-us', name: 'USA', flag: '🇺🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/us.m3u' },
-          { id: 's-uk', name: 'UK', flag: '🇬🇧', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/uk.m3u' },
-          { id: 's-ca', name: 'Canada', flag: '🇨🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca.m3u' },
-          { id: 's-fr', name: 'France', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr.m3u' },
-          { id: 's-de', name: 'Germany', flag: '🇩🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/de.m3u' },
-          { id: 's-es', name: 'Spain', flag: '🇪🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es.m3u' },
-          { id: 's-it', name: 'Italy', flag: '🇮🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/it.m3u' },
-          { id: 's-ru', name: 'Russia', flag: '🇷🇺', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ru.m3u' },
-          { id: 's-in', name: 'India', flag: '🇮🇳', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/in.m3u' },
-          { id: 's-cn', name: 'China', flag: '🇨🇳', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn.m3u' },
-          { id: 's-jp', name: 'Japan', flag: '🇯🇵', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/jp.m3u' },
-          { id: 's-kr', name: 'Korea', flag: '🇰🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/kr.m3u' },
-          { id: 's-br', name: 'Brazil', flag: '🇧🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/br.m3u' },
-          { id: 's-mx', name: 'Mexico', flag: '🇲🇽', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/mx.m3u' },
-          { id: 's-ar', name: 'Argentina', flag: '🇦🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ar.m3u' },
-          { id: 's-cl', name: 'Chile', flag: '🇨🇱', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cl.m3u' },
-          { id: 's-se', name: 'Sweden', flag: '🇸🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/se.m3u' },
-          { id: 's-nl', name: 'Netherlands', flag: '🇳🇱', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/nl.m3u' },
-          { id: 's-pl', name: 'Poland', flag: '🇵🇱', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/pl.m3u' },
-          { id: 's-za', name: 'South Africa', flag: '🇿🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/za.m3u' },
-          { id: 's-ng', name: 'Nigeria', flag: '🇳🇬', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ng.m3u' },
-        ],
-      },
-      {
-        id: 'pluto-tv',
-        name: 'Pluto TV',
-        flag: '🆓',
-        playlists: [
-          { id: 's-us-pluto', name: 'Pluto TV USA', flag: '🇺🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/us_pluto.m3u' },
-          { id: 's-uk-pluto', name: 'Pluto TV UK', flag: '🇬🇧', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/uk_pluto.m3u' },
-          { id: 's-at-pluto', name: 'Pluto TV Austria', flag: '🇦🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/at_pluto.m3u' },
-          { id: 's-br-pluto', name: 'Pluto TV Brazil', flag: '🇧🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/br_pluto.m3u' },
-          { id: 's-ca-pluto', name: 'Pluto TV Canada', flag: '🇨🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca_pluto.m3u' },
-          { id: 's-ch-pluto', name: 'Pluto TV Switzerland', flag: '🇨🇭', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ch_pluto.m3u' },
-          { id: 's-de-pluto', name: 'Pluto TV Germany', flag: '🇩🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/de_pluto.m3u' },
-          { id: 's-dk-pluto', name: 'Pluto TV Denmark', flag: '🇩🇰', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/dk_pluto.m3u' },
-          { id: 's-es-pluto', name: 'Pluto TV Spain', flag: '🇪🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es_pluto.m3u' },
-          { id: 's-fr-pluto', name: 'Pluto TV France', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_pluto.m3u' },
-          { id: 's-it-pluto', name: 'Pluto TV Italy', flag: '🇮🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/it_pluto.m3u' },
-          { id: 's-se-pluto', name: 'Pluto TV Sweden', flag: '🇸🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/se_pluto.m3u' },
-        ],
-      },
-      {
-        id: 'samsung-tv',
-        name: 'Samsung TV Plus',
-        flag: '📱',
-        playlists: [
-          { id: 's-us-samsung', name: 'Samsung TV USA (252✓)', flag: '🇺🇸', url: '/filtered/iptv-streams-samsung-tv-us-samsung.m3u' },
-          { id: 's-uk-samsung', name: 'Samsung TV UK (120✓)', flag: '🇬🇧', url: '/filtered/iptv-streams-samsung-tv-uk-samsung.m3u' },
-          { id: 's-at-samsung', name: 'Samsung TV Austria', flag: '🇦🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/at_samsung.m3u' },
-          { id: 's-au-samsung', name: 'Samsung TV Australia', flag: '🇦🇺', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/au_samsung.m3u' },
-          { id: 's-be-samsung', name: 'Samsung TV Belgium', flag: '🇧🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/be_samsung.m3u' },
-          { id: 's-br-samsung', name: 'Samsung TV Brazil', flag: '🇧🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/br_samsung.m3u' },
-          { id: 's-ca-samsung', name: 'Samsung TV Canada', flag: '🇨🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca_samsung.m3u' },
-          { id: 's-ch-samsung', name: 'Samsung TV Switzerland', flag: '🇨🇭', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ch_samsung.m3u' },
-          { id: 's-de-samsung', name: 'Samsung TV Germany (1✓)', flag: '🇩🇪', url: '/filtered/iptv-streams-samsung-tv-de-samsung.m3u' },
-          { id: 's-dk-samsung', name: 'Samsung TV Denmark', flag: '🇩🇰', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/dk_samsung.m3u' },
-          { id: 's-es-samsung', name: 'Samsung TV Spain', flag: '🇪🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es_samsung.m3u' },
-          { id: 's-fi-samsung', name: 'Samsung TV Finland', flag: '🇫🇮', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fi_samsung.m3u' },
-          { id: 's-fr-samsung', name: 'Samsung TV France', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_samsung.m3u' },
-          { id: 's-it-samsung', name: 'Samsung TV Italy', flag: '🇮🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/it_samsung.m3u' },
-          { id: 's-se-samsung', name: 'Samsung TV Sweden', flag: '🇸🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/se_samsung.m3u' },
-        ],
-      },
-      {
-        id: 'special',
-        name: 'Special Sources',
-        flag: '⭐',
-        playlists: [
-          { id: 's-cn-cctv', name: 'CCTV (China)', flag: '🇨🇳', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn_cctv.m3u' },
-          { id: 's-cn-cgtn', name: 'CGTN (China Global)', flag: '🌍', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn_cgtn.m3u' },
-          { id: 's-cn-112114', name: '112114 (China)', flag: '🇨🇳', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn_112114.m3u' },
-          { id: 's-cn-yeslivetv', name: 'YesLiveTV (China)', flag: '🇨🇳', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn_yeslivetv.m3u' },
-          { id: 's-ca-stingray', name: 'Stingray (Canada)', flag: '🇨🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca_stingray.m3u' },
-          { id: 's-ba-morescreens', name: 'MoreScreens (Bosnia)', flag: '🇧🇦', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ba_morescreens.m3u' },
-          { id: 's-bz-nexgen', name: 'NexGen (Belize)', flag: '🇧🇿', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/bz_nexgen.m3u' },
-          { id: 's-fr-bfm', name: 'BFM (France)', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_bfm.m3u' },
-          { id: 's-fr-fashiontv', name: 'FashionTV (France)', flag: '👗', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_fashiontv.m3u' },
-          { id: 's-fr-groupecanalplus', name: 'Canal+ Group (France)', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_groupecanalplus.m3u' },
-          { id: 's-fr-groupem6', name: 'M6 Group (France)', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_groupem6.m3u' },
-          { id: 's-fr-persiana', name: 'Persiana (France)', flag: '🇫🇷', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr_persiana.m3u' },
-          { id: 's-de-rakuten', name: 'Rakuten (Germany)', flag: '🇩🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/de_rakuten.m3u' },
-          { id: 's-es-rakuten', name: 'Rakuten (Spain)', flag: '🇪🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es_rakuten.m3u' },
-          { id: 's-es-yowi', name: 'Yowi (Spain)', flag: '🇪🇸', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es_yowi.m3u' },
-          { id: 's-fi-rakuten', name: 'Rakuten (Finland)', flag: '🇫🇮', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fi_rakuten.m3u' },
-          { id: 's-it-rakuten', name: 'Rakuten (Italy)', flag: '🇮🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/it_rakuten.m3u' },
-          { id: 's-pl-rakuten', name: 'Rakuten (Poland)', flag: '🇵🇱', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/pl_rakuten.m3u' },
-        ],
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // beIN Sports — VERIFIED WORKING streams only
-  // Every URL in the "Verified Working" category has been tested with a stream
-  // checker (HTTP GET + HLS manifest + variant + .ts segment validation) and
-  // confirmed working as of the last check.
-  //
-  // The 7 community playlists from GitHub gists were all tested and found to
-  // contain only MAC-locked subscription portals (0 working channels across
-  // 270+ beIN-branded entries). They have been removed.
-  //
-  // The only genuinely free, working beIN streams are:
-  // - beIN Sports XTRA (US, English) — 2 sources
-  // - beIN Sports XTRA Ñ (US, Spanish) — 3 sources
-  // - beIN Sports Haber (Turkey) — 1 source
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    id: 'bein-community',
-    name: 'beIN Sports',
-    description: 'Verified working beIN streams — tested before adding',
-    flag: '⚽',
-    categories: [
-      {
-        id: 'verified',
-        name: 'Verified Working',
-        flag: '✅',
-        directUrl: '/filtered/bein-verified.m3u',
-      },
-      {
-        id: 'iptv-org-sports',
-        name: 'iptv-org Sports',
-        flag: '🌐',
-        directUrl: 'https://iptv-org.github.io/iptv/categories/sports.m3u',
-      },
-      {
-        id: 'world-verified',
-        name: 'World IPTV Verified',
-        flag: '🌍',
-        directUrl: 'https://romaxa55.github.io/world_ip_tv/output/index.m3u',
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // FAST IPTV (ahan443) — Indonesian, Bangladeshi, Indian, World Cup 2026
-  // Source: https://github.com/ahan443/FAST-IPTV
-  // 21 M3U files, ~6500+ channels total. Mostly free-to-air South Asian TV
-  // plus FIFA World Cup 2026 free broadcasters (TVRI, Btv, etc.).
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    id: 'fast-iptv',
-    name: 'FAST IPTV',
-    description: 'Indonesian, Bangladeshi, Indian, World Cup 2026 — 744 verified working',
-    flag: '⚡',
-    categories: [
-      {
-        id: 'world-cup',
-        name: 'World Cup 2026',
-        flag: '🏆',
-        playlists: [
-          { id: 'f-fifa', name: 'FIFA BDIX (12✓)', flag: '⚽', url: '/filtered/fast-iptv-world-cup-f-fifa.m3u' },
-          { id: 'f-combined', name: 'Combined Sports (117✓)', flag: 'ESPN', url: '/filtered/fast-iptv-world-cup-f-combined.m3u' },
-        ],
-      },
-      {
-        id: 'countries',
-        name: 'By Country',
-        flag: '🗺️',
-        playlists: [
-          { id: 'f-indian', name: 'Indian (28✓)', flag: '🇮🇳', url: '/filtered/fast-iptv-countries-f-indian.m3u' },
-          { id: 'f-world-4k', name: 'Bangladesh 4K (60)', flag: '🇧🇩', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/m3u_world_4k.m3u8' },
-          { id: 'f-play', name: 'Indonesia Play (151✓)', flag: '🇮🇩', url: '/filtered/fast-iptv-countries-f-play.m3u' },
-        ],
-      },
-      {
-        id: 'content',
-        name: 'Movies & Shows',
-        flag: '🎬',
-        playlists: [
-          { id: 'f-movies', name: 'Movies (78✓)', flag: '🎬', url: '/filtered/fast-iptv-content-f-movies.m3u' },
-          { id: 'f-animation', name: 'Animation (6)', flag: '🎨', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/animation.m3u' },
-          { id: 'f-direct', name: 'Direct M3U (220✓)', flag: '📺', url: '/filtered/fast-iptv-content-f-direct.m3u' },
-          { id: 'f-channels', name: 'Channels (138✓)', flag: '📡', url: '/filtered/fast-iptv-content-f-channels.m3u' },
-        ],
-      },
-      {
-        id: 'mega-packs',
-        name: 'Mega Packs (unfiltered)',
-        flag: '📦',
-        playlists: [
-          { id: 'f-ixww', name: 'Pack ixww (1232)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/ixww_m3u.m3u8' },
-          { id: 'f-i4tk', name: 'Pack i4tk (865)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/i4tk_m3u.m3u8' },
-          { id: 'f-bkju', name: 'Pack bkju (719)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/bkju_m3u.m3u8' },
-          { id: 'f-qjim', name: 'Pack qjim (690)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/qjim.m3u.m3u8' },
-          { id: 'f-5dzx', name: 'Pack 5dzx (415)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/5dzx_m3u.m3u8' },
-          { id: 'f-u5zm', name: 'Pack u5zm (326)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/u5zm_m3u.m3u8' },
-          { id: 'f-mzxi', name: 'Pack mzxi (296)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/mzxi_m3u.m3u8' },
-          { id: 'f-cygk', name: 'Pack cygk (216)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/cygk_m3u.m3u8' },
-          { id: 'f-zpy8', name: 'Pack zpy8 (154)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/zpy8.m3u.m3u8' },
-        ],
-      },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // FAST Platforms (apsattv.com) — Free Ad-supported Streaming TV platforms
-  // Source: https://www.apsattv.com/ + github.com/BuddyChewChew/app-m3u-generator
-  // These are official free ad-supported TV services (Rakuten, Vizio, LG
-  // Channels, Tubi, Roku, Xumo, etc.) — same model as Pluto TV and Samsung
-  // TV Plus. All streams are HLS via amagi.tv / wurl CDN.
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    id: 'fast-platforms',
-    name: 'FAST Platforms',
-    description: 'Rakuten, Vizio, LG, Tubi, Roku, Xumo + more — free ad-supported TV',
-    flag: '🆓',
-    categories: [
-      {
-        id: 'streaming-platforms',
-        name: 'Streaming Platforms',
-        flag: '📺',
-        playlists: [
-          { id: 'fp-rakuten-uk', name: 'Rakuten UK (169)', flag: '🇬🇧', url: 'https://www.apsattv.com/rakutentv-uk.m3u' },
-          { id: 'fp-rakuten-fr', name: 'Rakuten FR', flag: '🇫🇷', url: 'https://www.apsattv.com/rakutentv-fr.m3u' },
-          { id: 'fp-vizio', name: 'Vizio TV (433)', flag: '📺', url: 'https://www.apsattv.com/vizio.m3u' },
-          { id: 'fp-vidaa', name: 'Vidaa TV', flag: '📺', url: 'https://www.apsattv.com/vidaa.m3u' },
-          { id: 'fp-orka', name: 'Orka TV', flag: '📺', url: 'https://www.apsattv.com/orka.m3u' },
-          { id: 'fp-kogan', name: 'Kogan TV Plus (AU)', flag: '🇦🇺', url: 'https://www.apsattv.com/kogantvplus.m3u' },
-          { id: 'fp-metax', name: 'Metax', flag: '📺', url: 'https://www.apsattv.com/metax.m3u' },
-          { id: 'fp-galxy', name: 'Galaxy.TV', flag: '📺', url: 'https://www.apsattv.com/galxytv.m3u' },
-          { id: 'fp-localnow', name: 'LocalNow (447)', flag: '🇺🇸', url: 'https://www.apsattv.com/localnow.m3u' },
-          { id: 'fp-tcl', name: 'TCL TV Plus (494)', flag: '📺', url: 'https://www.apsattv.com/tclplus.m3u' },
-          { id: 'fp-hp', name: 'HP Fast (134)', flag: '💻', url: 'https://www.apsattv.com/hp.m3u' },
-          { id: 'fp-igocast', name: 'Igocast', flag: '📺', url: 'https://www.apsattv.com/igocast.m3u' },
-          { id: 'fp-rewarded', name: 'Rewarded TV', flag: '🎁', url: 'https://www.apsattv.com/rewardedtv.m3u' },
-          { id: 'fp-xumo', name: 'Xumo (389)', flag: '📺', url: 'https://www.apsattv.com/xumo.m3u' },
-          { id: 'fp-cineverse', name: 'Cineverse (30)', flag: '🎬', url: 'https://www.apsattv.com/cineverse.m3u' },
-          { id: 'fp-whale-all', name: 'Whale TV Plus (360)', flag: '🐋', url: 'https://www.apsattv.com/whaletvplus_all.m3u' },
-          { id: 'fp-distro', name: 'Distro', flag: '📦', url: 'https://www.apsattv.com/distro.m3u' },
-        ],
-      },
-      {
-        id: 'lg-channels',
-        name: 'LG Channels',
-        flag: '📺',
-        playlists: [
-          { id: 'fp-lg-us', name: 'LG US (445)', flag: '🇺🇸', url: 'https://www.apsattv.com/uslg.m3u' },
-          { id: 'fp-lg-gb', name: 'LG UK (300)', flag: '🇬🇧', url: 'https://www.apsattv.com/gblg.m3u' },
-          { id: 'fp-lg-de', name: 'LG Germany (210)', flag: '🇩🇪', url: 'https://www.apsattv.com/delg.m3u' },
-          { id: 'fp-lg-fr', name: 'LG France (182)', flag: '🇫🇷', url: 'https://www.apsattv.com/frlg.m3u' },
-          { id: 'fp-lg-es', name: 'LG Spain', flag: '🇪🇸', url: 'https://www.apsattv.com/eslg.m3u' },
-          { id: 'fp-lg-it', name: 'LG Italy', flag: '🇮🇹', url: 'https://www.apsattv.com/itlg.m3u' },
-          { id: 'fp-lg-au', name: 'LG Australia', flag: '🇦🇺', url: 'https://www.apsattv.com/aulg.m3u' },
-          { id: 'fp-lg-ca', name: 'LG Canada', flag: '🇨🇦', url: 'https://www.apsattv.com/calg.m3u' },
-          { id: 'fp-lg-br', name: 'LG Brazil', flag: '🇧🇷', url: 'https://www.apsattv.com/brlg.m3u' },
-          { id: 'fp-lg-mx', name: 'LG Mexico', flag: '🇲🇽', url: 'https://www.apsattv.com/mxlg.m3u' },
-          { id: 'fp-lg-jp', name: 'LG Japan', flag: '🇯🇵', url: 'https://www.apsattv.com/jplg.m3u' },
-          { id: 'fp-lg-kr', name: 'LG Korea', flag: '🇰🇷', url: 'https://www.apsattv.com/krlg.m3u' },
-          { id: 'fp-lg-in', name: 'LG India', flag: '🇮🇳', url: 'https://www.apsattv.com/inlg.m3u' },
-          { id: 'fp-lg-ae', name: 'LG UAE', flag: '🇦🇪', url: 'https://www.apsattv.com/aelg.m3u' },
-          { id: 'fp-lg-ar', name: 'LG Argentina', flag: '🇦🇷', url: 'https://www.apsattv.com/arlg.m3u' },
-          { id: 'fp-lg-cl', name: 'LG Chile', flag: '🇨🇱', url: 'https://www.apsattv.com/cllg.m3u' },
-          { id: 'fp-lg-co', name: 'LG Colombia', flag: '🇨🇴', url: 'https://www.apsattv.com/colg.m3u' },
-          { id: 'fp-lg-nl', name: 'LG Netherlands', flag: '🇳🇱', url: 'https://www.apsattv.com/nllg.m3u' },
-          { id: 'fp-lg-se', name: 'LG Sweden', flag: '🇸🇪', url: 'https://www.apsattv.com/selg.m3u' },
-          { id: 'fp-lg-no', name: 'LG Norway', flag: '🇳🇴', url: 'https://www.apsattv.com/nolg.m3u' },
-          { id: 'fp-lg-dk', name: 'LG Denmark', flag: '🇩🇰', url: 'https://www.apsattv.com/dklg.m3u' },
-          { id: 'fp-lg-fi', name: 'LG Finland', flag: '🇫🇮', url: 'https://www.apsattv.com/filg.m3u' },
-          { id: 'fp-lg-pl', name: 'LG Poland', flag: '🇵🇱', url: 'https://www.apsattv.com/pllg.m3u' },
-          { id: 'fp-lg-pt', name: 'LG Portugal', flag: '🇵🇹', url: 'https://www.apsattv.com/ptlg.m3u' },
-          { id: 'fp-lg-at', name: 'LG Austria', flag: '🇦🇹', url: 'https://www.apsattv.com/atlg.m3u' },
-          { id: 'fp-lg-be', name: 'LG Belgium', flag: '🇧🇪', url: 'https://www.apsattv.com/belg.m3u' },
-          { id: 'fp-lg-ch', name: 'LG Switzerland', flag: '🇨🇭', url: 'https://www.apsattv.com/chlg.m3u' },
-          { id: 'fp-lg-ie', name: 'LG Ireland', flag: '🇮🇪', url: 'https://www.apsattv.com/ielg.m3u' },
-          { id: 'fp-lg-lu', name: 'LG Luxembourg', flag: '🇱🇺', url: 'https://www.apsattv.com/lulg.m3u' },
-          { id: 'fp-lg-nz', name: 'LG New Zealand', flag: '🇳🇿', url: 'https://www.apsattv.com/nzlg.m3u' },
-          { id: 'fp-lg-pe', name: 'LG Peru', flag: '🇵🇪', url: 'https://www.apsattv.com/pelg.m3u' },
-          { id: 'fp-lg-sg', name: 'LG Singapore', flag: '🇸🇬', url: 'https://www.apsattv.com/sglg.m3u' },
-        ],
-      },
-      {
-        id: 'apps',
-        name: 'Major Apps',
-        flag: '📱',
-        playlists: [
-          { id: 'fp-tubi', name: 'Tubi TV (176)', flag: '📺', url: 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/tubi_all.m3u' },
-          { id: 'fp-roku', name: 'Roku Channel (352)', flag: '📺', url: 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/roku_all.m3u' },
-        ],
-      },
-      {
-        id: 'sports',
-        name: 'Sports',
-        flag: '⚽',
-        playlists: [
-          { id: 'fp-freelivesports', name: 'Free Live Sports', flag: '⚽', url: 'https://www.apsattv.com/freelivesports.m3u' },
         ],
       },
     ],
@@ -641,7 +516,6 @@ export function resolvePlaylistUrl(providerId: string, categoryId: string, playl
     const pl = cat.playlists.find((p) => p.id === playlistId)
     return pl?.url
   }
-  // If category has playlists but no playlistId specified, return the first
   if (cat.playlists && cat.playlists.length > 0) return cat.playlists[0].url
   return undefined
 }

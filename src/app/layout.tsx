@@ -14,16 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StreamDeck — M3U Playlist Player",
-  description: "Host & play M3U / M3U8 IPTV playlists. Arabic, sports, news, movies, music, kids & 8000+ global channels.",
-  keywords: ["M3U", "IPTV", "M3U8", "playlist", "HLS", "streaming", "live TV"],
-  authors: [{ name: "StreamDeck" }],
+  title: "FreeStream TV — Free Live TV Streaming",
+  description: "Watch free live TV from around the world. Pluto TV, Samsung TV Plus, LG Channels, Rakuten, Tubi, Roku, beIN XTRA, FIFA+ and more — no signup, no subscription.",
+  keywords: ["FreeStream TV", "free TV", "IPTV", "M3U", "M3U8", "live TV", "Pluto TV", "Samsung TV Plus", "LG Channels", "Tubi", "Roku", "FAST"],
+  authors: [{ name: "FreeStream TV" }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "StreamDeck — M3U Playlist Player",
-    description: "Host & play M3U / M3U8 IPTV playlists in your browser.",
+    title: "FreeStream TV — Free Live TV Streaming",
+    description: "Watch free live TV from around the world. No signup, no subscription.",
     type: "website",
   },
 };

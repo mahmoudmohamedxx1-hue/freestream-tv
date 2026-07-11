@@ -2,7 +2,14 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Hls from 'hls.js'
-import { AlertCircle, Loader2, Volume2, VolumeX, Maximize, Play, Pause, SkipForward } from 'lucide-react'
+import { AlertCircle, Loader2, Volume2, VolumeX, Maximize, Play, Pause, SkipForward, Settings } from 'lucide-react'
+
+type QualityLevel = {
+  id: number
+  label: string
+  height: number
+  bitrate: number
+}
 
 type VideoPlayerProps = {
   src: string
@@ -13,9 +20,11 @@ type VideoPlayerProps = {
   onNext?: () => void
   /** If true, automatically calls onNext after a short delay when an error occurs */
   autoSkip?: boolean
+  /** Global max quality cap (e.g., '720p' limits to 720p and below) */
+  maxQuality?: 'auto' | '480p' | '720p' | '1080p'
 }
 
-export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSkip = false }: VideoPlayerProps) {
+export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSkip = false, maxQuality = 'auto' }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const hlsRef = useRef<Hls | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -25,6 +34,9 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
   const [error, setError] = useState<string | null>(null)
   const [playing, setPlaying] = useState(false)
   const [muted, setMuted] = useState(false)
+  const [levels, setLevels] = useState<QualityLevel[]>([])
+  const [currentLevel, setCurrentLevel] = useState<number>(-1) // -1 = auto
+  const [showQualityMenu, setShowQualityMenu] = useState(false)
 
   const triggerError = useCallback((msg: string) => {
     setError(msg)
@@ -141,6 +153,40 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
       hls.on(Hls.Events.FRAG_LOADED, onFragLoaded)
       hls.on(Hls.Events.FRAG_LOADING, onFragLoading)
       hls.on(Hls.Events.BUFFER_APPENDED, onBufferAppended)
+      // Track quality levels for the quality selector
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        const qs = hls.levels.map((lvl, i) => ({
+          id: i,
+          label: lvl.height ? `${lvl.height}p` : `${Math.round(lvl.bitrate / 1000)}kbps`,
+          height: lvl.height || 0,
+          bitrate: lvl.bitrate,
+        }))
+        setLevels(qs)
+        // Apply max quality cap from global setting
+        if (maxQuality !== 'auto' && hls.levels.length > 0) {
+          const maxH = maxQuality === '480p' ? 480 : maxQuality === '720p' ? 720 : 1080
+          // Find the highest level at or below maxH
+          let bestIdx = -1
+          let bestH = 0
+          hls.levels.forEach((lvl, i) => {
+            const h = lvl.height || 0
+            if (h <= maxH && h > bestH) { bestH = h; bestIdx = i }
+          })
+          if (bestIdx !== -1) {
+            hls.currentLevel = bestIdx
+            setCurrentLevel(bestIdx)
+          } else {
+            hls.currentLevel = -1 // auto
+            setCurrentLevel(-1)
+          }
+        } else {
+          hls.currentLevel = -1 // auto by default
+          setCurrentLevel(-1)
+        }
+      })
+      hls.on(Hls.Events.LEVEL_SWITCHED, (_event, data) => {
+        setCurrentLevel(hls.autoLevelEnabled ? -1 : data.level)
+      })
       hls.on(Hls.Events.ERROR, (_event, data) => {
         if (data.fatal) {
           errorCountRef.current += 1
@@ -230,6 +276,13 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
     if (!v) return
     v.muted = !v.muted
     setMuted(v.muted)
+  }
+
+  const setQuality = (levelId: number) => {
+    if (!hlsRef.current) return
+    hlsRef.current.currentLevel = levelId // -1 = auto
+    setCurrentLevel(levelId)
+    setShowQualityMenu(false)
   }
 
   const goFullscreen = () => {
@@ -325,9 +378,42 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
                 <SkipForward className="w-5 h-5" />
               </button>
             )}
+            {/* Quality selector */}
+            {levels.length > 0 && (
+              <div className="relative ml-auto">
+                <button
+                  onClick={() => setShowQualityMenu(v => !v)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition text-white text-xs font-medium pointer-events-auto"
+                  aria-label="Quality"
+                  title="Stream quality"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span>{currentLevel === -1 ? 'Auto' : levels.find(l => l.id === currentLevel)?.label || 'Auto'}</span>
+                </button>
+                {showQualityMenu && (
+                  <div className="absolute bottom-full right-0 mb-2 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-[120px] shadow-xl pointer-events-auto">
+                    <button
+                      onClick={() => setQuality(-1)}
+                      className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${currentLevel === -1 ? 'text-primary bg-primary/10' : 'text-white'}`}
+                    >
+                      Auto
+                    </button>
+                    {levels.slice().reverse().map(lvl => (
+                      <button
+                        key={lvl.id}
+                        onClick={() => setQuality(lvl.id)}
+                        className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${currentLevel === lvl.id ? 'text-primary bg-primary/10' : 'text-white'}`}
+                      >
+                        {lvl.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
             <button
               onClick={goFullscreen}
-              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition text-white pointer-events-auto ml-auto"
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition text-white pointer-events-auto"
               aria-label="Fullscreen"
             >
               <Maximize className="w-5 h-5" />
