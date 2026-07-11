@@ -1,0 +1,82 @@
+[
+  {
+    "genre": "Sports",
+    "flag": "\u26bd",
+    "candidates": 540,
+    "tested": 200,
+    "working": 100,
+    "file": "sports.m3u"
+  },
+  {
+    "genre": "News",
+    "flag": "\ud83d\udcf0",
+    "candidates": 691,
+    "tested": 200,
+    "working": 100,
+    "file": "news.m3u"
+  },
+  {
+    "genre": "Movies",
+    "flag": "\ud83c\udfac",
+    "candidates": 332,
+    "tested": 200,
+    "working": 100,
+    "file": "movies.m3u"
+  },
+  {
+    "genre": "Music",
+    "flag": "\ud83c\udfb5",
+    "candidates": 174,
+    "tested": 174,
+    "working": 100,
+    "file": "music.m3u"
+  },
+  {
+    "genre": "Kids",
+    "flag": "\ud83d\udc76",
+    "candidates": 152,
+    "tested": 152,
+    "working": 100,
+    "file": "kids.m3u"
+  },
+  {
+    "genre": "Entertainment",
+    "flag": "\ud83c\udfaa",
+    "candidates": 498,
+    "tested": 200,
+    "working": 100,
+    "file": "entertainment.m3u"
+  },
+  {
+    "genre": "Documentary",
+    "flag": "\ud83d\udd2c",
+    "candidates": 277,
+    "tested": 200,
+    "working": 100,
+    "file": "documentary.m3u"
+  },
+  {
+    "genre": "Religious",
+    "flag": "\ud83d\udd4c",
+    "candidates": 29,
+    "tested": 29,
+    "working": 24,
+    "file": "religious.m3u"
+  },
+  {
+    "genre": "Education",
+    "flag": "\ud83c\udf93",
+    "candidates": 15,
+    "tested": 15,
+    "working": 9,
+    "file": "education.m3u"
+  },
+  {
+    "genre": "International",
+    "flag": "\ud83c\udf0d",
+    "candidates": 85,
+    "tested": 85,
+    "working": 77,
+    "file": "international.m3u"
+  }
+]

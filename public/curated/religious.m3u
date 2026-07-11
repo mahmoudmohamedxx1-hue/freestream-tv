@@ -1,0 +1,50 @@
+#EXTM3U
+# Best 100 Religious — curated by FreeStream TV
+#EXTINF:-1 tvg-id="",XITE Christian Hits (1080p)
+https://d2tuyivcrvbj81.cloudfront.net/XITE_Christian_Hits.m3u8
+#EXTINF:-1 tvg-name="Qatar Television The Holy Quran" tvg-logo="https://i.imgur.com/N5RB4sp.png" tvg-id="QatarTelevisionTheHolyQuran.qa" tvg-chno="3" tvg-country="QA" group-title="Qatar",Qatar Television The Holy Quran
+https://qatartv.akamaized.net/hls/live/20000612/qtvquran/master1080p.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Relagion Channel",God TV
+https://hlsb-us.god.tv/GODTV/USA-480.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Islamic" tvg-logo="https://i.postimg.cc/pdPNPz8J/images.png",AL SUNNAH AL NABAWIYAH TV
+https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Islamic" tvg-logo="https://i.imgur.com/afhANph.jpg",Makka live
+https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8
+#EXTINF:-1 tvg-logo="https://images-na.ssl-images-amazon.com/images/I/71CywdrFaZL.png" group-title="ISLAMIC CHANNELS", Peace tv Bangla
+https://dzkyvlfyge.erbvr.com/PeaceTvBangla/tracks-v3a1/mono.m3u8?sid=s7AaNdTzDE2912wNcPLejQ
+#EXTINF:-1 tvg-logo="" group-title="ISLAMIC CHANNELS" tvg-logo=" ", Noor Tv
+https://cdn.bestream.io:19360/elfaro4/elfaro4.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/cygNtwH/bahrain-quaran.png" group-title="ISLAMIC CHANNELS",BAHRAIN QURAN
+https://5c7b683162943.streamlock.net/live/ngrp:bahrainquran_all/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/dQtMFVT/qamar.jpg" group-title="ISLAMIC CHANNELS",AL QAMAR
+https://streamer3.premio.link/alqamar/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/ypj95gJ/almasirah.png" group-title="ISLAMIC CHANNELS",ALMASIRA MUBASHER
+https://live2.cdnbridge.tv/AlmasirahMubasher/Mubasher_All/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/TkVK043/ekbariya.png" group-title="ISLAMIC CHANNELS",AL EKHBARIA
+https://cdn-globecast.akamaized.net/live/eds/al_ekhbariya/hls_roku/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/HPzRmd3/alistiqama.png" group-title="ISLAMIC CHANNELS",AL ISTIQAMA
+https://jmc-live.ercdn.net/alistiqama/alistiqama.m3u8
+#EXTINF:-1,  @SKY LIFE BD(AL QURAN)24 HOUR
+http://fastshare1.com:8080//live/25711345/late8airline/319505.ts
+#EXTINF:-1,SKY LIFE BD AL QURAN
+https://live.kwikmotion.com/sbrksaquranradiolive/srpksaquranradio/playlist.m3u8
+#EXTINF:-1 tvg-id="feb40b2a-e10d-45d2-9e89-786f7d29ab2c" tvg-name="SUNNAH" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Religious",SUNNAH
+https://tiger-hub.vercel.app@vodzong.mjunoon.tv:8087/streamtest/SaudiSunnah-141/playlist.m3u8
+#EXTINF:-1 tvg-id="1854a4d105e03db1dcdc85e0ba28283c",Saudia Quran
+http://119.156.228.231:9983/stream/channelid/1369723928?ticket=FB519FDE7AC5E4632EA26A4B5017AE222A64D4A7&profile=pass
+#EXTINF:-1 tvg-id="812566" tvg-name="##### ISLAMIC #####" tvg-logo="" group-title="AR| ISLAMIC", ##### ISLAMIC #####
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/812566
+#EXTINF:-1 tvg-id="7587" tvg-name="AR| SAUDI CH QURAN HD" tvg-logo="http://picons.cmshulk.com/picons/7587.png" group-title="AR| ISLAMIC", AR| SAUDI CH QURAN HD
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/7587
+#EXTINF:-1 tvg-id="6627" tvg-name="AR| SAUDI CH SUNNA HD" tvg-logo="http://picons.cmshulk.com/picons/6627.png" group-title="AR| ISLAMIC", AR| SAUDI CH SUNNA HD
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/6627
+#EXTINF:-1 tvg-id="6629" tvg-name="AR| IQRAA" tvg-logo="http://picons.cmshulk.com/picons/6629.png" group-title="AR| ISLAMIC", AR| IQRAA
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/6629
+#EXTINF:-1 tvg-logo="https://images.vizio.com/v4/btv/1/1646848044/1/267/150/0.jpg" group-title="INSPIRATION + FAITH",Trinity Broadcasting Network
+https://d3is52sgpnlx4c.cloudfront.net/10901/88885537/hls/playlist.m3u8?withResolution=true&ads.xumo_channelId=88885537a&ads.csid=viziowatchfree_us_trinitybroadcastingnetwork_ssai&ads.caid=TrinityBroadcastingNetwork&ads.lat=&ads.lon=&ads.os=&ads.osv=&ads.xumo_platform=viziowatchfree&ads._fw_player_width=%7bWIDTH%7d&ads._fw_player_height=%7bHEIGHT%7d&ads._fw_is_lat=%7bLMT%7d&ads._fw_us_privacy=%7bUSPRIVACY%7d&ads._fw_coppa=0&ads._fw_app_bundle=%7bAPP_BUNDLE%7d&ads._fw_content_category=IAB1-7&ads._fw_content_genre=television&ads._fw_content_language=en&ads._fw_content_rating=tv-g&ads._fw_deviceMake=%7bDEVICE_MAKE%7d&ads._fw_device_model=%7bDEVICE_MODEL%7d&ads._fw_devicetype=%7bDEVICE_TYPE%7d&ads.domain=%7bDOMAIN%7d&ads.gpp=%7bGPP%7d&ads.gpp_sid=%7bGPP_SID%7d&ads._fw_h_x_country=US&ads.appName=%7bAPP_NAME%7d&ads.xumo_contentId=2051&ads.xumo_contentName=TrinityBroadcastingNetwork&ads.xumo_providerId=2051&ads.xumo_providerName=TrinityBroadcastingNetwork&ads.channelId=88885537&ads.xumo_channelName=TrinityBroadcastingNetwork&ads._fw_content_programmer_brand=TrinityBroadcastingNetwork&ads.xumo_adsystem=mediatailor&ads.tpcl=MIDROLL&ads.xumo_ifa=%7bADID%7d&ads.xumo_ifaType=%7bIFATYPE%7d&ads._fw_app_store_url=%7bAPP_STORE_URL%7d&ads.appVersion=%7bAPP_VERSION%7d&ads.vizdartoken=eyJhdWQiOiI5NiIsIndmcGNpZCI6MzUzNTM1ODAyMn0
+#EXTINF:-1 tvg-logo="https://images.vizio.com/v4/btv/1/1715991425/1/267/150/0.jpg" group-title="INSPIRATION + FAITH",JLTV
+https://api-ott.jltv.tv/loggingmediaurlpassthrough/a.m3u8?version=12&id=10&partner=vizio_syndication&device_id=%7bADID%7d&us_privacy=%7bUSPRIVACY%7d&lmt=%7bLMT%7d&ifa_type=%7bIFATYPE%7d&app_bundle=%7bAPP_BUNDLE%7d&app_name=%7bAPP_NAME%7d&app_store_url=%7bAPP_STORE_URL%7d&app_domain=%7bDOMAIN%7d&device_height=%7bHEIGHT%7d&device_width=%7bWIDTH%7d&device_make=%7bDEVICE_MAKE%7d&vizdartoken=eyJhdWQiOiIyNDMiLCJ3ZnBjaWQiOjQ0NDY0OTc0MzJ9
+#EXTINF:-1 tvg-logo="https://images.vizio.com/v4/btv/1/1727412044/1/267/150/0.jpg" group-title="INSPIRATION + FAITH",Women’s Wellness by Commune
+https://8abefd00ff894738b7fc3b211ac358a1.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Vizio_Commune-1/playlist.m3u8?ads.wurl_channel=996&ads.wurl_name=Commune-1&ads.coppa=0&ads.psid=%7bADID%7d&ads.targetopt=%7bTARGETOPT%7d&ads.us_privacy=%7bUSPRIVACY%7d&ads.ifa_type=%7bIFATYPE%7d&ads.lmt=%7bLMT%7d&ads.app_bundle=%7bAPP_BUNDLE%7d&ads.app_name=%7bAPP_NAME%7d&ads.app_store_url=%7bAPP_STORE_URL%7d&ads.url=%7bDOMAIN%7d&ads.w=%7bWIDTH%7d&ads.h=%7bHEIGHT%7d&ads.device_make=%7bDEVICE_MAKE%7d&ads.vizio_network_name=%7bVIZIO_NETWORK_NAME%7d&ads.vizdartoken=eyJhdWQiOiI5OCIsIndmcGNpZCI6NDM3Mjg5NTc4MX0
+#EXTINF:-1 tvg-logo="https://images.vizio.com/v4/btv/1/1719682645/1/267/150/0.jpg" group-title="INSPIRATION + FAITH",Highway to Heaven
+https://d3is52sgpnlx4c.cloudfront.net/10901/88885579/hls/master.m3u8?withResolution=true&ads.xumo_channelId=88885579&ads.csid=viziowatchfree_us_highwaytoheaven_ssai&ads.caid=FilmRiseHighwayToHeaven&ads.lat=&ads.lon=&ads.os=&ads.osv=&ads.xumo_platform=viziowatchfree&ads._fw_player_width=%7bWIDTH%7d&ads._fw_player_height=%7bHEIGHT%7d&ads._fw_is_lat=%7bLMT%7d&ads._fw_us_privacy=%7bUSPRIVACY%7d&ads._fw_coppa=0&ads._fw_app_bundle=%7bAPP_BUNDLE%7d&ads._fw_content_category=IAB1-7&ads._fw_content_genre=television&ads._fw_content_language=en&ads._fw_content_rating=tv-14&ads._fw_deviceMake=%7bDEVICE_MAKE%7d&ads._fw_device_model=%7bDEVICE_MODEL%7d&ads._fw_devicetype=%7bDEVICE_TYPE%7d&ads.domain=%7bDOMAIN%7d&ads.gpp=%7bGPP%7d&ads.gpp_sid=%7bGPP_SID%7d&ads._fw_h_x_country=US&ads.appName=%7bAPP_NAME%7d&ads.xumo_contentId=260&ads.xumo_contentName=&ads.xumo_providerId=260&ads.xumo_providerName=FilmRise&ads.channelId=88885579&ads.xumo_channelName=FilmRise&ads._fw_content_programmer_brand=FilmRise&ads.xumo_adsystem=mediatailor&ads.tpcl=MIDROLL&ads.xumo_ifa=%7bADID%7d&ads.xumo_ifaType=%7bIFATYPE%7d&ads._fw_app_store_url=%7bAPP_STORE_URL%7d&ads.appVersion=%7bAPP_VERSION%7d&ads.vizdartoken=eyJhdWQiOiI5NiIsIndmcGNpZCI6NDQ2NTc3ODcyNn0

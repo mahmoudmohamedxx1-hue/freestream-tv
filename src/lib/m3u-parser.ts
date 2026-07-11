@@ -22,6 +22,8 @@ export type Channel = {
   qualityTier?: number
   /** Status flags parsed from name like [Not 24/7], [Geo-blocked] */
   not247?: boolean
+  /** Is this VOD (Video on Demand) vs Live TV? VOD = static file (.mp4, .mkv, .ts file), Live = HLS playlist */
+  isVod?: boolean
   geoBlocked?: boolean
   /** Original raw name (preserves everything) */
   rawName?: string
@@ -231,6 +233,13 @@ export function parseM3U(content: string): ParsedPlaylist {
       const flags = extractFlags(pendingName)
       const q = extractQuality(pendingName)
 
+      // Detect VOD vs Live: HLS playlists (.m3u8) are live TV;
+      // static files (.mp4, .mkv, .avi, .ts without /live/) are VOD
+      const lowerUrl = line.toLowerCase()
+      const isHls = lowerUrl.includes('.m3u8') || lowerUrl.includes('/live/')
+      const isVodFile = /\.(mp4|mkv|avi|mov|webm)(\?|$)/.test(lowerUrl) ||
+                        (lowerUrl.endsWith('.ts') && !lowerUrl.includes('/live/'))
+
       channels.push({
         id: nextId(),
         name: pendingName,
@@ -247,6 +256,7 @@ export function parseM3U(content: string): ParsedPlaylist {
         quality: q.quality,
         qualityTier: q.tier,
         not247: flags.not247,
+        isVod: isVodFile && !isHls,
         geoBlocked: flags.geoBlocked,
       })
 

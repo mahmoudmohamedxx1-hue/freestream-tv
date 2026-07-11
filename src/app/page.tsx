@@ -781,6 +781,11 @@ export default function Home() {
                       {currentChannel.group && (
                         <Badge variant="secondary" className="text-xs">{currentChannel.group}</Badge>
                       )}
+                      {currentChannel.isVod && (
+                        <Badge variant="outline" className="text-xs text-blue-400 border-blue-400/40 gap-1">
+                          <Play className="w-2.5 h-2.5" /> VOD
+                        </Badge>
+                      )}
                       {currentChannel.not247 && (
                         <Badge variant="outline" className="text-xs text-amber-500 border-amber-500/40">
                           Not 24/7
@@ -1010,6 +1015,11 @@ function ChannelRow({
           {channel.quality && (
             <Badge variant="outline" className="text-[10px] px-1 py-0 h-4">
               {channel.quality}
+            </Badge>
+          )}
+          {channel.isVod && (
+            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 text-blue-400 border-blue-400/40">
+              VOD
             </Badge>
           )}
           {channel.not247 && (
