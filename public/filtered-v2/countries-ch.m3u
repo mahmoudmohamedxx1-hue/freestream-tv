@@ -1,0 +1,3 @@
+#EXTM3U
+#EXTINF:-1 tvg-name="Teleticino" tvg-logo="https://i.imgur.com/zm2ruqz.png" tvg-id="TeleTicino.ch" tvg-chno="3" tvg-country="CH" group-title="Switzerland",Teleticino
+https://vstream-cdn.ch/hls/teleticino_720p/index.m3u8

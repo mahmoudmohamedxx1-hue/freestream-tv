@@ -1,0 +1,9 @@
+#EXTM3U
+#EXTINF:-1 channel-id="409951b52fa75a1684ba8efe5b724e91" tvg-id="409951b52fa75a1684ba8efe5b724e91" tvg-chno="257" tvg-name="ACC Digital Network" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/409951b52fa75a1684ba8efe5b724e91/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1657669780439_ACCDigitalNetwork_260x147_centered.png" group-title="Sports",ACC Digital Network
+https://jmp2.uk/rok-409951b52fa75a1684ba8efe5b724e91.m3u8
+#EXTINF:-1 channel-id="955058d03806e22dbb37bf1ee8d681a1" tvg-id="955058d03806e22dbb37bf1ee8d681a1" tvg-chno="256" tvg-name="Big 12 Studios" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/955058d03806e22dbb37bf1ee8d681a1/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1724089069456_big12studios_HUD_centered.png" group-title="Sports",Big 12 Studios
+https://jmp2.uk/rok-955058d03806e22dbb37bf1ee8d681a1.m3u8
+#EXTINF:-1 tvg-id="ACCNetwork.us@SD" tvg-logo="https://i.imgur.com/TpCkbkT.png" group-title="Sports",ACC Network (720p)
+http://206.212.244.63/2486/index.m3u8
+#EXTINF:-1 tvg-id="Pac12Insider.us@SD" tvg-logo="https://i.imgur.com/736QREy.png" group-title="Sports",Pac 12 Insider (1080p)
+https://pac12-firetv.amagi.tv/playlist.m3u8

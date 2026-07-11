@@ -60,9 +60,9 @@ export default function Home() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
   const [deadChannels, setDeadChannels] = useState<Set<string>>(new Set())
   const [recentChannels, setRecentChannels] = useState<string[]>([])
-  const [hideDead, setHideDead] = useState(true)
-  const [hideBad, setHideBad] = useState(true)
-  const [autoSkip, setAutoSkip] = useState(true)
+  const [hideDead, setHideDead] = useState(false)
+  const [hideBad, setHideBad] = useState(false)
+  const [autoSkip, setAutoSkip] = useState(false)
   const [qualityFilter, setQualityFilter] = useState<QualityFilter>('all')
   const [sortMode, setSortMode] = useState<SortMode>('az')
   const [maxQuality, setMaxQuality] = useState<MaxQuality>('auto')
@@ -97,16 +97,22 @@ export default function Home() {
     try {
       const favRaw = localStorage.getItem(FAV_KEY)
       if (favRaw) setFavorites(new Set(JSON.parse(favRaw)))
-      const deadRaw = localStorage.getItem(DEAD_KEY)
-      if (deadRaw) setDeadChannels(new Set(JSON.parse(deadRaw)))
+      // CLEAR dead channels — restore all previously hidden streams
+      // The user asked to stop removing streams, so we clear the dead list
+      localStorage.removeItem(DEAD_KEY)
+      setDeadChannels(new Set())
       const recentRaw = localStorage.getItem(RECENT_KEY)
       if (recentRaw) setRecentChannels(JSON.parse(recentRaw))
+      // Force-disable auto features that remove streams
       const as = localStorage.getItem(AUTOSKIP_KEY)
       if (as !== null) setAutoSkip(as === '1')
+      else setAutoSkip(false)
       const hd = localStorage.getItem(HIDE_DEAD_KEY)
       if (hd !== null) setHideDead(hd === '1')
+      else setHideDead(false)
       const hb = localStorage.getItem(HIDE_BAD_KEY)
       if (hb !== null) setHideBad(hb === '1')
+      else setHideBad(false)
       const mq = localStorage.getItem(MAX_QUALITY_KEY) as MaxQuality | null
       if (mq) setMaxQuality(mq)
       const savedLang = localStorage.getItem('freestream.language') as 'en' | 'ar' | null
@@ -275,12 +281,13 @@ export default function Home() {
     }
   }, [recordRecent])
 
+  // Player error handler — does NOT auto-mark channels as dead.
+  // The user decides manually whether a channel is dead (via the "Mark dead" button).
+  // This prevents good channels from being hidden just because they were slow to load.
   const handlePlayerError = useCallback((_msg: string) => {
-    const cur = currentChannelRef.current
-    if (cur) {
-      markDead(cur)
-    }
-  }, [markDead])
+    // No automatic action — just let the player show the error overlay.
+    // The user can click "Skip to next channel" or "Mark dead" manually.
+  }, [])
 
   // ─── Filtering & sorting ────────────────────────────────────────────────
   const recentSet = useMemo(() => new Set(recentChannels), [recentChannels])

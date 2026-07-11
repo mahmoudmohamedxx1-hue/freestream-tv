@@ -1,0 +1,5 @@
+#EXTM3U
+#EXTINF:-1,Conflict
+https://wurlrightsbooster.global.transmit.live/hls/689fa2beba15bec7b4403ec0/playlist.m3u8?wurl_channel=1336&wurl_name=Conflict&coppa=0&rdid={DEVICE_ID}&dnt={DNT}&pr={US_PRIVACY}&gdpr={GDPR}&isgdpr={CONSENT}&appname={APP_NAME}&bundleid={APP_BUNDLE}&appstoreurl={APP_STORE_URL}&ifatype={IFA_TYPE}&custom={CUSTOM}&make={DEVICE_MAKE}&model={DEVICE_MODEL}&givn={GIVN}&u_paln={U_PALN}
+#EXTINF:-1 tvg-id="NFLNetwork.us@SD" tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/NFL_Network_logo.svg/960px-NFL_Network_logo.svg.png" group-title="Sports",NFL Network (720p)
+http://206.212.244.63/196/index.m3u8

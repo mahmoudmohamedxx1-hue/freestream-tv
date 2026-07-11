@@ -1,0 +1,86 @@
+[
+  {
+    "id": "american-football",
+    "name": "American Football",
+    "flag": "\ud83c\udfc8",
+    "found": 12,
+    "working": 8
+  },
+  {
+    "id": "soccer",
+    "name": "Soccer",
+    "flag": "\u26bd",
+    "found": 279,
+    "working": 100
+  },
+  {
+    "id": "basketball",
+    "name": "Basketball",
+    "flag": "\ud83c\udfc0",
+    "found": 14,
+    "working": 9
+  },
+  {
+    "id": "baseball",
+    "name": "Baseball",
+    "flag": "\u26be",
+    "found": 6,
+    "working": 4
+  },
+  {
+    "id": "hockey",
+    "name": "Hockey",
+    "flag": "\ud83c\udfd2",
+    "found": 13,
+    "working": 11
+  },
+  {
+    "id": "combat",
+    "name": "Combat & Fighting",
+    "flag": "\ud83e\udd4a",
+    "found": 72,
+    "working": 53
+  },
+  {
+    "id": "racing",
+    "name": "Racing & Motorsport",
+    "flag": "\ud83c\udfce\ufe0f",
+    "found": 32,
+    "working": 25
+  },
+  {
+    "id": "tennis-golf",
+    "name": "Tennis & Golf",
+    "flag": "\ud83c\udfbe",
+    "found": 55,
+    "working": 38
+  },
+  {
+    "id": "college",
+    "name": "College Sports",
+    "flag": "\ud83c\udf93",
+    "found": 10,
+    "working": 8
+  },
+  {
+    "id": "extreme-outdoor",
+    "name": "Extreme & Outdoor",
+    "flag": "\ud83e\uddd7",
+    "found": 88,
+    "working": 60
+  },
+  {
+    "id": "cricket-rugby",
+    "name": "Cricket & Rugby",
+    "flag": "\ud83c\udfcf",
+    "found": 20,
+    "working": 18
+  },
+  {
+    "id": "general-sports",
+    "name": "General Sports",
+    "flag": "\ud83c\udfc6",
+    "found": 652,
+    "working": 100
+  }
+]
