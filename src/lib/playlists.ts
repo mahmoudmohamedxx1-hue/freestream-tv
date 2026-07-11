@@ -459,6 +459,163 @@ export const PROVIDERS: Provider[] = [
       },
     ],
   },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // FAST IPTV (ahan443) — Indonesian, Bangladeshi, Indian, World Cup 2026
+  // Source: https://github.com/ahan443/FAST-IPTV
+  // 21 M3U files, ~6500+ channels total. Mostly free-to-air South Asian TV
+  // plus FIFA World Cup 2026 free broadcasters (TVRI, Btv, etc.).
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'fast-iptv',
+    name: 'FAST IPTV',
+    description: 'Indonesian, Bangladeshi, Indian, World Cup 2026 — 744 verified working',
+    flag: '⚡',
+    categories: [
+      {
+        id: 'world-cup',
+        name: 'World Cup 2026',
+        flag: '🏆',
+        playlists: [
+          { id: 'f-fifa', name: 'FIFA BDIX (12✓)', flag: '⚽', url: '/filtered/fast-iptv-world-cup-f-fifa.m3u' },
+          { id: 'f-combined', name: 'Combined Sports (117✓)', flag: 'ESPN', url: '/filtered/fast-iptv-world-cup-f-combined.m3u' },
+        ],
+      },
+      {
+        id: 'countries',
+        name: 'By Country',
+        flag: '🗺️',
+        playlists: [
+          { id: 'f-indian', name: 'Indian (28✓)', flag: '🇮🇳', url: '/filtered/fast-iptv-countries-f-indian.m3u' },
+          { id: 'f-world-4k', name: 'Bangladesh 4K (60)', flag: '🇧🇩', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/m3u_world_4k.m3u8' },
+          { id: 'f-play', name: 'Indonesia Play (151✓)', flag: '🇮🇩', url: '/filtered/fast-iptv-countries-f-play.m3u' },
+        ],
+      },
+      {
+        id: 'content',
+        name: 'Movies & Shows',
+        flag: '🎬',
+        playlists: [
+          { id: 'f-movies', name: 'Movies (78✓)', flag: '🎬', url: '/filtered/fast-iptv-content-f-movies.m3u' },
+          { id: 'f-animation', name: 'Animation (6)', flag: '🎨', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/animation.m3u' },
+          { id: 'f-direct', name: 'Direct M3U (220✓)', flag: '📺', url: '/filtered/fast-iptv-content-f-direct.m3u' },
+          { id: 'f-channels', name: 'Channels (138✓)', flag: '📡', url: '/filtered/fast-iptv-content-f-channels.m3u' },
+        ],
+      },
+      {
+        id: 'mega-packs',
+        name: 'Mega Packs (unfiltered)',
+        flag: '📦',
+        playlists: [
+          { id: 'f-ixww', name: 'Pack ixww (1232)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/ixww_m3u.m3u8' },
+          { id: 'f-i4tk', name: 'Pack i4tk (865)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/i4tk_m3u.m3u8' },
+          { id: 'f-bkju', name: 'Pack bkju (719)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/bkju_m3u.m3u8' },
+          { id: 'f-qjim', name: 'Pack qjim (690)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/qjim.m3u.m3u8' },
+          { id: 'f-5dzx', name: 'Pack 5dzx (415)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/5dzx_m3u.m3u8' },
+          { id: 'f-u5zm', name: 'Pack u5zm (326)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/u5zm_m3u.m3u8' },
+          { id: 'f-mzxi', name: 'Pack mzxi (296)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/mzxi_m3u.m3u8' },
+          { id: 'f-cygk', name: 'Pack cygk (216)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/cygk_m3u.m3u8' },
+          { id: 'f-zpy8', name: 'Pack zpy8 (154)', flag: '📦', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/zpy8.m3u.m3u8' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // FAST Platforms (apsattv.com) — Free Ad-supported Streaming TV platforms
+  // Source: https://www.apsattv.com/ + github.com/BuddyChewChew/app-m3u-generator
+  // These are official free ad-supported TV services (Rakuten, Vizio, LG
+  // Channels, Tubi, Roku, Xumo, etc.) — same model as Pluto TV and Samsung
+  // TV Plus. All streams are HLS via amagi.tv / wurl CDN.
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'fast-platforms',
+    name: 'FAST Platforms',
+    description: 'Rakuten, Vizio, LG, Tubi, Roku, Xumo + more — free ad-supported TV',
+    flag: '🆓',
+    categories: [
+      {
+        id: 'streaming-platforms',
+        name: 'Streaming Platforms',
+        flag: '📺',
+        playlists: [
+          { id: 'fp-rakuten-uk', name: 'Rakuten UK (169)', flag: '🇬🇧', url: 'https://www.apsattv.com/rakutentv-uk.m3u' },
+          { id: 'fp-rakuten-fr', name: 'Rakuten FR', flag: '🇫🇷', url: 'https://www.apsattv.com/rakutentv-fr.m3u' },
+          { id: 'fp-vizio', name: 'Vizio TV (433)', flag: '📺', url: 'https://www.apsattv.com/vizio.m3u' },
+          { id: 'fp-vidaa', name: 'Vidaa TV', flag: '📺', url: 'https://www.apsattv.com/vidaa.m3u' },
+          { id: 'fp-orka', name: 'Orka TV', flag: '📺', url: 'https://www.apsattv.com/orka.m3u' },
+          { id: 'fp-kogan', name: 'Kogan TV Plus (AU)', flag: '🇦🇺', url: 'https://www.apsattv.com/kogantvplus.m3u' },
+          { id: 'fp-metax', name: 'Metax', flag: '📺', url: 'https://www.apsattv.com/metax.m3u' },
+          { id: 'fp-galxy', name: 'Galaxy.TV', flag: '📺', url: 'https://www.apsattv.com/galxytv.m3u' },
+          { id: 'fp-localnow', name: 'LocalNow (447)', flag: '🇺🇸', url: 'https://www.apsattv.com/localnow.m3u' },
+          { id: 'fp-tcl', name: 'TCL TV Plus (494)', flag: '📺', url: 'https://www.apsattv.com/tclplus.m3u' },
+          { id: 'fp-hp', name: 'HP Fast (134)', flag: '💻', url: 'https://www.apsattv.com/hp.m3u' },
+          { id: 'fp-igocast', name: 'Igocast', flag: '📺', url: 'https://www.apsattv.com/igocast.m3u' },
+          { id: 'fp-rewarded', name: 'Rewarded TV', flag: '🎁', url: 'https://www.apsattv.com/rewardedtv.m3u' },
+          { id: 'fp-xumo', name: 'Xumo (389)', flag: '📺', url: 'https://www.apsattv.com/xumo.m3u' },
+          { id: 'fp-cineverse', name: 'Cineverse (30)', flag: '🎬', url: 'https://www.apsattv.com/cineverse.m3u' },
+          { id: 'fp-whale-all', name: 'Whale TV Plus (360)', flag: '🐋', url: 'https://www.apsattv.com/whaletvplus_all.m3u' },
+          { id: 'fp-distro', name: 'Distro', flag: '📦', url: 'https://www.apsattv.com/distro.m3u' },
+        ],
+      },
+      {
+        id: 'lg-channels',
+        name: 'LG Channels',
+        flag: '📺',
+        playlists: [
+          { id: 'fp-lg-us', name: 'LG US (445)', flag: '🇺🇸', url: 'https://www.apsattv.com/uslg.m3u' },
+          { id: 'fp-lg-gb', name: 'LG UK (300)', flag: '🇬🇧', url: 'https://www.apsattv.com/gblg.m3u' },
+          { id: 'fp-lg-de', name: 'LG Germany (210)', flag: '🇩🇪', url: 'https://www.apsattv.com/delg.m3u' },
+          { id: 'fp-lg-fr', name: 'LG France (182)', flag: '🇫🇷', url: 'https://www.apsattv.com/frlg.m3u' },
+          { id: 'fp-lg-es', name: 'LG Spain', flag: '🇪🇸', url: 'https://www.apsattv.com/eslg.m3u' },
+          { id: 'fp-lg-it', name: 'LG Italy', flag: '🇮🇹', url: 'https://www.apsattv.com/itlg.m3u' },
+          { id: 'fp-lg-au', name: 'LG Australia', flag: '🇦🇺', url: 'https://www.apsattv.com/aulg.m3u' },
+          { id: 'fp-lg-ca', name: 'LG Canada', flag: '🇨🇦', url: 'https://www.apsattv.com/calg.m3u' },
+          { id: 'fp-lg-br', name: 'LG Brazil', flag: '🇧🇷', url: 'https://www.apsattv.com/brlg.m3u' },
+          { id: 'fp-lg-mx', name: 'LG Mexico', flag: '🇲🇽', url: 'https://www.apsattv.com/mxlg.m3u' },
+          { id: 'fp-lg-jp', name: 'LG Japan', flag: '🇯🇵', url: 'https://www.apsattv.com/jplg.m3u' },
+          { id: 'fp-lg-kr', name: 'LG Korea', flag: '🇰🇷', url: 'https://www.apsattv.com/krlg.m3u' },
+          { id: 'fp-lg-in', name: 'LG India', flag: '🇮🇳', url: 'https://www.apsattv.com/inlg.m3u' },
+          { id: 'fp-lg-ae', name: 'LG UAE', flag: '🇦🇪', url: 'https://www.apsattv.com/aelg.m3u' },
+          { id: 'fp-lg-ar', name: 'LG Argentina', flag: '🇦🇷', url: 'https://www.apsattv.com/arlg.m3u' },
+          { id: 'fp-lg-cl', name: 'LG Chile', flag: '🇨🇱', url: 'https://www.apsattv.com/cllg.m3u' },
+          { id: 'fp-lg-co', name: 'LG Colombia', flag: '🇨🇴', url: 'https://www.apsattv.com/colg.m3u' },
+          { id: 'fp-lg-nl', name: 'LG Netherlands', flag: '🇳🇱', url: 'https://www.apsattv.com/nllg.m3u' },
+          { id: 'fp-lg-se', name: 'LG Sweden', flag: '🇸🇪', url: 'https://www.apsattv.com/selg.m3u' },
+          { id: 'fp-lg-no', name: 'LG Norway', flag: '🇳🇴', url: 'https://www.apsattv.com/nolg.m3u' },
+          { id: 'fp-lg-dk', name: 'LG Denmark', flag: '🇩🇰', url: 'https://www.apsattv.com/dklg.m3u' },
+          { id: 'fp-lg-fi', name: 'LG Finland', flag: '🇫🇮', url: 'https://www.apsattv.com/filg.m3u' },
+          { id: 'fp-lg-pl', name: 'LG Poland', flag: '🇵🇱', url: 'https://www.apsattv.com/pllg.m3u' },
+          { id: 'fp-lg-pt', name: 'LG Portugal', flag: '🇵🇹', url: 'https://www.apsattv.com/ptlg.m3u' },
+          { id: 'fp-lg-at', name: 'LG Austria', flag: '🇦🇹', url: 'https://www.apsattv.com/atlg.m3u' },
+          { id: 'fp-lg-be', name: 'LG Belgium', flag: '🇧🇪', url: 'https://www.apsattv.com/belg.m3u' },
+          { id: 'fp-lg-ch', name: 'LG Switzerland', flag: '🇨🇭', url: 'https://www.apsattv.com/chlg.m3u' },
+          { id: 'fp-lg-ie', name: 'LG Ireland', flag: '🇮🇪', url: 'https://www.apsattv.com/ielg.m3u' },
+          { id: 'fp-lg-lu', name: 'LG Luxembourg', flag: '🇱🇺', url: 'https://www.apsattv.com/lulg.m3u' },
+          { id: 'fp-lg-nz', name: 'LG New Zealand', flag: '🇳🇿', url: 'https://www.apsattv.com/nzlg.m3u' },
+          { id: 'fp-lg-pe', name: 'LG Peru', flag: '🇵🇪', url: 'https://www.apsattv.com/pelg.m3u' },
+          { id: 'fp-lg-sg', name: 'LG Singapore', flag: '🇸🇬', url: 'https://www.apsattv.com/sglg.m3u' },
+        ],
+      },
+      {
+        id: 'apps',
+        name: 'Major Apps',
+        flag: '📱',
+        playlists: [
+          { id: 'fp-tubi', name: 'Tubi TV (176)', flag: '📺', url: 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/tubi_all.m3u' },
+          { id: 'fp-roku', name: 'Roku Channel (352)', flag: '📺', url: 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/roku_all.m3u' },
+        ],
+      },
+      {
+        id: 'sports',
+        name: 'Sports',
+        flag: '⚽',
+        playlists: [
+          { id: 'fp-freelivesports', name: 'Free Live Sports', flag: '⚽', url: 'https://www.apsattv.com/freelivesports.m3u' },
+        ],
+      },
+    ],
+  },
 ]
 
 // ─── Lookup helpers ──────────────────────────────────────────────────────────
