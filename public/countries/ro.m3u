@@ -1,0 +1,6 @@
+#EXTM3U
+# Romania — 2 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="Pro TV" tvg-logo="https://i.imgur.com/aKAfKtW.png" tvg-id="ProTV.ro" tvg-chno="6" tvg-country="RO" group-title="Romania",Pro TV
+https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-ro-voyo-news/playlist.m3u8?offsetSeconds=0&url=0
+#EXTINF:-1 tvg-name="Euronews România Ⓨ" tvg-logo="https://i.imgur.com/jUOVUXt.png" tvg-id="EuronewsRomania.ro" tvg-chno="10" tvg-country="RO" group-title="Romania",Euronews România Ⓨ
+https://www.youtube.com/euronewsro/live

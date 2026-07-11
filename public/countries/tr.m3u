@@ -1,0 +1,30 @@
+#EXTM3U
+# Turkey — 14 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="TRT 1" tvg-logo="https://i.imgur.com/j786OLG.png" tvg-id="TRT1.tr" tvg-chno="1" tvg-country="TR" group-title="Turkey",TRT 1
+https://tv-trt1.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT Haber" tvg-logo="https://i.imgur.com/OVfo8Ab.png" tvg-id="TRTHaber.tr" tvg-chno="3" tvg-country="TR" group-title="Turkey",TRT Haber
+https://tv-trthaber.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT Çocuk" tvg-logo="https://i.imgur.com/QLFmD6d.png" tvg-id="TRTCocuk.tr" tvg-chno="6" tvg-country="TR" group-title="Turkey",TRT Çocuk
+https://tv-trtcocuk.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT Müzik" tvg-logo="https://i.imgur.com/fIVFCEd.png" tvg-chno="7" tvg-country="TR" group-title="Turkey",TRT Müzik
+https://tv-trtmuzik.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT Avaz" tvg-logo="https://i.imgur.com/VhTwXu5.png" tvg-id="TRTAvaz.tr" tvg-chno="9" tvg-country="TR" group-title="Turkey",TRT Avaz
+https://tv-trtavaz.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT Kurdî" tvg-logo="https://i.imgur.com/6BpymfB.png" tvg-id="TRTKurdi.tr" tvg-chno="10" tvg-country="TR" group-title="Turkey",TRT Kurdî
+https://tv-trtkurdi.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT Arabi" tvg-logo="https://i.imgur.com/yyhWOZs.png" tvg-id="TRTArabi.tr" tvg-chno="11" tvg-country="TR" group-title="Turkey",TRT Arabi
+https://tv-trtarabi.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT World" tvg-logo="https://i.imgur.com/JEA2xpv.png" tvg-id="TRTWorld.tr" tvg-chno="12" tvg-country="TR" group-title="Turkey",TRT World
+https://tv-trtworld.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT Türk" tvg-logo="https://i.imgur.com/OSTOQNw.png" tvg-id="TRTTurk.tr" tvg-chno="13" tvg-country="TR" group-title="Turkey",TRT Türk
+https://tv-trtturk.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT EBA Ilkokul" tvg-logo="https://i.imgur.com/wDvZfk8.png" tvg-chno="14" tvg-country="TR" group-title="Turkey",TRT EBA Ilkokul
+https://tv-e-okul00.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT EBA Ortaokul" tvg-logo="https://i.imgur.com/yfPTvRx.png" tvg-chno="15" tvg-country="TR" group-title="Turkey",TRT EBA Ortaokul
+https://tv-e-okul01.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="TRT EBA Lise" tvg-logo="https://i.imgur.com/IebUZx1.png" tvg-chno="16" tvg-country="TR" group-title="Turkey",TRT EBA Lise
+https://tv-e-okul02.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-name="CNBC" tvg-logo="https://i.imgur.com/wOL3Nzd.jpeg" tvg-id="cnbc.com" group-title="News CNBC",CNBC-e Türkiye
+https://hnpsechtsc.turknet.ercdn.net/xpnvudnlsv/cnbc-e/cnbc-e.m3u8?tv=1
+#EXTINF:-1 tvg-name="Fb tv" tvg-logo="https://i.imgur.com/p8o0WVN.jpeg" tvg-id="fbtv.tr" group-title="Channel Club Bola",Fenerbahçe TV
+http://1hskrdto.rocketcdn.com/fenerbahcetv.smil/playlist.m3u8

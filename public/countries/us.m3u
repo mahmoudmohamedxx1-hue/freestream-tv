@@ -1,0 +1,150 @@
+#EXTM3U
+# United States — 74 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993062/600x200.png?type=white_cropped",109 America's Got Talent
+https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99993062&ads.xumo_streamId=99993062&ads.channelId=99993062&ads.ad_tag_id=127758&ads.csid=lgchannels_us_fremantleamericasgottalent_ssai&ads.channelName=americasgottalent_us&ads.xumo_contentName=FremantleAmericasGotTalent&ads.xumo_contentId=4266&ads.xumo_providerName=FremantleAmericasGotTalent&ads.xumo_providerId=4266&ads.content_category=IAB1-7&ads.content_genre=GameShow,Game,Quiz,QG,QP,Entertainment&ads.content_language=en&ads.content_rating=tv-pg&ads.coppa=0&ads.livestream=0&ads.prodq=1&ads.did=[IFA]&ads.lmt=[LMT]&ads.dnt=[DNS]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_name=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/419/lg/4dfe21/LG-Logo-PNG-100x100_v1.png",134 Real America's Voice
+https://wurlperformanceonemedia.global.transmit.live/hls/69d93e1344d5f8fbce12e874/v1/p1media_americasvoice_1/lg_us/latest/main/hls/AVWurlTRCABR.m3u8?wurl_channel=419&wurl_name=AmericasVoice&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993042/600x200.png?type=white_cropped",354 American Ninja Warrior
+https://d4whmvwm0rdvi.cloudfront.net/10007/99993042/hls/master.m3u8?ads.xumo_channelId=99993042&ads.asnw=169843&ads.afid=405342864&ads.sfid=19647852&ads.csid=lgchannels_us_nbcuamericanninjawarrior_ssai_cro&ads._fw_is_lat=[LMT]&ads._fw_us_privacy=[US_PRIVACY]&ads._fw_coppa=0&ads._fw_did=[IFA]&ads._fw_vcid2=512116:[IFA]&ads._fw_app_bundle=[APP_BUNDLE]&ads._fw_app_store_url=[APP_STOREURL]&ads._fw_content_category=IAB1-7&ads._fw_content_genre=television&ads._fw_content_language=en&ads._fw_content_rating=tv-14&ads._fw_deviceMake=[DEVICE_MAKE]&ads._fw_device_model=[DEVICE_MODEL]&ads._fw_deviceType=3-Connected_TV&ads.appVersion=[APP_VERSION]&ads.appName=lgchannels&ads.xumo_contentId=4063&ads.xumo_contentName=NBCUAmericanNinjaWarrior&ads.xumo_providerId=4063&ads.xumo_providerName=NBCUAmericanNinjaWarrior&ads.channelId=99993042&ads._fw_ifa_type=dpid&ads.givn=[NONCE]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993013/600x200.png?type=white_cropped",389 American Crimes
+https://d4whmvwm0rdvi.cloudfront.net/10007/99993013/hls/master.m3u8?ads.xumo_channelId=99993013&ads.xumo_streamId=99993013&ads.channelId=99993013&ads.asnw=535279&ads.afid=440668677&ads.sfid=23817261&ads.csid=lgchannels_us_versantamericancrimes_ssai_cro&ads._fw_coppa=0&ads._fw_content_category=IAB1-7&ads._fw_content_genre=television&ads._fw_content_language=en&ads._fw_content_rating=TV-14&ads.xumo_contentId=4291&ads.xumo_contentName=VersantAmericanCrimes&ads.xumo_providerId=4291&ads.xumo_providerName=VersantAmericanCrimes&ads.appName=lgchannels&ads._fw_deviceType=3-Connected_TV&ads._fw_vcid2=512116:[IFA]&ads._fw_is_lat=[LMT]&ads._fw_us_privacy=[US_PRIVACY]&ads._fw_ifa_type=dpid&ads._fw_did=[IFA]&ads.givn=[NONCE]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads._fw_deviceMake=[DEVICE_MAKE]&ads._fw_device_model=[DEVICE_MODEL]&ads.appVersion=[APP_VERSION]&ads._fw_app_bundle=[APP_BUNDLE]&ads._fw_app_store_url=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="https://d2gqmql520my5n.cloudfront.net/USATV/TeamUSATVLogoWhite_800x200.png",451 Team USA TV
+https://amg01416-amg01416c4-lg-us-4203.playouts.now.amagi.tv/playlist/amg01416-faststudios-usatvall-lgus/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]
+#EXTINF:-1 tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/feeds/images/atk/ATK_Logo_LG.png",545 America's Test Kitchen
+https://amg01420-americastestkitchen-amg01420c1-lg-us-1280.playouts.now.amagi.tv/playlist/amg01420-americastestkitchen-americastestkitchen-lgus/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/535/lg/87a941/LG-Logo-PNG-100x100_v1.png",1514 GoUSA TV
+https://f1f44e9f9685437d90439a5e25451ddd.mediatailor.us-east-1.amazonaws.com/v1/master/f4e8c53a8367a5b58e20ce054ea3ce25a3e904d3/LG-gb_GoUSATV/playlist.m3u8
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/535/lg/87a941/LG-Logo-PNG-100x100_v1.png",616 GoUSA TV
+https://db257ce47b7c4eb88829ad36574738a5.mediatailor.us-east-1.amazonaws.com/v1/master/f4e8c53a8367a5b58e20ce054ea3ce25a3e904d3/LG-de_GoUSATV/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993060/600x200.png?type=white_cropped",994 Sky News International Americas
+https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99993060&ads.xumo_streamId=99993060&ads.channelId=99993060&ads.ad_tag_id=118011&ads.csid=lgchannels_de_skynewsamericas_ssai&ads.channelName=skynews_de&ads.xumo_contentName=SkyNewsAmericas&ads.xumo_contentId=4227&ads.xumo_providerName=SkyNewsAmericas&ads.xumo_providerId=4227&ads.content_category=IAB1-7&ads.content_genre=News,N,DN,Local,LocalNews,News-Local&ads.content_language=en&ads.content_rating=tv-pg&ads.coppa=0&ads.livestream=0&ads.prodq=1&ads.did=[IFA]&ads.lmt=[LMT]&ads.dnt=[DNS]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_name=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/535/lg/87a941/LG-Logo-PNG-100x100_v1.png",616 GoUSA TV
+https://19bdbd160e674236a9333884b71ece52.mediatailor.us-east-1.amazonaws.com/v1/master/f4e8c53a8367a5b58e20ce054ea3ce25a3e904d3/LG-fr_GoUSATV/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99992447/600x200.png?type=white_cropped",991 Sky News International Americas
+https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99992447&ads.xumo_streamId=99992447&ads.channelId=99992447&ads.ad_tag_id=118011&ads.csid=lgchannels_fr_skynewsamericas_ssai&ads.channelName=skynews_fr&ads.xumo_contentName=SkyNewsAmericas&ads.xumo_contentId=4227&ads.xumo_providerName=SkyNewsAmericas&ads.xumo_providerId=4227&ads.content_category=IAB1-7&ads.content_genre=News,N,DN,Local,LocalNews,News-Local&ads.content_language=en&ads.content_rating=tv-pg&ads.coppa=0&ads.livestream=0&ads.prodq=1&ads.did=[IFA]&ads.lmt=[LMT]&ads.dnt=[DNS]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_name=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="https://images.pluto.tv/channels/686cd84603ad75cfd132d672/logo_1751963785358.png?w=380&h=110&trim=auto&trim-sd=10&trim-md=0&fit=clip&fm=png",531 America's Next Top Model
+https://jmp2.uk/plu-686cd84603ad75cfd132d672.m3u8
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1714/lg/f2b512/LG-Logo-PNG-100x100_v1.png",616 GoUSA TV
+https://5f67d01489c44765b12ec877f3d070cd.mediatailor.us-east-1.amazonaws.com/v1/master/f4e8c53a8367a5b58e20ce054ea3ce25a3e904d3/LG-es_GoUSATV/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993061/600x200.png?type=white_cropped",991 Sky News International Americas
+https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99993061&ads.xumo_streamId=99993061&ads.channelId=99993061&ads.ad_tag_id=118011&ads.csid=lgchannels_es_skynewsamericas_ssai&ads.channelName=skynews_es&ads.xumo_contentName=SkyNewsAmericas&ads.xumo_contentId=4227&ads.xumo_providerName=SkyNewsAmericas&ads.xumo_providerId=4227&ads.content_category=IAB1-7&ads.content_genre=News,N,DN,Local,LocalNews,News-Local&ads.content_language=en&ads.content_rating=tv-pg&ads.coppa=0&ads.livestream=0&ads.prodq=1&ads.did=[IFA]&ads.lmt=[LMT]&ads.dnt=[DNS]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_name=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/535/lg/87a941/LG-Logo-PNG-100x100_v1.png",616 GoUSA TV
+https://8823dc2add3840a4aaa83239d0c98bce.mediatailor.us-east-1.amazonaws.com/v1/master/f4e8c53a8367a5b58e20ce054ea3ce25a3e904d3/LG-it_GoUSATV/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99992602/600x200.png?type=white_cropped",992 Sky News International Americas
+https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99992602&ads.xumo_streamId=99992602&ads.channelId=99992602&ads.ad_tag_id=118011&ads.csid=lgchannels_it_skynewsamericas_ssai&ads.channelName=skynews_it&ads.xumo_contentName=SkyNewsAmericas&ads.xumo_contentId=4227&ads.xumo_providerName=SkyNewsAmericas&ads.xumo_providerId=4227&ads.content_category=IAB1-7&ads.content_genre=News,N,DN,Local,LocalNews,News-Local&ads.content_language=en&ads.content_rating=tv-pg&ads.coppa=0&ads.livestream=0&ads.prodq=1&ads.did=[IFA]&ads.lmt=[LMT]&ads.dnt=[DNS]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_name=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99992484/600x200.png?type=white_cropped",141 USA TODAY News
+https://d29h829bjuxghm.cloudfront.net/hls/playlist.m3u8?includeAssetTags=true&ads.xumo_channelId=99992484&ads.xumo_streamId=99992484&ads.channelId=99992484&ads.inventory_router_id=377&ads.csid=lgchannels_br_usatodaynewsintl_ssai&ads.channelName=&ads.xumo_contentName=USATodayNewsIntl&ads.xumo_contentId=2833&ads.xumo_providerName=USATodayNewsIntl&ads.xumo_providerId=2833&ads.content_category=IAB1-7&ads.content_genre=news&ads.content_language=en&ads.content_rating=tv-14&ads.coppa=0&ads._fw_content_genre=news&ads.did=[IFA]&ads.is_lat=[LMT]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.appName=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_version=[APP_VERSION]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/535/lg/87a941/LG-Logo-PNG-100x100_v1.png",246 GoUSA TV
+https://c5ac946c18ad41a9a368a9d6be80ce76.mediatailor.us-east-1.amazonaws.com/v1/master/f4e8c53a8367a5b58e20ce054ea3ce25a3e904d3/LG-br_GoUSATV/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://images.pluto.tv/channels/5ff609de50ab210008025c1b/logo.png?w=380&h=110&trim=auto&trim-sd=10&trim-md=0&fit=clip&fm=png",658 Tokusato
+https://jmp2.uk/plu-5ff609de50ab210008025c1b.m3u8
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99992241/600x200.png?type=white_cropped",899 American Classics
+https://d29h829bjuxghm.cloudfront.net/hls/master.m3u8?includeAssetTags=true&ads.xumo_channelId=99992241&ads.xumo_streamId=99992241&ads.channelId=99992241&ads.inventory_router_id=377&ads.csid=lgchannels_br_americanclassics_ssai&ads.channelName=&ads.xumo_contentName=AmericanClassics&ads.xumo_contentId=286&ads.xumo_providerName=AmericanClassics&ads.xumo_providerId=286&ads.content_category=IAB1-7&ads.content_genre=Entertainment,Drama,GD,GV&ads.content_language=en&ads.content_rating=tv-g&ads.coppa=0&ads._fw_content_genre=Entertainment,Drama,GD,GV&ads.did=[IFA]&ads.is_lat=[LMT]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.appName=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_version=[APP_VERSION]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1714/lg/f2b512/LG-Logo-PNG-100x100_v1.png",106 GoUSA TV
+https://c9fd4c14c795468c927deb7506af7134.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/LG-mx_GoUSATV/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99992161/600x200.png?type=white_cropped",127 USA TODAY News
+https://d29h829bjuxghm.cloudfront.net/hls/playlist.m3u8?includeAssetTags=true&ads.xumo_channelId=99992161&ads.xumo_streamId=99992161&ads.channelId=99992161&ads.inventory_router_id=377&ads.csid=lgchannels_mx_usatodaynewsintl_ssai&ads.channelName=&ads.xumo_contentName=USATodayNewsIntl&ads.xumo_contentId=2833&ads.xumo_providerName=USATodayNewsIntl&ads.xumo_providerId=2833&ads.content_category=IAB1-7&ads.content_genre=news&ads.content_language=en&ads.content_rating=tv-g&ads.coppa=0&ads._fw_content_genre=news&ads.did=[IFA]&ads.is_lat=[LMT]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.appName=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_version=[APP_VERSION]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="https://d2aqhkzukipl76.cloudfront.net/CRICKET-GOLD-USA/logo/400x200.jpg",603 CRICKET-GOLD-USA
+https://vglivessai.akamaized.net/ptnr-lg/title-CricketGold-LGIndia/sg/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/2d588e31-21da-4f74-9fc8-a1313ce2b053/manifest.m3u8?ads.deviceid=[DEVICE_ID]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.lat=[LMT]&ads.donotsell=[DNT]&ads.country=[COUNTRY]&ads.device_make=[DEVICE_MAKE]&ads.device_model=[DEVICE_MODEL]&ads.device_type=[DEVICE_TYPE]&ua=[UA]&ip=[IP]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]
+#EXTINF:-1 tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/feeds/Images/Mosalsalat_400x200.png",127 Musalsalat
+https://amg30483-amg30483c9-amgplt0794.playout.now3.amagi.tv/ts-ap-s1-n1/playlist/amg30483-amg30483c9-amgplt0794/playlist.m3u8?ads.appversion=[APP_VERSION]&ads.devicemodel=[DEVICE_MODEL]&ads.lat=[LMT]&ads.bundleid=[APP_BUNDLE]&ads.donotsell=[DNS]&ads.ifa=[IFA]&ads.targetad=[TARGETAD_ALLOWED]&ads.appstoreurl=[APP_STOREURL]&ads.deviceid=[DEVICE_ID]&ads.devicemake=[DEVICE_MAKE]&ads.devicetype=[DEVICE_TYPE]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.ifatype=[IFA_TYPE]&ads.ip=[IP]&ads.appname=[APP_NAME]&ads.country=[COUNTRY]&ads.fck=[FCK]&ads.givn=[NONCE]&ads.ua=[UA]&ads.usprivacy=[US_PRIVACY]&ads.viewsize=[VIEWSIZE]&ads.coppa=0&ads.ic=[IC]
+#EXTINF:-1 tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/feeds/images/Watchit/LG/Watchit/Abo_El_Arousa.png",131 Abo Al Arousa
+https://amg17387-amg17387c4-lg-uae-11420.playouts.now.amagi.tv/ts-eu-w1-n2/playlist/amg17387-watchitfast-aboelarousa-lguae/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&coppa=0&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.ic=[IC]
+#EXTINF:-1 tvg-id="AFV.us@SD",America’s Funniest Home Videos (1080p)
+https://d1mp1kdk5zi1ie.cloudfront.net/playlist.m3u8
+#EXTINF:-1 tvg-id="",America's Got Talent (720p)
+https://d1i40wgstaij6f.cloudfront.net/webvtt/v1/18584c3f3a2a4df8/88886062/master.m3u8
+#EXTINF:-1 tvg-id="OutdoorAmerica.us@SD",Outdoor America (1080p)
+https://d1e354daam8g5r.cloudfront.net/playlist.m3u8
+#EXTINF:-1 tvg-id="RealAmericasVoice.us@SD",Real America's Voice (720p)
+https://d2jiqiw4g5lj5k.cloudfront.net/AVSamsung/AVSamsung.m3u8
+#EXTINF:-1 tvg-id="",Team USA TV (1080p)
+https://d8b6mh9us4zvx.cloudfront.net/TEAM_USA_TV.m3u8
+#EXTINF:-1 tvg-id="",America's Got Talent (1080p)
+https://d2mexh8isep4mf.cloudfront.net/AmericasGotTalent_GB.m3u8
+#EXTINF:-1 tvg-id="",American Idol (1080p)
+https://d2yn8dyffvmgy.cloudfront.net/AmericanIdol_GB.m3u8
+#EXTINF:-1 tvg-id="GoUSATV.us@SD",GoUSA TV (720p)
+https://brandusa-gousa-1-gb.samsung.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/gBbLyqh.png" group-title="Aguascalientes",CCTV-4 America (1080p)
+https://global.cgtn.cicc.media.caton.cloud/master/cgtn-america.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/FqFxog1.png" group-title="Aguascalientes",Garage TV Latin America
+https://stream1.sersat.com/hls/garagetv.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/iODADvi.png" group-title="Aguascalientes",TVE Internacional America (720p)
+http://190.11.225.124:5000/live/tve_hd/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/OuogLHx.png" group-title="American Samoa",Bloomberg TV Asia (720p)
+https://bloomberg.com/media-manifest/streams/asia.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/OuogLHx.png" group-title="American Samoa",Bloomberg TV Asia Live Event (720p)
+https://bloomberg.com/media-manifest/streams/asia-event.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sua70RO.png" group-title="American Samoa",EWTN Asia-Pacific (720p) [Not 24/7]
+https://cdn3.wowza.com/1/QmVNUVhTNTZSS3Uz/YWQ0aHpi/hls/live/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/rjgCM2B.png" group-title="American Samoa",Peace TV English (1080p)
+https://dzkyvlfyge.erbvr.com/PeaceTvEnglish/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/Wc5Z3iS.png" group-title="American Samoa",WION (1080p)
+https://d7x8z4yuq42qn.cloudfront.net/index_7.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Comedy_Central_2018.svg/960px-Comedy_Central_2018.svg.png" group-title="Argentina",Comedy Central Latin America (1080p)
+http://181.119.93.83:8000/play/a1di/index.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/f/ff/2024_Disney_Channel_text_logo.svg" group-title="Argentina",Disney Channel Latin America (1080p)
+http://45.185.163.75:8000/play/a02j/index.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/f/ff/2024_Disney_Channel_text_logo.svg" group-title="Argentina",Disney Channel Latin America Panregional HD (1080p)
+http://190.11.225.124:5000/live/disney_hd/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/e/e3/2024_Disney_Jr._Logo.svg" group-title="Argentina",Disney Jr. Latin America South (1080p)
+http://45.185.163.75:8000/play/a016/index.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/e/e3/2024_Disney_Jr._Logo.svg" group-title="Argentina",Disney Jr. Latin America South HD (1080p)
+http://179.60.51.134:8888/DISNEY-JR/index.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/960px-FIFA%2B_(2025).svg.png" group-title="Argentina",FIFA+ Hispanic America (720p)
+https://6c849fb3.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctbXhfRklGQVBsdXNTcGFuaXNoLTFfSExT/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/MTV_2021_%28brand_version%29.svg/960px-MTV_2021_%28brand_version%29.svg.png" group-title="Argentina",MTV Latin America (1080p)
+http://179.60.51.134:8888/MTV/index.m3u8
+#EXTINF:-1 tvg-name="CNBC Ⓨ" tvg-logo="https://i.imgur.com/BTasyOy.png" tvg-id="CNBC.us" tvg-chno="2" tvg-country="US" group-title="USA",CNBC Ⓨ
+https://www.youtube.com/c/CNBC/live
+#EXTINF:-1 tvg-name="Bloomberg" tvg-logo="https://i.imgur.com/VnCcH73.png" tvg-id="BloombergTelevision.us" tvg-chno="3" tvg-country="US" group-title="USA",Bloomberg
+https://bloomberg.com/media-manifest/streams/us.m3u8
+#EXTINF:-1 tvg-name="CBS News" tvg-logo="https://i.imgur.com/nki2HDQ.png" tvg-id="CBSNews.us" tvg-chno="5" tvg-country="US" group-title="USA",CBS News
+https://cbsnews.akamaized.net/hls/live/2020607/cbsnlineup_8/master.m3u8
+#EXTINF:-1 tvg-name="Music Channel" tvg-logo="http://media.boni-records.com/logo.png" tvg-id="Boni-Records.com.us" tvg-chno="3" tvg-country="US" group-title="USA",Music Channel
+http://media.boni-records.com/index.m3u8
+#EXTINF:-1 tvg-name="CBS News" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cbs-news-us.png" tvg-id="CBSNews.us" tvg-chno="12" group-title="News",CBS News
+https://dai.google.com/linear/hls/event/Sid4xiTQTkCT1SLu6rjUSQ/master.m3u8
+#EXTINF:-1 tvg-name="Scripps News" tvg-logo="https://i.imgur.com/UfN6aAi.png" tvg-id="ScrippsNews.us" tvg-chno="28" group-title="News",Scripps News
+https://content.uplynk.com/channel/4bb4901b934c4e029fd4c1abfc766c37.m3u8
+#EXTINF:-1 tvg-name="CNN International" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cnn-us.png" tvg-id="CNNInternationalEurope.us" tvg-chno="37" group-title="News",CNN International
+https://turnerlive.warnermediacdn.com/hls/live/586495/cnngo/cnn_slate/VIDEO_0_3564000.m3u8
+#EXTINF:-1 tvg-name="Bloomberg TV+" tvg-logo="https://i.imgur.com/xGlToly.png" tvg-id="BloombergTVPlus.us" tvg-chno="102" group-title="Business",Bloomberg TV+
+https://bloomberg.com/media-manifest/streams/phoenix-us.m3u8
+#EXTINF:-1 tvg-name="Yahoo! Finance" tvg-logo="https://i.imgur.com/43oHsHL.png" tvg-id="YahooFinance.us" tvg-chno="105" group-title="Business",Yahoo! Finance
+https://d1ewctnvcwvvvu.cloudfront.net/playlist.m3u8
+#EXTINF:-1 tvg-name="Moconomy" tvg-logo="https://i.imgur.com/GvqbLZB.png" tvg-id="MoconomyEconomyFinanceInfotainment.us" tvg-chno="109" group-title="Business",Moconomy
+https://amogonetworx-moconomy-2-us.tcl.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-name="AccuWeather NOW" tvg-logo="https://i.imgur.com/M8wbVYK.png" tvg-id="AccuWeatherNOW.us" tvg-chno="201" group-title="Weather",AccuWeather NOW
+https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg00684-accuweather-accuweather-plex/playlist.m3u8
+#EXTINF:-1 tvg-name="beIN Sport Xtra" tvg-logo="https://i.imgur.com/GhwnOic.jpeg" tvg-id="Bein Sport.us" group-title="beIN Sports",beIN Sports Xtra
+https://amg01334-beinsportsllc-beinxtra-localnow-kcy6r.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-name="CNN" tvg-logo="https://i.imgur.com/zeVygos.jpeg" tvg-id="CNN.us" group-title="News CNN",CNN USA
+https://amg01448-samsungin-cnnnow-samsungin-4npqg.amagi.tv/playlist/amg01448-samsungin-cnnnow-samsungin/playlist.m3u8
+#EXTINF:-1 tvg-id="691129" tvg-logo="https://canvas-lb.tubitv.com/opts/W9ioP8rN2WZEdQ==/9804e812-0cda-4c43-b18e-ed951546a0b6/CHgQeDoFMS4xLjlAAQ==" group-title="Good Eats",America's Test Kitchen
+https://live-manifest.production-public.tubi.io/live/c1bdcaaf-728a-4656-9763-f766ea7a12e0/playlist.m3u8
+#EXTINF:-1 tvg-id="670604" tvg-logo="https://canvas-lb.tubitv.com/opts/g7byDgzsOUbQNA==/78811e2c-60c2-4e88-ac2b-c083848b67ce/CHgQeDoFMS4xLjlAAQ==" group-title="Games & Competition",Deal or No Deal USA
+https://live-manifest.production-public.tubi.io/live/7d2f308c-8fdb-4dc5-8736-3c293bdf5a65/playlist.m3u8
+#EXTINF:-1 tvg-id="670602" tvg-logo="https://canvas-lb.tubitv.com/opts/lnF_d9-y39CI8A==/ae22b756-ab2a-4cb2-bb18-ce281b110449/CHgQeDoFMS4xLjlAAQ==" group-title="Games & Competition",Fear Factor USA
+https://live-manifest.production-public.tubi.io/live/dde54a14-3364-49f8-a1f2-4a56c7e9ebb2/playlist.m3u8
+#EXTINF:-1 channel-id="20a6aa8be0f3aff9d50f3daf3dfe6ba8" tvg-id="20a6aa8be0f3aff9d50f3daf3dfe6ba8" tvg-chno="822" tvg-name="America's Funniest Home Videos" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/20a6aa8be0f3aff9d50f3daf3dfe6ba8/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1769180377871_AFHV_Roku_Info_HUD_Logo_260x147_EFEFEF.png" group-title="Comedy",America's Funniest Home Videos
+https://jmp2.uk/rok-20a6aa8be0f3aff9d50f3daf3dfe6ba8.m3u8
+#EXTINF:-1 channel-id="77672e0655c5540095b1c492c91c37d3" tvg-id="77672e0655c5540095b1c492c91c37d3" tvg-chno="277" tvg-name="Great American RomComs" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/77672e0655c5540095b1c492c91c37d3/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1768402132746_Great-ROMCOMS-60x147.png" group-title="Comedy",Great American RomComs
+https://jmp2.uk/rok-77672e0655c5540095b1c492c91c37d3.m3u8
+#EXTINF:-1 channel-id="a96f9c338b3e5ab29ec3b436c01c84da" tvg-id="a96f9c338b3e5ab29ec3b436c01c84da" tvg-chno="452" tvg-name="America's Test Kitchen" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/a96f9c338b3e5ab29ec3b436c01c84da/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1673305860263_americasTestKitchen_HUDlogo_centered_260x147.png" group-title="Cooking",America's Test Kitchen
+https://jmp2.uk/rok-a96f9c338b3e5ab29ec3b436c01c84da.m3u8
+#EXTINF:-1 channel-id="6183f9f73a64394cf3c55690605af2a7" tvg-id="6183f9f73a64394cf3c55690605af2a7" tvg-chno="144" tvg-name="BBC News (North America)" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6183f9f73a64394cf3c55690605af2a7/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1765822678156_ROKU_BBC_NEWS_LOGO_260x147_WHITE.png" group-title="Documentary",BBC News (North America)
+https://jmp2.uk/rok-6183f9f73a64394cf3c55690605af2a7.m3u8
+#EXTINF:-1 channel-id="0e9a0d968d225a3eb93784404f7edadf" tvg-id="0e9a0d968d225a3eb93784404f7edadf" tvg-chno="920" tvg-name="AmericaTeve" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/0e9a0d968d225a3eb93784404f7edadf/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1675112610226_americateve_260x147.png" group-title="News",AmericaTeve
+https://jmp2.uk/rok-0e9a0d968d225a3eb93784404f7edadf.m3u8
+#EXTINF:-1 channel-id="cf7c191b9f2a4207cf119fb095e965e7" tvg-id="cf7c191b9f2a4207cf119fb095e965e7" tvg-chno="623" tvg-name="American Gladiators" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/cf7c191b9f2a4207cf119fb095e965e7/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1749753112642_AmericanGladiators_HUDLogo_Centered_260x147.png" group-title="Sports",American Gladiators
+https://jmp2.uk/rok-cf7c191b9f2a4207cf119fb095e965e7.m3u8
+#EXTINF:-1 channel-id="257afd66cee15a1ca2125fc377e87cc2" tvg-id="257afd66cee15a1ca2125fc377e87cc2" tvg-chno="252" tvg-name="Team USA TV" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/257afd66cee15a1ca2125fc377e87cc2/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1718724430937_TeamUSATV_HUDLogo_260x147.png" group-title="Sports",Team USA TV
+https://jmp2.uk/rok-257afd66cee15a1ca2125fc377e87cc2.m3u8
+#EXTINF:-1 channel-id="3580b15015379c4256440b0e119d46ed" tvg-id="3580b15015379c4256440b0e119d46ed" tvg-chno="629" tvg-name="America's Got Talent" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/3580b15015379c4256440b0e119d46ed/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1775265472400_AGT_HUD_260x147_CenterAligned.png" group-title="TV & Entertainment",America's Got Talent
+https://jmp2.uk/rok-3580b15015379c4256440b0e119d46ed.m3u8
+#EXTINF:-1 channel-id="eec9d131b4095083a23c485d804c8b2d" tvg-id="eec9d131b4095083a23c485d804c8b2d" tvg-chno="612" tvg-name="American Ninja Warrior" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/eec9d131b4095083a23c485d804c8b2d/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1713548868549_ANW_260x147_2x1_logo_center_align_EFEFEF_transparent_bkgd_roku_PNG.png" group-title="TV & Entertainment",American Ninja Warrior
+https://jmp2.uk/rok-eec9d131b4095083a23c485d804c8b2d.m3u8
+#EXTINF:-1 channel-id="cdfd1ee39343a406984976d2687e894d" tvg-id="cdfd1ee39343a406984976d2687e894d" tvg-chno="976" tvg-name="Vas O No Vas USA" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/cdfd1ee39343a406984976d2687e894d/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1765921837825_DealOrNoDealUSA-LATAM_HUD_logo_260x147.png" group-title="TV & Entertainment",Vas O No Vas USA
+https://jmp2.uk/rok-cdfd1ee39343a406984976d2687e894d.m3u8

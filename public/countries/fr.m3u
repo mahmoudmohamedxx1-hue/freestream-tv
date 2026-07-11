@@ -1,0 +1,54 @@
+#EXTM3U
+# France — 26 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-logo="https://d325q51bzx1jj.cloudfront.net/FRA24/400x200-f24-fast.png",1984 France24
+https://amg00106-france24-amg00106c1-lg-gb-9281.playouts.now.amagi.tv/playlist/amg00106-france24fast-france24-lggb/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99994448/600x200.png?type=white_cropped",507 Crime Scene TV France
+https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99994448&ads.xumo_streamId=99994448&ads.channelId=99994448&ads.ad_tag_id=140648&ads.csid=lgchannels_fr_indigeniuscrimescenetv_ssai&ads.channelName=indigeniuscrimescenetv_fr&ads.xumo_contentName=IndigeniusFrance&ads.xumo_contentId=4231&ads.xumo_providerName=IndigeniusFrance&ads.xumo_providerId=4231&ads.content_category=IAB1-7&ads.content_genre=television&ads.content_language=fr&ads.content_rating=tv-14&ads.coppa=0&ads.livestream=0&ads.prodq=1&ads.did=[IFA]&ads.lmt=[LMT]&ads.dnt=[DNS]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_name=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/Images/ProgramStore/LaMaisonFrance5/LG_LA_MAISON_FRANCE_5_400x200.png",623 La Maison France 5
+https://amg02362-amg02362c1-amgplt0030.playout.now3.amagi.tv/ts-eu-w1-n2/playlist/amg02362-amg02362c1-amgplt0030/playlist.m3u8?ads.country=[COUNTRY]&ads.gdpr=[GDPR]&ads.lat=[LMT]&ads.targetad=[TARGETAD_ALLOWED]&ads.devicemodel=[DEVICE_MODEL]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.appstoreurl=[APP_STOREURL]&ads.gdprconsent=[GDPR_CONSENT]&ads.ifa=[IFA]&ads.ip=[IP]&ads.usprivacy=[US_PRIVACY]&ads.deviceid=[DEVICE_ID]&ads.devicemake=[DEVICE_MAKE]&ads.devicetype=[DEVICE_TYPE]&ads.ifatype=[IFA_TYPE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.bundleid=[APP_BUNDLE]
+#EXTINF:-1 tvg-logo="https://d325q51bzx1jj.cloudfront.net/FRA24/400x200-f24-fast.png",990 France24
+https://amg00106-france24-amg00106c1-lg-es-10487.playouts.now.amagi.tv/ts-eu-w1-n2/playlist/amg00106-france24fast-france24-lges/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]
+#EXTINF:-1 tvg-id="France24.fr@English",France 24 English (1080p)
+https://amg00106-france24-france24-samsunguk-qvpp8.amagi.tv/playlist/amg00106-france24-france24-samsunguk/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/c1/France_24_logo_%282013%29.svg" group-title="Aguascalientes",France 24 Español (1080p)
+https://live.france24.com/hls/live/2037220-b/F24_ES_HI_HLS/master_5000.m3u8
+#EXTINF:-1 tvg-name="LCP" tvg-logo="https://upload.wikimedia.org/wikipedia/fr/thumb/6/6a/Logo_LCP-AN_-_Public_S%C3%A9nat_%282019%29.svg/53px-Logo_LCP-AN_-_Public_S%C3%A9nat_%282019%29.svg.png" tvg-id="LCP.fr" tvg-chno="13" tvg-country="FR" group-title="France",LCP
+https://lcp.fr/le-live-lcp-tnt-5433
+#EXTINF:-1 tvg-name="Public Sénat" tvg-logo="https://i.imgur.com/bJOdFT1.png" tvg-id="PublicSenat.fr" tvg-chno="13" tvg-country="FR" group-title="France",Public Sénat
+https://www.publicsenat.fr/direct
+#EXTINF:-1 tvg-name="CNews Ⓓ" tvg-logo="https://i.imgur.com/UMRGAHx.png" tvg-id="CNews.fr" tvg-chno="16" tvg-country="FR" group-title="France",CNews Ⓓ
+https://www.dailymotion.com/video/x3b68jn
+#EXTINF:-1 tvg-name="franceinfo: Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Franceinfo.svg/640px-Franceinfo.svg.png" tvg-id="Franceinfo.fr" tvg-chno="27" tvg-country="FR" group-title="France",franceinfo: Ⓨ
+https://www.youtube.com/c/franceinfo/live
+#EXTINF:-1 tvg-name="France 24 Ⓨ" tvg-logo="https://i.imgur.com/61MSiq9.png" tvg-id="France24French.fr" tvg-chno="28" tvg-country="FR" group-title="France",France 24 Ⓨ
+https://www.youtube.com/c/FRANCE24/live
+#EXTINF:-1 tvg-name="Euronews Français Ⓨ" tvg-logo="https://i.imgur.com/3Lr5iAj.png" tvg-id="EuronewsFrench.fr" tvg-chno="31" tvg-country="FR" group-title="France",Euronews Français Ⓨ
+https://www.youtube.com/euronewsfr/live
+#EXTINF:-1 tvg-name="Africanews Ⓨ" tvg-logo="https://i.imgur.com/xocvePC.png" tvg-id="Africanews.cg" tvg-chno="33" tvg-country="FR" group-title="France",Africanews Ⓨ
+https://www.youtube.com/c/Africanewsfr/live
+#EXTINF:-1 tvg-name="L'Équipe ⒹⒼ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/L%27%C3%89quipe_wordmark.svg/640px-L%27%C3%89quipe_wordmark.svg.png" tvg-id="LEquipe.fr" tvg-chno="21" tvg-country="FR" group-title="France",L'Équipe ⒹⒼ
+https://www.dailymotion.com/video/x2lefik
+#EXTINF:-1 tvg-name="France Inter Ⓨ" tvg-logo="https://i.imgur.com/d9Ncl8m.png" tvg-id="FranceInter.fr" tvg-chno="32" tvg-country="FR" group-title="France",France Inter Ⓨ
+https://www.youtube.com/c/FranceInter/live
+#EXTINF:-1 tvg-name="TV5 Monde Info" tvg-logo="https://i.imgur.com/NcysrWH.png" tvg-id="TV5MondeInfo.fr" tvg-chno="29" tvg-country="FR" group-title="France",TV5 Monde Info
+https://ott.tv5monde.com/Content/HLS/Live/channel(info)/index.m3u8
+#EXTINF:-1 tvg-name="Euronews Deutsch Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Euronews_2022.svg/640px-Euronews_2022.svg.png" tvg-id="EuronewsGerman.fr" tvg-chno="10" tvg-country="DE" group-title="Germany",Euronews Deutsch Ⓨ
+https://www.youtube.com/euronewsde/live
+#EXTINF:-1 tvg-name="Euronews Hungarian Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Euronews_2022.svg/640px-Euronews_2022.svg.png" tvg-id="EuronewsHungarian.fr" tvg-chno="1" tvg-country="HU" group-title="Hungary",Euronews Hungarian Ⓨ
+https://www.youtube.com/channel/UC4Ct8gIf9f0n4mdyGsFiZRA/live
+#EXTINF:-1 tvg-name="Euronews Italian Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Euronews_2022.svg/640px-Euronews_2022.svg.png" tvg-id="EuronewsItalian.fr" tvg-chno="59" tvg-country="IT" group-title="Italy",Euronews Italian Ⓨ
+https://www.youtube.com/user/euronewsit/live
+#EXTINF:-1 tvg-name="Euronews em Português Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Euronews_2022.svg/640px-Euronews_2022.svg.png" tvg-id="EuronewsPortuguese.fr" tvg-chno="17" tvg-country="PT" group-title="Portugal",Euronews em Português Ⓨ
+https://www.youtube.com/euronewspt/live
+#EXTINF:-1 tvg-name="Euronews по-русски Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Euronews_2022.svg/640px-Euronews_2022.svg.png" tvg-id="EuronewsRussian.fr" tvg-chno="24" tvg-country="RU" group-title="Russia",Euronews по-русски Ⓨ
+https://www.youtube.com/euronewsru/live
+#EXTINF:-1 tvg-name="France 24 العربية Ⓨ" tvg-logo="https://i.imgur.com/61MSiq9.png" tvg-id="France24Arabic.fr" tvg-chno="4" group-title="News (AR)",France 24 العربية Ⓨ
+https://www.youtube.com/c/FRANCE24Arabic/live
+#EXTINF:-1 tvg-name="Euronews Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Euronews_2022.svg/640px-Euronews_2022.svg.png" tvg-id="EuronewsEnglish.fr" tvg-chno="2" group-title="News",Euronews Ⓨ
+https://www.youtube.com/euronews/live
+#EXTINF:-1 tvg-name="France 24 Ⓨ" tvg-logo="https://i.imgur.com/61MSiq9.png" tvg-id="France24English.fr" tvg-chno="4" group-title="News",France 24 Ⓨ
+https://www.youtube.com/france24english/live
+#EXTINF:-1 tvg-name="Euronews Español Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Euronews_2022.svg/640px-Euronews_2022.svg.png" tvg-id="EuronewsSpanish.fr" tvg-chno="1" group-title="News (ES)",Euronews Español Ⓨ
+https://www.youtube.com/euronewses/live
+#EXTINF:-1 tvg-name="France 24 Español Ⓨ" tvg-logo="https://i.imgur.com/61MSiq9.png" tvg-id="France24Espanol.fr" tvg-chno="2" group-title="News (ES)",France 24 Español Ⓨ
+https://www.youtube.com/c/FRANCE24Espanol/live

@@ -174,14 +174,25 @@ export default function Home() {
   }, [fetchPlaylist])
 
   // ─── Fetch TV Guide ─────────────────────────────────────────────────────
+  const [guideGenres, setGuideGenres] = useState<any[]>([])
+  const [activeGuideGenre, setActiveGuideGenre] = useState<string>('sports')
   const fetchGuide = useCallback(async () => {
     setGuideLoading(true)
     try {
       const res = await fetch('/api/tv-guide?limit=40')
       const json = await res.json()
-      setTvGuide(json.channels || [])
+      setGuideGenres(json.genres || [])
+      // Flatten all genres' channels for backward compat
+      const all: any[] = []
+      for (const g of (json.genres || [])) {
+        for (const ch of (g.channels || [])) {
+          all.push({ ...ch, genre: g.id, genreName: g.name, genreFlag: g.flag })
+        }
+      }
+      setTvGuide(all)
     } catch {
       setTvGuide([])
+      setGuideGenres([])
     } finally {
       setGuideLoading(false)
     }
@@ -632,50 +643,99 @@ export default function Home() {
           </div>
 
           {sidebarView === 'guide' ? (
-            /* TV Guide view */
+            /* TV Guide view — synced with curated channels, click to play */
             <ScrollArea className="flex-1 thin-scroll">
               <div className="p-3">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Free TV Guide</h3>
+                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">What to Watch</h3>
                   {guideLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />}
                 </div>
-                {!guideLoading && tvGuide.length > 0 && (
-                  <p className="text-[10px] text-muted-foreground mb-2">
-                    {tvGuide.length} free channels from Pluto, Samsung, LG, Tubi, Roku, beIN, FIFA & more
-                  </p>
-                )}
-                {guideLoading ? (
-                  Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-14 mb-2" />)
-                ) : tvGuide.length === 0 ? (
-                  <p className="text-xs text-muted-foreground text-center py-4">No guide data available</p>
-                ) : (
-                  <div className="space-y-1">
-                    {tvGuide.map((ch, i) => (
-                      <div key={i} className="p-2 rounded-md hover:bg-secondary/60 transition cursor-pointer">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          {ch.logo ? (
-                            <img src={ch.logo} alt="" className="w-5 h-5 object-contain rounded-sm bg-white/5" />
-                          ) : (
-                            <Tv className="w-4 h-4 text-muted-foreground" />
-                          )}
-                          <span className="text-xs font-medium truncate flex-1">{ch.name}</span>
-                          <Badge variant="outline" className="text-[10px] px-1 py-0 gap-0.5">
-                            <span className="relative flex h-1.5 w-1.5">
-                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-                              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-                            </span>
-                            LIVE
-                          </Badge>
-                        </div>
-                        <p className="text-xs text-foreground/70 truncate pl-7">
-                          {ch.network ? `${ch.network} · ` : ''}
-                          {(ch.categories || []).join(', ')}
-                          {ch.country ? ` · ${ch.country}` : ''}
-                        </p>
-                      </div>
+
+                {/* Genre tabs */}
+                {guideGenres.length > 0 && (
+                  <div className="flex gap-1 mb-3 overflow-x-auto no-scrollbar">
+                    {guideGenres.map((g: any) => (
+                      <button
+                        key={g.id}
+                        onClick={() => setActiveGuideGenre(g.id)}
+                        className={cn(
+                          'flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition whitespace-nowrap',
+                          activeGuideGenre === g.id
+                            ? 'bg-primary text-primary-foreground'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-secondary',
+                        )}
+                      >
+                        <span>{g.flag}</span>
+                        <span>{g.name}</span>
+                      </button>
                     ))}
                   </div>
                 )}
+
+                {/* Channels for active genre */}
+                {guideLoading ? (
+                  Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-14 mb-2" />)
+                ) : (() => {
+                  const activeGenre = guideGenres.find((g: any) => g.id === activeGuideGenre)
+                  const channels = activeGenre?.channels || []
+                  if (channels.length === 0) {
+                    return <p className="text-xs text-muted-foreground text-center py-4">No channels for this genre</p>
+                  }
+                  return (
+                    <div className="space-y-1">
+                      <p className="text-[10px] text-muted-foreground mb-2">
+                        {activeGenre?.flag} {activeGenre?.name} — {activeGenre?.channelCount} channels available
+                      </p>
+                      {channels.map((ch: any, i: number) => (
+                        <div
+                          key={i}
+                          className="p-2 rounded-md hover:bg-secondary/60 transition cursor-pointer"
+                          onClick={() => {
+                            // Click to play this channel directly
+                            const channelObj: Channel = {
+                              id: `guide-${i}`,
+                              name: ch.name,
+                              displayName: ch.displayName,
+                              url: ch.url,
+                              logo: ch.logo,
+                              group: ch.group || activeGuideGenre,
+                              quality: ch.quality,
+                              qualityTier: ch.quality === '4K' ? 40 : ch.quality === '1080p' ? 30 : ch.quality === '720p' ? 20 : 0,
+                              isVod: ch.isVod,
+                              countryCode: ch.country,
+                            }
+                            handleSelectChannel(channelObj)
+                            setSidebarView('channels')
+                          }}
+                        >
+                          <div className="flex items-center gap-2 mb-0.5">
+                            {ch.logo ? (
+                              <img src={ch.logo} alt="" className="w-5 h-5 object-contain rounded-sm bg-white/5" />
+                            ) : (
+                              <Tv className="w-4 h-4 text-muted-foreground" />
+                            )}
+                            <span className="text-xs font-medium truncate flex-1">{ch.displayName}</span>
+                            {ch.quality && (
+                              <Badge variant="outline" className="text-[10px] px-1 py-0 h-4">
+                                {ch.quality}
+                              </Badge>
+                            )}
+                            <Badge variant="outline" className="text-[10px] px-1 py-0 gap-0.5">
+                              <span className="relative flex h-1.5 w-1.5">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+                              </span>
+                              LIVE
+                            </Badge>
+                          </div>
+                          {ch.group && (
+                            <p className="text-xs text-foreground/70 truncate pl-7">{ch.group}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )
+                })()}
               </div>
             </ScrollArea>
           ) : (

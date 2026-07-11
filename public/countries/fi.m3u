@@ -1,0 +1,40 @@
+#EXTM3U
+# Finland — 19 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="Taevas TV7" tvg-logo="https://i.imgur.com/usXedIj.png" tvg-id="TaevasTV7.fi" tvg-chno="5" tvg-country="EE" group-title="Estonia",Taevas TV7
+https://vod.tv7.fi/tv7-ee/_definst_/smil:tv7-ee.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="Nelonen" tvg-logo="https://i.imgur.com/BFbCyfY.png" tvg-id="Nelonen.fi" tvg-chno="4" tvg-country="FI" group-title="Finland",Nelonen
+https://live-fi.tvkaista.net/nelonen/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="MTV Sub" tvg-logo="https://i.imgur.com/VRCuxQt.png" tvg-id="Sub.fi" tvg-chno="6" tvg-country="FI" group-title="Finland",MTV Sub
+https://live-fi.tvkaista.net/sub/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="TV5 Finland" tvg-logo="https://i.imgur.com/MoukyGs.png" tvg-id="TV5.fi" tvg-chno="7" tvg-country="FI" group-title="Finland",TV5 Finland
+https://live-fi.tvkaista.net/tv5/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="Jim" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/9/92/Jim_color_RGB.png" tvg-id="Jim.fi" tvg-chno="9" tvg-country="FI" group-title="Finland",Jim
+https://live-fi.tvkaista.net/jim/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="Kutonen" tvg-logo="https://i.imgur.com/4giVyxb.png" tvg-id="Kutonen.fi" tvg-chno="10" tvg-country="FI" group-title="Finland",Kutonen
+https://live-fi.tvkaista.net/kutonen/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="TLC Finland" tvg-logo="https://i.imgur.com/0d5hP3A.png" tvg-id="TLCFinland.fi" tvg-chno="11" tvg-country="FI" group-title="Finland",TLC Finland
+https://live-fi.tvkaista.net/tlc/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="Star Channel Finland" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Star_Channel_2020.svg/640px-Star_Channel_2020.svg.png" tvg-id="StarChannel.fi" tvg-chno="12" tvg-country="FI" group-title="Finland",Star Channel Finland
+https://live-fi.tvkaista.net/star-channel/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="MTV Ava" tvg-logo="https://i.imgur.com/rtyJVgB.png" tvg-id="AVA.fi" tvg-chno="13" tvg-country="FI" group-title="Finland",MTV Ava
+https://live-fi.tvkaista.net/ava/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="Frii" tvg-logo="https://i.imgur.com/ljKoG9I.png" tvg-id="Frii.fi" tvg-chno="15" tvg-country="FI" group-title="Finland",Frii
+https://live-fi.tvkaista.net/frii/live.m3u8?src=freetv
+#EXTINF:-1 tvg-name="Alfa Ⓢ" tvg-logo="https://upload.wikimedia.org/wikipedia/fi/9/93/IRR-TV-1.png" tvg-id="IRRTV.fi" tvg-chno="17" tvg-country="FI" group-title="Finland",Alfa Ⓢ
+https://irrtv2.digitacdn.net/live/ott/irrtv/playlist.m3u8?organizationId=229401409&suiteItemId=230439940
+#EXTINF:-1 tvg-name="OnniTV" tvg-logo="https://i.imgur.com/HzILf2H.png" tvg-id="KotiTV.fi" tvg-chno="33" tvg-country="FI" group-title="Finland",OnniTV
+https://onnitv.digitacdn.net/live/ott/onnitv/playlist.m3u8?organizationId=83459409&suiteItemId=83459780
+#EXTINF:-1 tvg-name="Taivas TV7" tvg-logo="https://i.imgur.com/a4iNVXA.png" tvg-id="TaivasTV7.fi" tvg-chno="45" tvg-country="FI" group-title="Finland",Taivas TV7
+https://vod.tv7.fi/tv7-fi/_definst_/smil:tv7-fi.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="Himlen TV7" tvg-logo="https://i.imgur.com/a4iNVXA.png" tvg-id="HimlenTV7.fi" tvg-chno="46" tvg-country="FI" group-title="Finland",Himlen TV7
+https://vod.tv7.fi/tv7-se/_definst_/smil:tv7-se.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="Nopola News" tvg-logo="https://i.imgur.com/gOj8J6O.png" tvg-id="NopolaNews.fi" tvg-country="FI" group-title="Finland",Nopola News
+https://virta2.nopolanews.fi:8443/live/smil:Stream1.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="När-TV Ⓢ" tvg-logo="https://i.imgur.com/Ht5yePq.png" tvg-id="NarTV.fi" tvg-country="FI" group-title="Finland",När-TV Ⓢ
+https://streaming.nartv.fi/live/ngrp:NAR_TV.stream_all/playlist.m3u8
+#EXTINF:-1 tvg-name="Sundom TV Ⓨ" tvg-logo="https://i.imgur.com/WgwR7nJ.png" tvg-id="SundomTV.fi" tvg-country="FI" group-title="Finland",Sundom TV Ⓨ
+https://www.youtube.com/@SundomTV/live
+#EXTINF:-1 tvg-name="Wör TV Ⓨ" tvg-logo="https://i.imgur.com/P9O1jo0.png" tvg-id="WorTV.fi" tvg-country="FI" group-title="Finland",Wör TV Ⓨ
+https://www.youtube.com/@wor-tvr.f.4461/live
+#EXTINF:-1 tvg-name="Järviradio TV" tvg-logo="https://jarviradio.fi/jrtv2/wp-content/uploads/2022/01/jrtv1.jpg" tvg-id="JRTVJarviradio.fi" tvg-country="FI" group-title="Finland",Järviradio TV
+https://streamer.radiotaajuus.fi/memfs/47f113bf-04ea-493b-a9d4-52945fd9db31.m3u8

@@ -1,0 +1,6 @@
+#EXTM3U
+# Thailand — 2 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="beIN Sport fr" tvg-logo="https://i.imgur.com/0vTnm9V.jpeg" tvg-id="Bein Sport.th" group-title="beIN Sports",beIN Sports France 1
+http://d029dcec.kazmazpaz.ru/iptv/D6F3GPB9FFSHNY/2499/index.m3u8
+#EXTINF:-1 tvg-name="beIN Sport fr" tvg-logo="https://i.imgur.com/XsYa6yG.jpeg" tvg-id="Bein Sport.th" group-title="beIN Sports",beIN Sports France 2
+http://d029dcec.kazmazpaz.ru/iptv/D6F3GPB9FFSHNY/2500/index.m3u8

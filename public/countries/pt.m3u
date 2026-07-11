@@ -1,0 +1,4 @@
+#EXTM3U
+# Portugal — 1 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="ADtv Ⓢ" tvg-logo="https://i.imgur.com/FvlcU3z.png" tvg-id="" tvg-chno="12" tvg-country="PT" group-title="Portugal",ADtv Ⓢ
+https://playout172.livextend.cloud/liveiframe/_definst_/ngrp:liveartvabr_abr/playlist.m3u8

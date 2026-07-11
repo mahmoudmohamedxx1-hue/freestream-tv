@@ -1,0 +1,12 @@
+#EXTM3U
+# Sweden — 5 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="Expressen TV" tvg-logo="https://i.imgur.com/8EjMSr7.png" tvg-id="ExpressenTV.se" tvg-chno="43" tvg-country="SE" group-title="Sweden",Expressen TV
+https://cdn0-03837-liveedge0.dna.ip-only.net/03837-liveedge0/smil:03837-tx2/playlist.m3u8
+#EXTINF:-1 tvg-name="Kanal 10 Sverige" tvg-logo="https://i.imgur.com/vlh699v.png" tvg-id="Kanal10.se" tvg-chno="49" tvg-country="SE" group-title="Sweden",Kanal 10 Sverige
+https://rrr.sz.xlcdn.com/?account=cn_kanal10media&file=live_transcoded&type=live&service=wowza&protocol=https&output=playlist.m3u8
+#EXTINF:-1 tvg-name="Di TV" tvg-logo="https://i.imgur.com/zApTDWn.png" tvg-id="DiTV.se" tvg-chno="121" tvg-country="SE" group-title="Sweden",Di TV
+https://cdn0-03837-liveedge0.dna.ip-only.net/03837-liveedge0/smil:03837-tx4/playlist.m3u8
+#EXTINF:-1 tvg-name="Sundskanalen" tvg-logo="https://i.imgur.com/8uT0p3q.jpg" tvg-id="Sundskanalen.se" tvg-chno="9" tvg-country="SE" group-title="Sweden",Sundskanalen
+https://stream.sundskanalen.se/live/view/index.m3u8
+#EXTINF:-1 tvg-name="Lokal-TV Uddevalla / Fyrbodal-TV Ⓨ" tvg-logo="https://i.imgur.com/cnLkbOT.png" tvg-id="LTVU.se" tvg-chno="36" tvg-country="SE" group-title="Sweden",Lokal-TV Uddevalla / Fyrbodal-TV Ⓨ
+https://www.youtube.com/@LtvuSeTube/live

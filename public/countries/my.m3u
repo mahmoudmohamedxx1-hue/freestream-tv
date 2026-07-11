@@ -1,0 +1,4 @@
+#EXTM3U
+# Malaysia — 1 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="Astro" tvg-logo="https://i.imgur.com/gjTNt6Y.jpeg" tvg-id="astro.my" group-title="Astro Sports",Astro Cricket
+http://tv.cloudcdn.me/live.ts?channelId=26034&uid=3453&deviceMac=00:1A:79:01:04:AC

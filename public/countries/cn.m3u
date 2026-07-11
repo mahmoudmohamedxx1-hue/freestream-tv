@@ -1,0 +1,10 @@
+#EXTM3U
+# China — 4 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/cgtn/Lglogos/DISCOVERING%20CHINA%20(400_200).png",500 CGTN Discovering China
+https://amg01314-cgtn-amg01314c8-lg-uae-10948.playouts.now.amagi.tv/ts-eu-w1-n2/playlist/amg01314-cgtn-cgtndiscoveringchina-lguae/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&coppa=0
+#EXTINF:-1 tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/cgtn/Lglogos/CHINA%20TRAVEL%20(400_200).png",603 CGTN China Travel
+https://amg01314-cgtn-amg01314c7-lg-uae-10953.playouts.now.amagi.tv/ts-eu-w1-n2/playlist/amg01314-cgtn-cgtnchinatravel-lguae/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&coppa=0
+#EXTINF:-1 tvg-name="CCTV-4 中文国际（亚） Ⓨ" tvg-logo="https://i.imgur.com/ovUSVEQ.png" tvg-id="CCTV4Asia.cn" tvg-chno="4" tvg-country="CN" group-title="China",CCTV-4 中文国际（亚） Ⓨ
+https://www.youtube.com/channel/UC4K_LI-Tn3-LshNgG0-YypQ/live
+#EXTINF:-1 tvg-name="CGTN العربية" tvg-logo="https://i.imgur.com/fMsJYzl.png" tvg-id="CGTNArabic.cn" tvg-chno="6" group-title="News (AR)",CGTN العربية
+https://arabic-livews.cgtn.com/hls/LSveq57bErWLinBnxosqjisZ220802LSTefTAS9zc9mpU08y3np9TH220802cd/playlist.m3u8

@@ -1,0 +1,14 @@
+#EXTM3U
+# Canada — 6 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="AzStarTV" tvg-logo="https://i.imgur.com/di3XX5L.png" tvg-id="AzStarTV.ca" tvg-country="AZ" group-title="Azerbaijan",AzStarTV
+http://live.azstartv.com/azstar/smil:azstar.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="ICI RDI" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/ICI_RDI_logo.svg/640px-ICI_RDI_logo.svg.png" tvg-id="IciRDI.ca" tvg-chno="1" tvg-country="CA" group-title="Canada",ICI RDI
+https://rcavlive.akamaized.net/hls/live/704025/xcanrdi/master.m3u8
+#EXTINF:-1 tvg-name="ICI Télé HD Ⓖ" tvg-logo="https://i.imgur.com/HsSi3NV.png" tvg-chno="2" tvg-country="CA" group-title="Canada",ICI Télé HD Ⓖ
+https://rcavlive.akamaized.net/hls/live/696615/xcancbft/master.m3u8
+#EXTINF:-1 tvg-name="Savoir Média" tvg-logo="https://i.imgur.com/pa4wOVY.png" tvg-id="CFTUDT.ca" tvg-chno="6" tvg-country="CA" group-title="Canada",Savoir Média
+https://hls.savoir.media/live/stream.m3u8
+#EXTINF:-1 tvg-name="ICI Montreal" tvg-logo="https://i.imgur.com/Z1b2TJD.png" tvg-id="CBFTDT.ca" tvg-chno="3" tvg-country="CA" group-title="Canada",ICI Montreal
+https://amdici.akamaized.net/hls/live/873426/ICI-Live-Stream/master.m3u8
+#EXTINF:-1 tvg-name="Global News" tvg-logo="https://i.imgur.com/xk1QOhW.png" tvg-id="GlobalNews.ca" tvg-chno="33" group-title="News",Global News
+https://live.corusdigitaldev.com/groupd/live/49a91e7f-1023-430f-8d66-561055f3d0f7/live.isml/.m3u8

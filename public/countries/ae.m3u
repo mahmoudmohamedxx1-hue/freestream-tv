@@ -1,0 +1,12 @@
+#EXTM3U
+# UAE — 5 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/Images/Augustusmedia/lovin_dubai_200x400.png",223 Lovin Dubai
+https://amg01985-amg01985c1-amgplt0794.playout.now3.amagi.tv/ts-eu-w1-n2/playlist/amg01985-amg01985c1-amgplt0794/playlist.m3u8?url=REPLACE_ME&us_privacy=REPLACE_ME&app_name=REPLACE_ME&coppa=0&did=REPLACE_ME&dnt=REPLACE_ME&genre=REPLACE_ME&ic=REPLACE_ME&idtype=REPLACEME&iu=REPLACEME&app_bundle=REPLACE_ME&app_store_url=REPLACE_ME&gdpr=REPLACE_ME&gdpr_consent=REPLACE_ME
+#EXTINF:-1 tvg-name="Al Arabiya Business" tvg-logo="https://i.imgur.com/eEV4r6J.jpg" tvg-id="AlArabiyaBusiness.ae" tvg-chno="2" tvg-country="AE" group-title="United Arab Emirates",Al Arabiya Business
+https://live.alarabiya.net/alarabiapublish/aswaaq.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="Sky News Arabia" tvg-logo="https://i.imgur.com/SvjU4h6.png" tvg-id="SkyNewsArabia.ae" tvg-chno="14" tvg-country="AE" group-title="United Arab Emirates",Sky News Arabia
+https://stream.skynewsarabia.com/hls/sna.m3u8
+#EXTINF:-1 tvg-name="Al Wousta" tvg-logo="https://i5.satexpat.com/cha/ae/al-wousta-95x90.gif" tvg-id="SharjahSports.ae" tvg-chno="3" tvg-country="AE" group-title="United Arab Emirates",Al Wousta
+https://svs.itworkscdn.net/alwoustalive/alwoustatv.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="Al Arabiya العربية" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Al-Arabiya_new_logo.svg/640px-Al-Arabiya_new_logo.svg.png" tvg-id="AlArabiya.ae" tvg-chno="2" group-title="News (AR)",Al Arabiya العربية
+https://live.alarabiya.net/alarabiapublish/alarabiya.smil/playlist.m3u8

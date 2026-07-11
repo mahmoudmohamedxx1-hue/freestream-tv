@@ -1,0 +1,42 @@
+#EXTM3U
+# General Sports — curated by FreeStream TV (20 channels)
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/590/lg/643d04/LG-Logo-PNG-100x100_v2.png",311 Xtreme Outdoor Presented by HISTORY
+https://aenetworks.global.transmit.live/hls/68b77e2b2119c010f1166488/v1/aenetworks_skills_thrills_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=590&wurl_name=SkillsAndThrills&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/2198/lg/ae6736/LG-Logo-PNG-100x100_v1.png",446 Scripps Sports Network
+https://wurlewscripps.global.transmit.live/hls/699df66287f734395f248b2b/v1/e_w_scripps_scrippssports_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=2198&wurl_name=ScrippsSportsNetwork&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/160/lg/651255/LG-Logo-PNG-100x100_v1.png",453 Stadium
+https://wurl120sports.global.transmit.live/hls/6863f426233e6604b8b45832/v1/stadium_gracenote/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=160&wurl_name=Stadium&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1872/lg/c984c0/LG-Logo-PNG-100x100_v1.png",458 RugbyPass TV
+https://wurlworldrugby.global.transmit.live/hls/688cf16a14352f4b8d1bd9ab/v1/world_rugby_rugbypasstv_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1872&wurl_name=RugbyPassTV&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993008/600x200.png?type=white_cropped",459 NBC Sports NOW
+https://d4whmvwm0rdvi.cloudfront.net/10007/99993008/hls/master.m3u8?ads.xumo_channelId=99993008&ads.asnw=169843&ads.afid=380753925&ads.sfid=17667876&ads.csid=lgchannels_us_nbcusports_ssai_cro&ads._fw_is_lat=[LMT]&ads._fw_us_privacy=[US_PRIVACY]&ads._fw_coppa=0&ads._fw_did=[IFA]&ads._fw_vcid2=512116:[IFA]&ads._fw_app_bundle=[APP_BUNDLE]&ads._fw_app_store_url=[APP_STOREURL]&ads._fw_content_category=IAB17&ads._fw_content_genre=Sport,Sports,SA,SC,SE,SN&ads._fw_content_language=en&ads._fw_content_rating=tv-g&ads._fw_deviceMake=[DEVICE_MAKE]&ads._fw_device_model=[DEVICE_MODEL]&ads._fw_deviceType=3-Connected_TV&ads.appVersion=[APP_VERSION]&ads.appName=lgchannels&ads.xumo_contentId=3929&ads.xumo_contentName=NBCUSports&ads.xumo_providerId=3929&ads.xumo_providerName=NBCUSports&ads.channelId=99993008&ads._fw_ifa_type=dpid&ads.givn=[NONCE]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1358/lg/2b0c5b/LG-Logo-PNG-100x100_v2.png",460 Fubo Sports
+https://wurlfubo.global.transmit.live/hls/67f42332d3dd98936978f581/v1/fubotv_fubo_sports_network_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1358&wurl_name=FuboSportsNetwork&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1386/lg/dad2b4/LG-Logo-PNG-100x100_v1.png",468 MSG SportsZone
+https://wurlrainbowmedia.global.transmit.live/hls/68c4987e18e2a74e37774fb6/v1/amc_msgsportszone_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1386&wurl_name=MSGSportsZone&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://d2gqmql520my5n.cloudfront.net/WOMCH/LG/WSNLogoWhite_800x200.png",483 Women's Sports Network
+https://womensnetwork-lg.amagi.tv/hls/amagi_hls_data_lgAAAAAAA-womensnetwork/CDN/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.coppa=0&ads.targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&givn=[NONCE]
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993009/600x200.png?type=white_cropped",486 GOLFPASS
+https://d4whmvwm0rdvi.cloudfront.net/10007/99993009/hls/master.m3u8?ads.xumo_channelId=99993009&ads.xumo_streamId=99993009&ads.channelId=99993009&ads.asnw=535279&ads.afid=440667964&ads.sfid=23817285&ads.csid=lgchannels_us_versantgolfpass_ssai_cro&ads._fw_coppa=0&ads._fw_content_category=IAB1-7&ads._fw_content_genre=Sport,Sports,SA,SC,SE,SN&ads._fw_content_language=en&ads._fw_content_rating=TV-14&ads.xumo_contentId=4292&ads.xumo_contentName=VersantGOLFPASS&ads.xumo_providerId=4292&ads.xumo_providerName=VersantGOLFPASS&ads.appName=lgchannels&ads._fw_deviceType=3-Connected_TV&ads._fw_vcid2=512116:[IFA]&ads._fw_is_lat=[LMT]&ads._fw_us_privacy=[US_PRIVACY]&ads._fw_ifa_type=dpid&ads._fw_did=[IFA]&ads.givn=[NONCE]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads._fw_deviceMake=[DEVICE_MAKE]&ads._fw_device_model=[DEVICE_MODEL]&ads.appVersion=[APP_VERSION]&ads._fw_app_bundle=[APP_BUNDLE]&ads._fw_app_store_url=[APP_STOREURL]
+#EXTINF:-1 tvg-id="beINSPORTSXTRA.us@SD",beIN SPORTS XTRA (1080p)
+https://d9ssxzmclhfo4.cloudfront.net/bein_sports.m3u8
+#EXTINF:-1 tvg-id="beINSPORTSXTRAenEspanol.us@SD",beIN Sports XTRA en Espanol (1080p)
+https://dc1644a9jazgj.cloudfront.net/beIN_Sports_Xtra_Espanol.m3u8
+#EXTINF:-1 tvg-id="ESPN8TheOcho.us@ESPN8TheOchoHD",ESPN8 The Ocho (1080p)
+https://d3b6q2ou5kp8ke.cloudfront.net/ESPNTheOcho.m3u8
+#EXTINF:-1 tvg-id="",FOX Sports (1080p)
+https://d1jzu95oc8fgt3.cloudfront.net/FOX_Sports.m3u8
+#EXTINF:-1 tvg-id="FuboSportsNetwork.us@SD",fubo Sports Network (1080p)
+https://dnf08l6u6uxnz.cloudfront.net/master.m3u8
+#EXTINF:-1 tvg-id="",GolfPass (1080p)
+https://d2icntm6fhxrry.cloudfront.net/master.m3u8
+#EXTINF:-1 tvg-id="NBCSportsNOW.us@SD",NBC Sports NOW (1080p)
+https://d1m1xk35ma8qfl.cloudfront.net/master.m3u8
+#EXTINF:-1 tvg-id="OutdoorAmerica.us@SD",Outdoor America (1080p)
+https://d1e354daam8g5r.cloudfront.net/playlist.m3u8
+#EXTINF:-1 tvg-id="",Roku Sports Channel (1080p)
+https://d3ialx0k0mla2a.cloudfront.net/Roku_Sports_Channel.m3u8
+#EXTINF:-1 tvg-id="SportsGrid.us@SD",SportsGrid (1080p)
+https://sportsgrid-samsungus.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-id="Stadium.us@SD",Stadium (720p)
+https://wurl120sports.global.transmit.live/hls/679a907dce42a042c23ace37/v1/stadium_gracenote/samsung_us/latest/main/hls/playlist.m3u8

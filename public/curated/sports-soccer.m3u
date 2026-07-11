@@ -1,0 +1,42 @@
+#EXTM3U
+# Soccer — curated by FreeStream TV (20 channels)
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1854/lg/319653/LG-Logo-PNG-100x100_v2.png",102 FIFA+
+https://wurlfifa.global.transmit.live/hls/68962aee6d5f7138484ade6a/v1/sysdata_s_p_a_fifa_7/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1854&wurl_name=FIFAPlusEnglish&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://epg.sam.stingray.com/IMAGE/347ADS/lg-direct/Channel_Logo_400x200.png",113 Stingray Soccer Anthems
+https://lotus.stingray.com/ads/ose-347ads-montreal/lgchannels/master.m3u8?ads.ip=[IP]&ads.ua=[UA]&ads.targetad=[TARGETAD_ALLOWED]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appstoreurl=[APP_STOREURL]&ads.deviceid=[DEVICE_ID]&ads.gdprconsent=[GDPR_CONSENT]&ads.gdpr=[GDPR]&ads.usprivacy=[US_PRIVACY]&ads.lat=[LMT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.ifatype=[IFA_TYPE]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.ifa=[IFA]&ads.lmt=[LMT]&ads.dns=[DNS]&ads.nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1102/lg/129bb3/LG-Logo-PNG-100x100_v1.png",491 Strongman Champions League
+https://wurlrightsbooster.global.transmit.live/hls/6823bc03ec440b38950aff0b/playlist.m3u8?wurl_channel=1102&wurl_name=StrongmanChampionsLeague&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1780/lg/8193d6/LG-Logo-PNG-100x100_v3.png",806 FIFA+ en Español
+https://wurlfifa.global.transmit.live/hls/6994c1f0d46abe3243dbe184/v1/sysdata_s_p_a_fifa_5/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1780&wurl_name=FIFAPlusSpanish&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/960px-FIFA%2B_(2025).svg.png" group-title="Argentina",FIFA+ Hispanic America (720p)
+https://6c849fb3.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctbXhfRklGQVBsdXNTcGFuaXNoLTFfSExT/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="FIFA World Cup 2026" tvg-logo="https://shorturl.at/NPoFh", FIFA Live 🇦🇺 🇹🇷
+https://andro.226503.xyz/checklist/androstreamlivebs1.m3u8
+#EXTINF:-1 tvg-logo="" group-title="FIFA World Cup 2026" tvg-logo="https://shorturl.at/NPoFh", Fifa World cup
+https://live-aburayhan1103.telewebion.ir/ek/faratar/live/playlist.m3u8?isp=NA&city=NA
+#EXTINF:-1 tvg-logo="" group-title="FIFA World Cup 2026" tvg-logo="https://shorturl.at/NPoFh", Somoy TV 🇧🇩
+https://live.thebosstv.com:30443/dwlive/Somoy-TV/chunks.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Football",FIFA+
+https://37b4c228.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWZyX0ZJRkFQbHVzRnJlbmNoX0hMUw/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="FIFA WC 2026",CT SPORTS - AQ
+https://dash2.antik.sk/stream/nvidia_ct_sport/playlist_cenc.mpd
+#EXTINF:-1,Fifa+
+https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8
+#EXTINF:-1 tvg-name="Soccer Channel" tvg-logo="https://i.imgur.com/OOfBzLz.jpeg" tvg-id="Soccer Channel.id" group-title="VISION+ Sports ", Soccer Channel
+https://d2xz2v5wuvgur6.cloudfront.net/out/v1/63c0da12bb4d48afbaf053f51dff2353/index.mpd
+#EXTINF:-1 tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+
+https://e3be9ac5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYnJfRklGQVBsdXNQb3J0dWd1ZXNlX0hMUw/playlist.m3u8
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ Women
+https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇦🇹
+https://jmp2.uk/stvp-ATBA3300007PT
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇨🇦
+https://jmp2.uk/stvp-CABD1200008JG
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇨🇭
+https://jmp2.uk/stvp-CHBA3300010UC
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇩🇪
+https://jmp2.uk/stvp-DEBA3300019EB
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇪🇸
+https://jmp2.uk/stvp-ESBC2700009B4
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇫🇷
+https://jmp2.uk/stvp-FRBA3300037Y7

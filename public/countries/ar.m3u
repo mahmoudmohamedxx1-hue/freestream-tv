@@ -1,0 +1,44 @@
+#EXTM3U
+# Argentina — 21 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="TN Todo Noticias Ⓨ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/TN_todo_noticias_logo.svg/200px-TN_todo_noticias_logo.svg.png" tvg-id="TodoNoticias.ar" tvg-chno="3" tvg-country="AR" group-title="Argentina",TN Todo Noticias Ⓨ
+https://www.youtube.com/c/todonoticias/live
+#EXTINF:-1 tvg-name="Encuentro Ⓨ Ⓖ" tvg-logo="https://i.imgur.com/IyP2UIx.png" tvg-id="Encuentro.ar" tvg-chno="22.1" tvg-country="AR" group-title="Argentina",Encuentro Ⓨ Ⓖ
+https://www.youtube.com/user/encuentro/live
+#EXTINF:-1 tvg-name="Pakapaka Ⓨ Ⓖ" tvg-logo="https://i.imgur.com/Q4zaCuM.png" tvg-id="Pakapaka.ar" tvg-chno="22.2" tvg-country="AR" group-title="Argentina",Pakapaka Ⓨ Ⓖ
+https://www.youtube.com/user/CanalPakapaka/live
+#EXTINF:-1 tvg-name="Televisión Pública Ⓨ" tvg-logo="https://i.imgur.com/4hYYpiu.png" tvg-id="TVPublica.ar" tvg-chno="23.1" tvg-country="AR" group-title="Argentina",Televisión Pública Ⓨ
+https://www.youtube.com/user/TVPublicaArgentina/live
+#EXTINF:-1 tvg-name="Canal 26 Ⓨ" tvg-logo="https://i.imgur.com/xDjOUuz.png" tvg-id="Canal26.ar" tvg-chno="24.2" tvg-country="AR" group-title="Argentina",Canal 26 Ⓨ
+https://www.youtube.com/c/canal26/live
+#EXTINF:-1 tvg-name="Crónica TV Ⓨ" tvg-logo="https://i.imgur.com/k2Ku8Ib.png" tvg-id="CronicaTV.ar" tvg-chno="24.4" tvg-country="AR" group-title="Argentina",Crónica TV Ⓨ
+https://www.youtube.com/c/cronicatv/live
+#EXTINF:-1 tvg-name="IP Noticias Ⓨ" tvg-logo="https://photos.live-tv-channels.org/tv-logo/ar-ip-noticias-6980-300x225.jpg" tvg-id="IPNoticias.ar" tvg-chno="24.5" tvg-country="AR" group-title="Argentina",IP Noticias Ⓨ
+https://www.youtube.com/watch?v=IxQ2-6Y4y9w
+#EXTINF:-1 tvg-name="El Destape Ⓨ" tvg-logo="https://yt3.ggpht.com/a-/AAuE7mAuXDwiY8UPwtAHrGXTXkAxBjdRqws2MJIN2A=s900-mo-c-c0xffffffff-rj-k-no" tvg-id="ElDestape.ar" tvg-chno="24.6" tvg-country="AR" group-title="Argentina",El Destape Ⓨ
+https://www.youtube.com/watch?v=JuskTxbUqmY
+#EXTINF:-1 tvg-name="C5N Ⓨ" tvg-logo="https://i.imgur.com/E3pamA5.png" tvg-id="C5N.ar" tvg-chno="25.2" tvg-country="AR" group-title="Argentina",C5N Ⓨ
+https://www.youtube.com/c/c5n/live
+#EXTINF:-1 tvg-name="LN+ Ⓨ" tvg-logo="https://i.imgur.com/vJYzGt1.png" tvg-id="LaNacionPlus.ar" tvg-chno="25.3" tvg-country="AR" group-title="Argentina",LN+ Ⓨ
+https://www.youtube.com/c/LaNacionMas/live
+#EXTINF:-1 tvg-name="Canal E" tvg-logo="https://i.ibb.co/y4pkxH3/Qtc8-M2-PG-400x400.jpg" tvg-id="CanalE.ar" tvg-chno="25.6" tvg-country="AR" group-title="Argentina",Canal E
+https://unlimited1-us.dps.live/perfiltv/perfiltv.smil/perfiltv/livestream2/chunks.m3u8
+#EXTINF:-1 tvg-name="Net TV" tvg-logo="https://i.imgur.com/EWmshtx.png" tvg-id="NETTV.ar" tvg-chno="27.2" tvg-country="AR" group-title="Argentina",Net TV
+https://unlimited1-us.dps.live/nettv/nettv.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="TV Universidad" tvg-logo="https://i.imgur.com/tvLHiAT.png" tvg-id="TVUniversidad.ar" tvg-chno="32.1" tvg-country="AR" group-title="Argentina",TV Universidad
+https://stratus.stream.cespi.unlp.edu.ar/hls/tvunlp.m3u8
+#EXTINF:-1 tvg-name="América Ⓨ" tvg-logo="https://i.imgur.com/Jt7dOQm.png" tvg-id="AmericaTV.ar" tvg-chno="36.1" tvg-country="AR" group-title="Argentina",América Ⓨ
+https://www.youtube.com/c/americaenvivo/live
+#EXTINF:-1 tvg-name="A24 Ⓨ" tvg-logo="https://i.imgur.com/OdhF7ym.png" tvg-id="A24.ar" tvg-chno="36.2" tvg-country="AR" group-title="Argentina",A24 Ⓨ
+https://www.youtube.com/c/A24com/live
+#EXTINF:-1 tvg-name="beIN Sport AR" tvg-logo="https://i.imgur.com/JXfLTDC.jpeg" tvg-id="Bein Sport.ar" group-title="beIN Sports",beIN Sports Arabian 1
+http://185.160.192.64:80/mangin15/85784/13682
+#EXTINF:-1 tvg-name="beIN Sport AR" tvg-logo="https://i.imgur.com/2lY6dfj.jpeg" tvg-id="Bein Sport.ar" group-title="beIN Sports",beIN Sports Arabian 2
+http://185.160.192.64:80/mangin15/85784/13680
+#EXTINF:-1 tvg-name="beIN Sport AR" tvg-logo="https://i.imgur.com/ZzMYcK0.jpeg" tvg-id="Bein Sport.ar" group-title="beIN Sports",beIN Sports Arabian 4
+http://185.160.192.64:80/mangin15/85784/13676
+#EXTINF:-1 tvg-name="beIN Sport AR" tvg-logo="https://i.imgur.com/LXyzvv5.jpeg" tvg-id="Bein Sport.ar" group-title="beIN Sports",beIN Sports Arabian 5
+http://185.160.192.64:80/mangin15/85784/13674
+#EXTINF:-1 tvg-name="beIN Sport AR" tvg-logo="https://i.imgur.com/kIQKIIL.jpeg" tvg-id="Bein Sport.ar" group-title="beIN Sports",beIN Sports Arabian 6
+http://185.160.192.64:80/mangin15/85784/13672
+#EXTINF:-1 tvg-name="beIN Sport AR" tvg-logo="https://i.imgur.com/FslK1uD.jpeg" tvg-id="Bein Sport.ar" group-title="beIN Sports",beIN Sports Arabian 9
+http://185.160.192.64:80/mangin15/85784/13686

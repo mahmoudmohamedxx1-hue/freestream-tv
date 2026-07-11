@@ -1,0 +1,4 @@
+#EXTM3U
+# Belgium — 1 channels (aggregated by FreeStream TV)
+#EXTINF:-1 tvg-name="BX1" tvg-logo="https://i.imgur.com/YjKqWru.png" tvg-id="BX1.be" tvg-chno="13" tvg-country="BE" group-title="Belgium",BX1
+https://59959724487e3.streamlock.net/stream/live/playlist.m3u8

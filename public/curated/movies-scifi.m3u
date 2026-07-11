@@ -1,0 +1,46 @@
+#EXTM3U
+# Sci-Fi & Fantasy — curated by FreeStream TV (22 channels)
+#EXTINF:-1 tvg-logo="http://dki01q1l7yn3y.cloudfront.net/thumbnails-platform-prod/assets/cs::content::channels/0-2048/1852-LG-Logo-PNG-100x100_v1.png",297 Ancient Aliens
+https://aenetworks.global.transmit.live/hls/68b709bb2119c010f1166417/v1/ae_networks_ancientaliens_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1852&wurl_name=AncientAliens&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/feeds/images/wbd/LG/SpaceandBeyond/LG_Logo_400x200_Space&Beyond.png",304 Space & Beyond
+https://amg00136-wbd-amg00136c83-lg-us-9807.playouts.now.amagi.tv/playlist/amg00136-warnerbrothersdiscovery-spaceandbeyond-lgus/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]
+#EXTINF:-1 tvg-logo="https://d1biytugnv36sr.cloudfront.net/resize?width=400&height=200&url=https://static.frequency.com/studio/gunpowderandsky/channels/Alien-Nation_white_logo_800x200.png",425 Alien Nation by DUST
+https://linear-888.frequency.stream/dist/lg-us/888/hls/master/playlist.m3u8?ads.app_bundle=[APP_BUNDLE]&ads.app_name=[APP_NAME]&ads.app_store_url=[APP_STOREURL]&ads.gdpr=[GDPR]&ads.consent=[GDPR_CONSENT]&ads.us_privacy=[US_PRIVACY]&ads.lmt=[LMT]&ads.device_make=[DEVICE_MAKE]&ads.device_model=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.ifa_type=[IFA_TYPE]&ads.device_id=[DEVICE_ID]&ads.viewsize=[VIEWSIZE]&ads.fck=[FCK]&ads.pcs=[PCS]&ads.nonce=[NONCE]&aws.brightLineAdSignalingEnabled=true
+#EXTINF:-1 tvg-logo="https://d1biytugnv36sr.cloudfront.net/resize?width=400&height=200&url=https://static.frequency.com/studio/itv/channels/1224-400x200.png",920 Space Live
+https://linear-1224.frequency.stream/dist/lg-us/1224/hls/master/playlist.m3u8?ads.app_bundle=[APP_BUNDLE]&ads.app_name=[APP_NAME]&ads.app_store_url=[APP_STOREURL]&ads.gdpr=[GDPR]&ads.consent=[GDPR_CONSENT]&ads.us_privacy=[US_PRIVACY]&ads.lmt=[LMT]&ads.device_make=[DEVICE_MAKE]&ads.device_model=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.ifa_type=[IFA_TYPE]&ads.device_id=[DEVICE_ID]&ads.viewsize=[VIEWSIZE]&ads.fck=[FCK]&ads.pcs=[PCS]&ads.nonce=[NONCE]&aws.brightLineAdSignalingEnabled=true
+#EXTINF:-1 tvg-id="DUST.us@SD",Alien Nation by DUST (1080p)
+https://dqi7ayt2o24fn.cloudfront.net/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/7ecgGIG.png" group-title="Aguascalientes",8NTV (1080p)
+https://60417ddeaf0d9.streamlock.net/ntv/videontv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/Og17U9N.png" group-title="Aguascalientes",ADN 40 (720p)
+https://mdstrm.com/live-stream-playlist/60b578b060947317de7b57ac.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/5nYjRlb.png" group-title="Aguascalientes",Alcance TV (720p)
+https://5bf8041cb3fed.streamlock.net/AlcanceTV/AlcanceTV/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/snIU1UA.jpg" group-title="Aguascalientes",AMX Noticias (720p) [Not 24/7]
+https://5e50264bd6766.streamlock.net/mexiquense2/videomexiquense2/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/1sAgSME.png" group-title="Aguascalientes",Antena TV (1080p)
+https://5ca9af4645e15.streamlock.net/grd/videogrd/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/Jdy3WNm.png" group-title="Aguascalientes",Arirang TV UN (1080p)
+https://amdlive-ch02-ctnd-com.akamaized.net/arirang_2ch/smil:arirang_2ch.smil/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/e/eb/Azteca_Internacional_logo_2023.png" group-title="Aguascalientes",Azteca Internacional (1080p)
+https://azt-mun.otteravision.com/azt/mun/mun.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/dw6puHC.png" group-title="Aguascalientes",Canal 10 Chiapas (720p)
+https://5ca9af4645e15.streamlock.net/chiapas/videochiapas/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/r7czgOc.png" group-title="Aguascalientes",Canal 15 ILCE Summa Sabres (720p)
+https://live-ilce.ovp-vivaro.digital/ovp-origin-abr/ngrp:6359ef999f3fb_all/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/PAvnVN9.png" group-title="Aguascalientes",Canal 26 Aguascalientes (1080p)
+https://60417ddeaf0d9.streamlock.net/telemetrika3/smil:telemetrika3.smil/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://iili.io/JCt1Nbn.png" group-title="Aguascalientes",Canal 33 Tijuana (720p)
+https://5f2c1b0d880e5.streamlock.net/canal33tijuana/videocanal33tijuana/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/YDp8MlN.png" group-title="Aguascalientes",Canal 44 Chihuahua (720p) [Not 24/7]
+https://5e50264bd6766.streamlock.net/canal442/videocanal442/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/fLpkHfZ.png" group-title="Aguascalientes",Canal Parlamento del Congreso de Jalisco (720p) [Not 24/7]
+https://60417ddeaf0d9.streamlock.net/srtc/smil:srtc.smil/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://caribbeanadvantage.com/images/CAtv-logo-512.png" group-title="Aguascalientes",Caribbean Advantage TV (1080p) [Not 24/7]
+https://video2.getstreamhosting.com:19360/8216/8216.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/gBbLyqh.png" group-title="Aguascalientes",CCTV-4 America (1080p)
+https://global.cgtn.cicc.media.caton.cloud/master/cgtn-america.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/CGTN.svg/512px-CGTN.svg.png" group-title="Aguascalientes",CGTN (1080p)
+https://amg00405-rakutentv-cgtn-rakuten-i9tar.amagi.tv/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/JHv0WxM.png" group-title="Aguascalientes",CGTN Documentary (1080p)
+https://amg00405-rakutentv-cgtndocumentary-rakuten-0ql8j.amagi.tv/master.m3u8
