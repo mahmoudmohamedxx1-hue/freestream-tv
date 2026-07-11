@@ -1,0 +1,102 @@
+#EXTM3U
+# World Cup 2026 — 50 verified channels
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1854/lg/319653/LG-Logo-PNG-100x100_v2.png",102 FIFA+
+https://wurlfifa.global.transmit.live/hls/68962aee6d5f7138484ade6a/v1/sysdata_s_p_a_fifa_7/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1854&wurl_name=FIFAPlusEnglish&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1780/lg/8193d6/LG-Logo-PNG-100x100_v3.png",806 FIFA+ en Español
+https://wurlfifa.global.transmit.live/hls/6994c1f0d46abe3243dbe184/v1/sysdata_s_p_a_fifa_5/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1780&wurl_name=FIFAPlusSpanish&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1781/lg/e1d25f/LG-Logo-PNG-100x100_v2.png",1601 FIFA+
+https://339a32f2.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZ2JfRklGQVBsdXNFbmdsaXNoX0hMUw/playlist.m3u8
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/2096/lg/808f4d/LG-Logo-PNG-100x100_v2.png",1602 FIFA+ Women
+https://97fdd279.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZ2JfRklGQVBsdXN3b21lbl9ITFM/playlist.m3u8
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1778/lg/14667d/LG-Logo-PNG-100x100_v2.png",700 FIFA+
+https://becfa822.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZnJfRklGQVBsdXNGcmVuY2hfSExT/playlist.m3u8
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1777/lg/5bb91a/LG-Logo-PNG-100x100_v2.png",702 FIFA+
+https://d94238f5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZGVfRklGQVBsdXNHZXJtYW5fSExT/playlist.m3u8
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1780/lg/8193d6/LG-Logo-PNG-100x100_v3.png",700 FIFA+ en Español
+https://87bb29fc.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZXNfRklGQVBsdXNTcGFuaXNoX0hMUw/playlist.m3u8
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1779/lg/40cfe0/LG-Logo-PNG-100x100_v2.png",700 FIFA+
+https://af7e4455.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctaXRfRklGQVBsdXNJdGFsaWFuX0hMUw/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/960px-FIFA%2B_(2025).svg.png" group-title="Argentina",FIFA+ Hispanic America (720p)
+https://6c849fb3.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctbXhfRklGQVBsdXNTcGFuaXNoLTFfSExT/playlist.m3u8
+#EXTINF:-1 tvg-id="2104163" tvg-name="WC-4K| 4K 1" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 1
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104163
+#EXTINF:-1 tvg-id="2104162" tvg-name="WC-4K| 4K 2" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 2
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104162
+#EXTINF:-1 tvg-id="2104161" tvg-name="WC-4K| 4K 3" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 3
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104161
+#EXTINF:-1 tvg-id="2104159" tvg-name="WC-4K| 4K 5" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 5
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104159
+#EXTINF:-1 tvg-id="2098112" tvg-name="WC-4K| BEIN SPORTS MAX ᵁᴴᴰ 4K FM" tvg-logo="http://51.158.145.100/picons/logos/bein/BEIN4.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| BEIN SPORTS MAX ᵁᴴᴰ 4K FM
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2098112
+#EXTINF:-1 tvg-id="2097322" tvg-name="WC-4K| BEIN SPORTS MAX ᵁᴴᴰ 4K NM" tvg-logo="http://51.158.145.100/picons/logos/bein/BEIN4.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| BEIN SPORTS MAX ᵁᴴᴰ 4K NM
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2097322
+#EXTINF:-1 tvg-id="2095904" tvg-name="WC-4K| BEIN SPORTS MAX ᵁᴴᴰ 4K" tvg-logo="http://51.158.145.100/picons/logos/bein/BEIN4.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| BEIN SPORTS MAX ᵁᴴᴰ 4K
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095904
+#EXTINF:-1 tvg-id="2095903" tvg-name="WC-4K| BBC ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| BBC ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095903
+#EXTINF:-1 tvg-id="2095902" tvg-name="WC-4K| FOX ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FOX ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095902
+#EXTINF:-1 tvg-id="2095901" tvg-name="WC-4K| FOX [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FOX [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095901
+#EXTINF:-1 tvg-id="2095900" tvg-name="WC-4K| FOX SPORTS 1 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FOX SPORTS 1 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095900
+#EXTINF:-1 tvg-id="2095899" tvg-name="WC-4K| FOX SPORTS 1 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FOX SPORTS 1 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095899
+#EXTINF:-1 tvg-id="2095898" tvg-name="WC-4K| NOW SPORTS 616 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| NOW SPORTS 616 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095898
+#EXTINF:-1 tvg-id="2095896" tvg-name="WC-4K| M6 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| M6 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095896
+#EXTINF:-1 tvg-id="2095895" tvg-name="WC-4K| FUSSBALL.TV1 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FUSSBALL.TV1 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095895
+#EXTINF:-1 tvg-id="2095894" tvg-name="WC-4K| FUSSBALL.TV 1 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FUSSBALL.TV 1 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095894
+#EXTINF:-1 tvg-id="2095892" tvg-name="WC-4K| FUSSBALL.TV 1 [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FUSSBALL.TV 1 [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095892
+#EXTINF:-1 tvg-id="2095891" tvg-name="WC-4K| FUSSBALL.TV 2 [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FUSSBALL.TV 2 [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095891
+#EXTINF:-1 tvg-id="2095890" tvg-name="WC-4K| MW FUSSBALL 1 DE ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| MW FUSSBALL 1 DE ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095890
+#EXTINF:-1 tvg-id="2095889" tvg-name="WC-4K| MW FUSSBALL 2 DE ᵁᴴᴰ ³⁸⁴⁰ᴾᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| MW FUSSBALL 2 DE ᵁᴴᴰ ³⁸⁴⁰ᴾᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095889
+#EXTINF:-1 tvg-logo="" group-title="FIFA World Cup 2026" tvg-logo="https://shorturl.at/NPoFh", FIFA Live 🇦🇺 🇹🇷
+https://andro.226503.xyz/checklist/androstreamlivebs1.m3u8
+#EXTINF:-1 tvg-logo="" group-title="FIFA World Cup 2026" tvg-logo="https://shorturl.at/NPoFh", Fifa World cup
+https://live-aburayhan1103.telewebion.ir/ek/faratar/live/playlist.m3u8?isp=NA&city=NA
+#EXTINF:-1 tvg-logo="" group-title="FIFA World Cup 2026" tvg-logo="https://shorturl.at/NPoFh", Somoy TV 🇧🇩
+https://live.thebosstv.com:30443/dwlive/Somoy-TV/chunks.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Football",FIFA+
+https://37b4c228.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWZyX0ZJRkFQbHVzRnJlbmNoX0hMUw/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg"group-title="Football World Cup 2026" group-title="",Football World Cup 2026
+http://93.93.113.95:25461/live/TV-Berati/XtreamCodes/495.ts
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="FIFA WC 2026",CT SPORTS - AQ
+https://dash2.antik.sk/stream/nvidia_ct_sport/playlist_cenc.mpd
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg"group-title="Football World Cup 2026" group-title="",Football World Cup 2026 Sky
+http://38.75.136.137:98/gslb/dsdqpub/cctv5hd.m3u8?auth=testpub
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg"group-title="Football World Cup 2026" group-title="",Football World Cup 2026 (4K)
+http://fastshare1.com:8080//live/25711345/late8airline/688287.ts
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg"group-title="Football World Cup 2026" group-title="",Football World Cup 2026 (4K)
+https://tv.topmediatv.net:25463/live/TopMediaWeb/bOteTR8ED1/125.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg"group-title="Football World Cup 2026" group-title="",Football World Cup 2026 (4K) 2
+http://fastshare1.com:8080//live/25711345/late8airline/745270.ts
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg"group-title="Football World Cup 2026" group-title="",Football World Cup 2026 (4K) bein
+http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/747283.ts
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg"group-title="Football World Cup 2026" group-title="",Football World Cup 2026 (t sports)
+http://114.130.57.233:8080/LIVE-Sports/video.m3u8?token=SkQuhAXZxgBan1
+#EXTINF:-1,Fifa+
+https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+
+https://e3be9ac5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYnJfRklGQVBsdXNQb3J0dWd1ZXNlX0hMUw/playlist.m3u8
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ Women
+https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇦🇹
+https://jmp2.uk/stvp-ATBA3300007PT
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇨🇦
+https://jmp2.uk/stvp-CABD1200008JG
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇨🇭
+https://jmp2.uk/stvp-CHBA3300010UC
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇩🇪
+https://jmp2.uk/stvp-DEBA3300019EB
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇪🇸
+https://jmp2.uk/stvp-ESBC2700009B4
+#EXTINF:-1  tvg-id="GBBD1100008YW" tvg-logo="https://i.imgur.com/cGvdDNY.jpeg" group-title="FIFA+" , FIFA+ 🇫🇷
+https://jmp2.uk/stvp-FRBA3300037Y7

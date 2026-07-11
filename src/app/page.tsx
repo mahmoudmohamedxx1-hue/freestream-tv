@@ -528,7 +528,30 @@ export default function Home() {
                   : 'bg-secondary/50 text-foreground hover:bg-secondary border-transparent',
               )}
             >
-              <span>{prov.flag}</span>
+              {prov.logo ? (
+                <img
+                  src={prov.logo}
+                  alt={prov.name}
+                  className={cn(
+                    'w-5 h-5 object-contain',
+                    activeProvider.id === prov.id && 'brightness-0 invert',
+                  )}
+                  onError={(e) => {
+                    // Fallback to flag emoji if logo fails to load
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                    const parent = target.parentElement
+                    if (parent && !parent.querySelector('.fallback-flag')) {
+                      const span = document.createElement('span')
+                      span.className = 'fallback-flag'
+                      span.textContent = prov.flag
+                      parent.insertBefore(span, parent.firstChild)
+                    }
+                  }}
+                />
+              ) : (
+                <span>{prov.flag}</span>
+              )}
               <span>{prov.name}</span>
             </button>
           ))}
