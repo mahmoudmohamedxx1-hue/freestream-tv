@@ -892,7 +892,7 @@ export default function Home() {
         {/* ─── Main content ─── */}
         <main className="flex-1 min-w-0 flex flex-col lg:flex-row">
           {/* Player + now playing */}
-          <section className="lg:w-2/3 xl:w-3/4 p-4 md:p-6 space-y-4">
+          <section className="lg:w-2/3 xl:w-3/4 p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
             {currentChannel ? (
               <>
                 <VideoPlayer

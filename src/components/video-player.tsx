@@ -41,6 +41,8 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
   const [subtitleTracks, setSubtitleTracks] = useState<any[]>([])
   const [activeSubtitle, setActiveSubtitle] = useState<number>(-1) // -1 = off
   const [showSubtitleMenu, setShowSubtitleMenu] = useState(false)
+  const [controlsVisible, setControlsVisible] = useState(true) // always visible on mobile
+  const controlsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const triggerError = useCallback((msg: string) => {
     setError(msg)
@@ -252,6 +254,10 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
         clearTimeout(skipTimerRef.current)
         skipTimerRef.current = null
       }
+      if (controlsTimerRef.current) {
+        clearTimeout(controlsTimerRef.current)
+        controlsTimerRef.current = null
+      }
       video.removeEventListener('loadedmetadata', onLoaded)
       video.removeEventListener('playing', onPlaying)
       video.removeEventListener('waiting', onWait)
@@ -300,6 +306,31 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
     setMuted(v.muted)
   }
 
+  // Toggle controls visibility (for mobile: tap to show/hide)
+  const showControls = useCallback(() => {
+    setControlsVisible(true)
+    if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current)
+    controlsTimerRef.current = setTimeout(() => {
+      if (!showQualityMenu && !showSubtitleMenu && videoRef.current && !videoRef.current.paused) {
+        setControlsVisible(false)
+      }
+    }, 4000)
+  }, [showQualityMenu, showSubtitleMenu])
+
+  // Tap on video area = toggle controls (mobile) or toggle play (desktop)
+  const handleVideoTap = useCallback(() => {
+    if (showQualityMenu || showSubtitleMenu) {
+      setShowQualityMenu(false)
+      setShowSubtitleMenu(false)
+      return
+    }
+    if (controlsVisible) {
+      togglePlay()
+    } else {
+      showControls()
+    }
+  }, [controlsVisible, showQualityMenu, showSubtitleMenu, showControls])
+
   const setQuality = (levelId: number) => {
     if (!hlsRef.current) return
     hlsRef.current.currentLevel = levelId // -1 = auto
@@ -316,11 +347,28 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
 
   const goFullscreen = () => {
     const c = containerRef.current
+    const v = videoRef.current
     if (!c) return
+    // Exit fullscreen
     if (document.fullscreenElement) {
       document.exitFullscreen()
-    } else {
+      return
+    }
+    // Try standard fullscreen
+    if (c.requestFullscreen) {
       c.requestFullscreen()
+    } else if ((c as any).webkitRequestFullscreen) {
+      // Safari desktop
+      ;(c as any).webkitRequestFullscreen()
+    } else if ((c as any).webkitEnterFullscreen) {
+      // iOS Safari — enter fullscreen on the video element itself
+      ;(c as any).webkitEnterFullscreen()
+    } else if (v && (v as any).webkitEnterFullscreen) {
+      // iOS Safari fallback — video element fullscreen
+      ;(v as any).webkitEnterFullscreen()
+    } else if ((c as any).msRequestFullscreen) {
+      // IE/Edge legacy
+      ;(c as any).msRequestFullscreen()
     }
   }
 
@@ -328,11 +376,22 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
     <div
       ref={containerRef}
       className="relative w-full aspect-video bg-black rounded-xl overflow-hidden group"
+      onClick={handleVideoTap}
+      onTouchStart={(e) => { /* Don't preventDefault — let click fire */ }}
+      onMouseMove={showControls}
+      onMouseLeave={() => {
+        // On desktop, hide controls when mouse leaves (if playing)
+        if (videoRef.current && !videoRef.current.paused && !showQualityMenu && !showSubtitleMenu) {
+          setControlsVisible(false)
+        }
+      }}
     >
       <video
         ref={videoRef}
         poster={poster}
         playsInline
+        // @ts-expect-error — webkit-playsinline is iOS-specific
+        webkit-playsinline="true"
         className="w-full h-full object-contain bg-black"
       />
 
@@ -374,33 +433,39 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
         </div>
       )}
 
-      {/* Controls overlay */}
+      {/* Controls overlay — visible on hover (desktop) or tap (mobile) */}
       {!error && (
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-          <div className="flex items-center gap-3">
+        <div
+          className={cn(
+            'absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/90 to-transparent transition-opacity duration-200 pointer-events-none',
+            controlsVisible ? 'opacity-100' : 'opacity-0',
+            'group-hover:opacity-100',
+          )}
+        >
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
-              onClick={togglePlay}
-              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition text-white pointer-events-auto"
+              onClick={(e) => { e.stopPropagation(); togglePlay() }}
+              className="p-2.5 sm:p-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition text-white pointer-events-auto touch-manipulation"
               aria-label={playing ? 'Pause' : 'Play'}
             >
               {playing ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
             </button>
             <button
-              onClick={toggleMute}
-              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition text-white pointer-events-auto"
+              onClick={(e) => { e.stopPropagation(); toggleMute() }}
+              className="p-2.5 sm:p-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition text-white pointer-events-auto touch-manipulation"
               aria-label={muted ? 'Unmute' : 'Mute'}
             >
               {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
             {channelName && (
-              <span className="text-white/90 text-sm font-medium truncate flex-1">
+              <span className="text-white/90 text-xs sm:text-sm font-medium truncate flex-1 min-w-0">
                 {channelName}
               </span>
             )}
             {onNext && (
               <button
-                onClick={onNext}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition text-white pointer-events-auto"
+                onClick={(e) => { e.stopPropagation(); onNext() }}
+                className="p-2.5 sm:p-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition text-white pointer-events-auto touch-manipulation"
                 aria-label="Next channel"
                 title="Next channel"
               >
@@ -411,9 +476,9 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
             {subtitleTracks.length > 0 && (
               <div className="relative">
                 <button
-                  onClick={() => setShowSubtitleMenu(v => !v)}
+                  onClick={(e) => { e.stopPropagation(); setShowSubtitleMenu(v => !v) }}
                   className={cn(
-                    'flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-white/20 transition text-white text-xs font-medium pointer-events-auto',
+                    'flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-1.5 rounded-full hover:bg-white/20 active:bg-white/30 transition text-white text-xs font-medium pointer-events-auto touch-manipulation',
                     activeSubtitle !== -1 ? 'bg-primary/80' : 'bg-white/10',
                   )}
                   aria-label="Subtitles"
@@ -425,16 +490,16 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
                 {showSubtitleMenu && (
                   <div className="absolute bottom-full right-0 mb-2 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-[140px] shadow-xl pointer-events-auto">
                     <button
-                      onClick={() => setSubtitle(-1)}
-                      className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${activeSubtitle === -1 ? 'text-primary bg-primary/10' : 'text-white'}`}
+                      onClick={(e) => { e.stopPropagation(); setSubtitle(-1) }}
+                      className={`w-full px-3 py-2.5 text-left text-xs hover:bg-white/10 transition ${activeSubtitle === -1 ? 'text-primary bg-primary/10' : 'text-white'}`}
                     >
                       Off
                     </button>
                     {subtitleTracks.map(sub => (
                       <button
                         key={sub.id}
-                        onClick={() => setSubtitle(sub.id)}
-                        className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${activeSubtitle === sub.id ? 'text-primary bg-primary/10' : 'text-white'}`}
+                        onClick={(e) => { e.stopPropagation(); setSubtitle(sub.id) }}
+                        className={`w-full px-3 py-2.5 text-left text-xs hover:bg-white/10 transition ${activeSubtitle === sub.id ? 'text-primary bg-primary/10' : 'text-white'}`}
                       >
                         {sub.name}{sub.lang && ` (${sub.lang})`}
                       </button>
@@ -446,8 +511,8 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
             {/* Quality selector — always visible, shows available levels or "Single" */}
             <div className="relative ml-auto">
               <button
-                onClick={() => levels.length > 1 && setShowQualityMenu(v => !v)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition text-white text-xs font-medium pointer-events-auto"
+                onClick={(e) => { e.stopPropagation(); if (levels.length > 1) setShowQualityMenu(v => !v) }}
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-1.5 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition text-white text-xs font-medium pointer-events-auto touch-manipulation"
                 aria-label="Quality"
                 title={levels.length > 1 ? 'Stream quality' : 'Single quality stream'}
               >
@@ -463,16 +528,16 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
               {showQualityMenu && levels.length > 1 && (
                 <div className="absolute bottom-full right-0 mb-2 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-[120px] shadow-xl pointer-events-auto">
                   <button
-                    onClick={() => setQuality(-1)}
-                    className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${currentLevel === -1 ? 'text-primary bg-primary/10' : 'text-white'}`}
+                    onClick={(e) => { e.stopPropagation(); setQuality(-1) }}
+                    className={`w-full px-3 py-2.5 text-left text-xs hover:bg-white/10 transition ${currentLevel === -1 ? 'text-primary bg-primary/10' : 'text-white'}`}
                   >
                     Auto
                   </button>
                   {levels.slice().reverse().map(lvl => (
                     <button
                       key={lvl.id}
-                      onClick={() => setQuality(lvl.id)}
-                      className={`w-full px-3 py-2 text-left text-xs hover:bg-white/10 transition ${currentLevel === lvl.id ? 'text-primary bg-primary/10' : 'text-white'}`}
+                      onClick={(e) => { e.stopPropagation(); setQuality(lvl.id) }}
+                      className={`w-full px-3 py-2.5 text-left text-xs hover:bg-white/10 transition ${currentLevel === lvl.id ? 'text-primary bg-primary/10' : 'text-white'}`}
                     >
                       {lvl.label}
                     </button>
@@ -481,8 +546,8 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
               )}
             </div>
             <button
-              onClick={goFullscreen}
-              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition text-white pointer-events-auto"
+              onClick={(e) => { e.stopPropagation(); goFullscreen() }}
+              className="p-2.5 sm:p-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition text-white pointer-events-auto touch-manipulation"
               aria-label="Fullscreen"
             >
               <Maximize className="w-5 h-5" />
