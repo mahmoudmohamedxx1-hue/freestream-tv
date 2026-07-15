@@ -5,7 +5,8 @@ import {
   Search, Heart, Tv, Loader2, AlertCircle, Menu, X, Radio,
   Globe, ChevronRight, Star, Zap, Filter, ZapOff, EyeOff,
   Settings, RotateCcw, Clock, ArrowDownAZ, ArrowUpAZ, Flame,
-  CheckCircle2, Calendar, Play, ChevronDown,
+  CheckCircle2, Calendar, Play, ChevronDown, RefreshCw, Key,
+  Code, Twitch, Youtube, Plus,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,10 +18,16 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select'
 import { VideoPlayer } from '@/components/video-player'
+import { EmbedPlayer, isEmbedUrl } from '@/components/embed-player'
 import { PROVIDERS, type Provider, type ProviderCategory } from '@/lib/playlists'
 import type { Channel } from '@/lib/m3u-parser'
 import { flagForCountry } from '@/lib/countries'
 import { cn } from '@/lib/utils'
+import {
+  loadXtreamCreds, saveXtreamCreds, clearXtreamCreds,
+  xtreamAuth, xtreamM3U, type XtreamCredentials,
+} from '@/lib/xtream'
+import { tryCompileFilter } from '@/lib/filter-dsl'
 
 type PlaylistData = {
   channels: Channel[]
@@ -33,6 +40,14 @@ type SortMode = 'az' | 'za' | 'recent' | 'quality'
 type QualityFilter = 'all' | '4k' | '1080p' | '720p' | 'sd'
 type MaxQuality = 'auto' | '480p' | '720p' | '1080p'
 type SidebarView = 'channels' | 'guide'
+
+/** Parse XMLTV time strings like "20240101123000 +0000" or "20240101123000Z" into a Date. */
+function parseXmltvTime(s: string): number {
+  if (!s) return 0
+  const m = s.match(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/)
+  if (!m) return 0
+  return new Date(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}Z`).getTime()
+}
 
 const FAV_KEY = 'freestream.favorites'
 const DEAD_KEY = 'freestream.deadChannels'
@@ -81,6 +96,25 @@ export default function Home() {
   const [adminChannelLogo, setAdminChannelLogo] = useState('')
   const [adminChannelGroup, setAdminChannelGroup] = useState('Custom')
   const [customM3uUrl, setCustomM3uUrl] = useState('')
+
+  // ─── Xtream Codes state ─────────────────────────────────────────────────
+  const [adminTab, setAdminTab] = useState<'channels' | 'xtream' | 'embed'>('channels')
+  const [xcServer, setXcServer] = useState('')
+  const [xcUser, setXcUser] = useState('')
+  const [xcPass, setXcPass] = useState('')
+  const [xcCreds, setXcCreds] = useState<XtreamCredentials | null>(null)
+  const [xcStatus, setXcStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
+  const [xcMessage, setXcMessage] = useState('')
+  const [xcChannels, setXcChannels] = useState<Channel[]>([])
+
+  // ─── Filter DSL (tuliprox-inspired) ─────────────────────────────────────
+  const [filterExpr, setFilterExpr] = useState('')
+  const [filterError, setFilterError] = useState<string | null>(null)
+  const filterFnRef = useRef<((ctx: any) => boolean) | null>(null)
+
+  // ─── EPG "Now Playing" for current channel ──────────────────────────────
+  const [epgNow, setEpgNow] = useState<any>(null)
+  const [epgLoading, setEpgLoading] = useState(false)
 
   // ─── Refs that mirror state ────────────────────────────────────────────
   const deadChannelsRef = useRef<Set<string>>(new Set())
@@ -161,8 +195,52 @@ export default function Home() {
   }, [activeProvider, activeCategory, activePlaylistId])
 
   // ─── Fetch playlist ─────────────────────────────────────────────────────
+  const [refreshNonce, setRefreshNonce] = useState(0)
   const fetchPlaylist = useCallback(async () => {
     if (!activeProvider || !activeCategory) return
+
+    // ─── Xtream Codes provider — load from XC server ─────────────────────
+    if (activeProvider.id === 'xtream') {
+      const creds = loadXtreamCreds()
+      if (!creds) {
+        setLoading(false)
+        setError('No Xtream Codes credentials saved. Open Admin → Xtream tab to log in.')
+        setData({ channels: [], groups: [], totalCount: 0, sourceKey: 'xtream' })
+        return
+      }
+      setLoading(true)
+      setError(null)
+      setData(null)
+      setActiveGroup('__all')
+      setSearch('')
+      try {
+        const result = await xtreamM3U(creds)
+        const channels: Channel[] = (result.channels || []).map((ch: any, i: number) => ({
+          ...ch,
+          id: ch.id || `xc-${i}`,
+          group: ch.group || 'Xtream',
+          isVod: ch.isVod,
+        }))
+        const groups = Array.from(new Set(channels.map(c => c.group || 'Other'))).sort()
+        setData({
+          channels,
+          groups,
+          totalCount: channels.length,
+          sourceKey: 'xtream',
+        })
+        const deadSet = deadChannelsRef.current
+        const firstPlayable = channels.find(c => !deadSet.has(c.url))
+        if (firstPlayable) setCurrentChannel(firstPlayable)
+        else if (channels.length > 0) setCurrentChannel(channels[0])
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : 'Unknown error'
+        setError(`Xtream Codes: ${msg}`)
+      } finally {
+        setLoading(false)
+      }
+      return
+    }
+
     setLoading(true)
     setError(null)
     setData(null)
@@ -174,6 +252,11 @@ export default function Home() {
         category: activeCategory.id,
       })
       if (activePlaylistId) params.set('playlist', activePlaylistId)
+      // Auto-updated providers always refresh on fetch
+      if (activeProvider.id === 'auto-updated' || activeProvider.id === 'embeds') {
+        params.set('refresh', '1')
+      }
+      if (refreshNonce > 0) params.set('refresh', '1')
       const res = await fetch(`/api/playlist?${params.toString()}`)
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Failed to load playlist')
@@ -191,7 +274,7 @@ export default function Home() {
     } finally {
       setLoading(false)
     }
-  }, [activeProvider, activeCategory, activePlaylistId])
+  }, [activeProvider, activeCategory, activePlaylistId, refreshNonce])
 
   useEffect(() => {
     fetchPlaylist()
@@ -257,6 +340,95 @@ export default function Home() {
   useEffect(() => {
     try { localStorage.setItem('freestream.customChannels', JSON.stringify(customChannels)) } catch {}
   }, [customChannels])
+
+  // ─── Xtream Codes: load saved creds on mount ───────────────────────────
+  useEffect(() => {
+    const saved = loadXtreamCreds()
+    if (saved) {
+      setXcCreds(saved)
+      setXcServer(saved.server)
+      setXcUser(saved.username)
+      setXcPass(saved.password)
+    }
+  }, [])
+
+  // ─── Xtream Codes: login handler ────────────────────────────────────────
+  const handleXtreamLogin = useCallback(async () => {
+    if (!xcServer.trim() || !xcUser.trim() || !xcPass.trim()) return
+    setXcStatus('loading')
+    setXcMessage('')
+    try {
+      const creds: XtreamCredentials = {
+        server: xcServer.trim().replace(/\/+$/, ''),
+        username: xcUser.trim(),
+        password: xcPass.trim(),
+      }
+      const info = await xtreamAuth(creds)
+      if (info?.user_info?.auth === 1 || info?.user_info?.status === 'Active') {
+        saveXtreamCreds(creds)
+        setXcCreds(creds)
+        setXcStatus('ok')
+        const exp = info.user_info.exp_date
+          ? new Date(parseInt(info.user_info.exp_date, 10) * 1000).toLocaleDateString()
+          : 'unknown'
+        setXcMessage(
+          `✓ Connected — ${info.user_info.username} · ${info.server_info.url}:${info.server_info.port} · max ${info.user_info.max_connections} connections · expires ${exp}`,
+        )
+      } else {
+        setXcStatus('error')
+        setXcMessage(`✗ Auth failed: ${info?.user_info?.message || 'Invalid credentials'}`)
+      }
+    } catch (e: unknown) {
+      setXcStatus('error')
+      setXcMessage(`✗ ${e instanceof Error ? e.message : 'Connection failed'}`)
+    }
+  }, [xcServer, xcUser, xcPass])
+
+  const handleXtreamLogout = useCallback(() => {
+    clearXtreamCreds()
+    setXcCreds(null)
+    setXcChannels([])
+    setXcStatus('idle')
+    setXcMessage('Logged out.')
+  }, [])
+
+  // ─── Filter DSL: recompile on change ────────────────────────────────────
+  useEffect(() => {
+    if (!filterExpr.trim()) {
+      filterFnRef.current = null
+      setFilterError(null)
+      return
+    }
+    const result = tryCompileFilter(filterExpr)
+    if (result.ok) {
+      filterFnRef.current = result.fn
+      setFilterError(null)
+    } else {
+      filterFnRef.current = null
+      setFilterError(result.error)
+    }
+  }, [filterExpr])
+
+  // ─── EPG "Now Playing" for the current channel ──────────────────────────
+  useEffect(() => {
+    if (!currentChannel?.tvgId) {
+      setEpgNow(null)
+      return
+    }
+    let cancelled = false
+    setEpgLoading(true)
+    fetch(`/api/epg?channel=${encodeURIComponent(currentChannel.tvgId)}&limit=1`)
+      .then(r => r.ok ? r.json() : null)
+      .then(json => {
+        if (cancelled) return
+        const ch = json?.channels?.[0]
+        const now = ch?.programs?.find((p: any) => p.isNow)
+        setEpgNow(now || null)
+      })
+      .catch(() => setEpgNow(null))
+      .finally(() => { if (!cancelled) setEpgLoading(false) })
+    return () => { cancelled = true }
+  }, [currentChannel])
 
   // ─── Fetch TV Guide ─────────────────────────────────────────────────────
   const [guideGenres, setGuideGenres] = useState<any[]>([])
@@ -385,6 +557,19 @@ export default function Home() {
       list = list.filter(c => !deadChannels.has(c.url))
     }
 
+    // ─── Tuliprox-style filter DSL ────────────────────────────────────────
+    if (filterFnRef.current) {
+      const fn = filterFnRef.current
+      list = list.filter(c => fn({
+        name: c.displayName || c.name || '',
+        group: c.group || '',
+        url: c.url || '',
+        logo: c.logo || '',
+        quality: c.quality || '',
+        country: c.countryCode || c.country || '',
+      }))
+    }
+
     const q = search.trim().toLowerCase()
     if (q) {
       list = list.filter(c =>
@@ -413,7 +598,7 @@ export default function Home() {
       })
     }
     return sorted
-  }, [data, search, activeGroup, showFavsOnly, showRecentOnly, favorites, deadChannels, hideDead, hideBad, qualityFilter, sortMode, recentChannels, recentSet])
+  }, [data, search, activeGroup, showFavsOnly, showRecentOnly, favorites, deadChannels, hideDead, hideBad, qualityFilter, sortMode, recentChannels, recentSet, filterExpr])
 
   const filteredChannelsRef = useRef<Channel[]>([])
   useEffect(() => {
@@ -529,14 +714,27 @@ export default function Home() {
             {language === 'en' ? '🇸🇦 AR' : '🇬🇧 EN'}
           </Button>
 
-          {/* Admin button — add/delete channels + load custom M3U */}
+          {/* Refresh button — bypasses cache to pull latest auto-updated playlists */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setRefreshNonce(n => n + 1)}
+            className="gap-2"
+            aria-label="Refresh"
+            title="Refresh — pull the latest version of this playlist (bypasses cache)"
+          >
+            <RefreshCw className="w-4 h-4" />
+            <span className="hidden sm:inline">Refresh</span>
+          </Button>
+
+          {/* Admin button — add/delete channels + load custom M3U + Xtream + Twitch/YT */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAdmin(v => !v)}
             className="gap-2"
             aria-label="Admin"
-            title="Admin — Add/Delete channels, Load custom M3U"
+            title="Admin — Custom channels, Xtream Codes, Twitch/YouTube"
           >
             <Tv className="w-4 h-4" />
             <span className="hidden sm:inline">Admin</span>
@@ -554,90 +752,351 @@ export default function Home() {
           </Button>
         </div>
 
-        {/* ─── Admin panel — add/delete channels + load custom M3U ─── */}
+        {/* ─── Admin panel — tabbed: Custom Channels / Xtream Codes / Twitch+YT ─── */}
         {showAdmin && (
           <div className="px-4 md:px-6 pb-3 border-t border-border bg-card/40">
             <div className="max-w-3xl mx-auto pt-3 space-y-3">
-              <h3 className="text-sm font-bold flex items-center gap-2">
-                <Tv className="w-4 h-4 text-primary" />
-                Admin — Custom Channels ({customChannels.length})
-              </h3>
-
-              {/* Load M3U by URL */}
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Paste M3U URL (https://...m3u8)"
-                  value={customM3uUrl}
-                  onChange={(e) => setCustomM3uUrl(e.target.value)}
-                  className="bg-secondary/40 flex-1"
-                />
-                <Button onClick={loadCustomM3u} size="sm" className="gap-2 shrink-0">
-                  <Search className="w-3 h-3" /> Load URL
-                </Button>
+              {/* Tab bar */}
+              <div className="flex gap-1 border-b border-border">
+                <button
+                  onClick={() => setAdminTab('channels')}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition',
+                    adminTab === 'channels' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <Tv className="w-3.5 h-3.5" /> Custom Channels ({customChannels.length})
+                </button>
+                <button
+                  onClick={() => setAdminTab('xtream')}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition',
+                    adminTab === 'xtream' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <Key className="w-3.5 h-3.5" /> Xtream Codes {xcCreds && <span className="text-green-500">✓</span>}
+                </button>
+                <button
+                  onClick={() => setAdminTab('embed')}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition',
+                    adminTab === 'embed' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <Twitch className="w-3.5 h-3.5" /> Twitch & YouTube
+                </button>
               </div>
 
-              {/* Add single channel */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <Input
-                  placeholder="Channel name (e.g. My Channel)"
-                  value={adminChannelName}
-                  onChange={(e) => setAdminChannelName(e.target.value)}
-                  className="bg-secondary/40"
-                />
-                <Input
-                  placeholder="Stream URL (https://...m3u8)"
-                  value={adminChannelUrl}
-                  onChange={(e) => setAdminChannelUrl(e.target.value)}
-                  className="bg-secondary/40"
-                />
-                <Input
-                  placeholder="Logo URL (optional)"
-                  value={adminChannelLogo}
-                  onChange={(e) => setAdminChannelLogo(e.target.value)}
-                  className="bg-secondary/40"
-                />
-                <Input
-                  placeholder="Group (e.g. Sports, News)"
-                  value={adminChannelGroup}
-                  onChange={(e) => setAdminChannelGroup(e.target.value)}
-                  className="bg-secondary/40"
-                />
-              </div>
-              <Button onClick={addCustomChannel} size="sm" className="gap-2">
-                <Play className="w-3 h-3" /> Add Channel
-              </Button>
+              {/* ─── Tab: Custom Channels ─── */}
+              {adminTab === 'channels' && (
+                <>
+                  {/* Load M3U by URL */}
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Paste M3U URL (https://...m3u8)"
+                      value={customM3uUrl}
+                      onChange={(e) => setCustomM3uUrl(e.target.value)}
+                      className="bg-secondary/40 flex-1"
+                    />
+                    <Button onClick={loadCustomM3u} size="sm" className="gap-2 shrink-0">
+                      <Search className="w-3 h-3" /> Load URL
+                    </Button>
+                  </div>
 
-              {/* Custom channels list */}
-              {customChannels.length > 0 && (
-                <div className="space-y-1 mt-2 max-h-60 overflow-y-auto thin-scroll">
-                  <p className="text-xs text-muted-foreground">Custom channels (click Play, × to delete):</p>
-                  {customChannels.map(ch => (
-                    <div key={ch.id} className="flex items-center gap-2 p-2 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition">
-                      {ch.logo ? (
-                        <img src={ch.logo} alt="" className="w-8 h-8 rounded object-contain bg-white/5" />
-                      ) : (
-                        <Tv className="w-5 h-5 text-muted-foreground" />
-                      )}
-                      <span className="text-sm font-medium flex-1 truncate">{ch.displayName}</span>
-                      <span className="text-xs text-muted-foreground">{ch.group}</span>
-                      <button
-                        onClick={() => {
-                          handleSelectChannel(ch)
-                          setShowAdmin(false)
-                        }}
-                        className="px-2 py-1 rounded text-xs bg-primary/20 text-primary hover:bg-primary/30 transition"
-                      >
-                        Play
-                      </button>
-                      <button
-                        onClick={() => deleteCustomChannel(ch.id)}
-                        className="p-1 rounded hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition"
-                        aria-label="Delete"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
+                  {/* Add single channel */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <Input
+                      placeholder="Channel name (e.g. My Channel)"
+                      value={adminChannelName}
+                      onChange={(e) => setAdminChannelName(e.target.value)}
+                      className="bg-secondary/40"
+                    />
+                    <Input
+                      placeholder="Stream URL (https://...m3u8)"
+                      value={adminChannelUrl}
+                      onChange={(e) => setAdminChannelUrl(e.target.value)}
+                      className="bg-secondary/40"
+                    />
+                    <Input
+                      placeholder="Logo URL (optional)"
+                      value={adminChannelLogo}
+                      onChange={(e) => setAdminChannelLogo(e.target.value)}
+                      className="bg-secondary/40"
+                    />
+                    <Input
+                      placeholder="Group (e.g. Sports, News)"
+                      value={adminChannelGroup}
+                      onChange={(e) => setAdminChannelGroup(e.target.value)}
+                      className="bg-secondary/40"
+                    />
+                  </div>
+                  <Button onClick={addCustomChannel} size="sm" className="gap-2">
+                    <Plus className="w-3 h-3" /> Add Channel
+                  </Button>
+
+                  {customChannels.length > 0 && (
+                    <div className="space-y-1 mt-2 max-h-60 overflow-y-auto thin-scroll">
+                      <p className="text-xs text-muted-foreground">Custom channels (click Play, × to delete):</p>
+                      {customChannels.map(ch => (
+                        <div key={ch.id} className="flex items-center gap-2 p-2 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition">
+                          {ch.logo ? (
+                            <img src={ch.logo} alt="" className="w-8 h-8 rounded object-contain bg-white/5" />
+                          ) : (
+                            <Tv className="w-5 h-5 text-muted-foreground" />
+                          )}
+                          <span className="text-sm font-medium flex-1 truncate">{ch.displayName}</span>
+                          <span className="text-xs text-muted-foreground">{ch.group}</span>
+                          <button
+                            onClick={() => {
+                              handleSelectChannel(ch)
+                              setShowAdmin(false)
+                            }}
+                            className="px-2 py-1 rounded text-xs bg-primary/20 text-primary hover:bg-primary/30 transition"
+                          >
+                            Play
+                          </button>
+                          <button
+                            onClick={() => deleteCustomChannel(ch.id)}
+                            className="p-1 rounded hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition"
+                            aria-label="Delete"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
+                </>
+              )}
+
+              {/* ─── Tab: Xtream Codes ─── */}
+              {adminTab === 'xtream' && (
+                <div className="space-y-3">
+                  <p className="text-xs text-muted-foreground">
+                    Login to any Xtream Codes provider (or a self-hosted <a href="https://github.com/kpirnie/kptv-proxy" target="_blank" rel="noreferrer" className="text-primary underline">kptv-proxy</a> server). Credentials are stored in your browser only.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <Input
+                      placeholder="Server URL (http://host:port)"
+                      value={xcServer}
+                      onChange={(e) => setXcServer(e.target.value)}
+                      className="bg-secondary/40 sm:col-span-3"
+                    />
+                    <Input
+                      placeholder="Username"
+                      value={xcUser}
+                      onChange={(e) => setXcUser(e.target.value)}
+                      className="bg-secondary/40"
+                      autoComplete="off"
+                    />
+                    <Input
+                      placeholder="Password"
+                      value={xcPass}
+                      onChange={(e) => setXcPass(e.target.value)}
+                      type="password"
+                      className="bg-secondary/40"
+                      autoComplete="off"
+                    />
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleXtreamLogin}
+                      size="sm"
+                      disabled={xcStatus === 'loading'}
+                      className="gap-2"
+                    >
+                      {xcStatus === 'loading' ? (
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                      ) : (
+                        <Key className="w-3 h-3" />
+                      )}
+                      {xcCreds ? 'Test & Save' : 'Connect'}
+                    </Button>
+                    {xcCreds && (
+                      <Button onClick={handleXtreamLogout} size="sm" variant="outline" className="gap-2">
+                        Logout
+                      </Button>
+                    )}
+                    {xcCreds && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="gap-2"
+                        onClick={() => {
+                          const xtreamProv = PROVIDERS.find(p => p.id === 'xtream')
+                          if (xtreamProv) {
+                            switchProvider(xtreamProv)
+                            setShowAdmin(false)
+                          }
+                        }}
+                      >
+                        <Play className="w-3 h-3" /> Open XC channels
+                      </Button>
+                    )}
+                  </div>
+
+                  {xcMessage && (
+                    <p className={cn(
+                      'text-xs p-2 rounded-lg',
+                      xcStatus === 'ok' && 'bg-green-500/10 text-green-500',
+                      xcStatus === 'error' && 'bg-destructive/10 text-destructive',
+                      xcStatus === 'idle' && 'bg-secondary/40 text-muted-foreground',
+                    )}>
+                      {xcMessage}
+                    </p>
+                  )}
+
+                  <div className="text-xs text-muted-foreground space-y-1 p-2 rounded-lg bg-secondary/20">
+                    <p className="font-semibold">Supported XC API actions (via /api/xtream proxy):</p>
+                    <p>• <code className="text-primary">player_api.php</code> — auth, live/vod/series categories & streams</p>
+                    <p>• <code className="text-primary">get.php</code> — full M3U playlist (parsed as channels)</p>
+                    <p>• <code className="text-primary">xmltv.php</code> — full XMLTV EPG (fetched on demand)</p>
+                    <p>• Live stream URL: <code className="text-primary">/live/user/pass/id.m3u8</code></p>
+                  </div>
+                </div>
+              )}
+
+              {/* ─── Tab: Twitch & YouTube ─── */}
+              {adminTab === 'embed' && (
+                <div className="space-y-3">
+                  <p className="text-xs text-muted-foreground">
+                    Add Twitch / YouTube streams. Use the official embed player — no server needed.
+                  </p>
+
+                  {/* Quick-add Twitch */}
+                  <div className="flex gap-2">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono">
+                      <Twitch className="w-3.5 h-3.5 text-purple-500" /> twitch:
+                    </div>
+                    <Input
+                      placeholder="Twitch channel name (e.g. shroud)"
+                      value={adminChannelUrl === '' && adminChannelName ? '' : adminChannelUrl}
+                      onChange={(e) => {
+                        const name = e.target.value.trim().replace(/^twitch:/i, '')
+                        setAdminChannelUrl(`twitch:${name}`)
+                        if (!adminChannelName) setAdminChannelName(`Twitch — ${name}`)
+                      }}
+                      className="bg-secondary/40 flex-1"
+                    />
+                    <Button
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => {
+                        if (!adminChannelUrl.startsWith('twitch:')) return
+                        const name = adminChannelUrl.slice(7)
+                        const ch: Channel = {
+                          id: `twitch-${Date.now()}`,
+                          name: adminChannelName || `Twitch — ${name}`,
+                          displayName: adminChannelName || `Twitch — ${name}`,
+                          rawName: adminChannelName,
+                          url: `twitch:${name}`,
+                          group: 'Twitch',
+                          isVod: false,
+                          logo: 'https://assets.help.twitch.tv/article/img/658115-02.png',
+                        }
+                        setCustomChannels(prev => [ch, ...prev])
+                        setAdminChannelName('')
+                        setAdminChannelUrl('')
+                      }}
+                    >
+                      <Plus className="w-3 h-3" /> Add
+                    </Button>
+                  </div>
+
+                  {/* Quick-add YouTube live (by channel ID) */}
+                  <div className="flex gap-2">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono">
+                      <Youtube className="w-3.5 h-3.5 text-red-500" /> youtube-live:
+                    </div>
+                    <Input
+                      placeholder="YouTube channel ID (UCxxxx...)"
+                      value={adminChannelUrl.startsWith('youtube-live:') ? adminChannelUrl.slice(14) : ''}
+                      onChange={(e) => {
+                        const id = e.target.value.trim().replace(/^youtube-live:/i, '')
+                        setAdminChannelUrl(`youtube-live:${id}`)
+                        if (!adminChannelName) setAdminChannelName(`YouTube Live — ${id.slice(0, 12)}…`)
+                      }}
+                      className="bg-secondary/40 flex-1"
+                    />
+                    <Button
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => {
+                        if (!adminChannelUrl.startsWith('youtube-live:')) return
+                        const id = adminChannelUrl.slice(14)
+                        const ch: Channel = {
+                          id: `yt-live-${Date.now()}`,
+                          name: adminChannelName || `YouTube Live — ${id.slice(0, 12)}`,
+                          displayName: adminChannelName || `YouTube Live`,
+                          rawName: adminChannelName,
+                          url: `youtube-live:${id}`,
+                          group: 'YouTube',
+                          isVod: false,
+                          logo: 'https://www.youtube.com/s/desktop/favicon.ico',
+                        }
+                        setCustomChannels(prev => [ch, ...prev])
+                        setAdminChannelName('')
+                        setAdminChannelUrl('')
+                      }}
+                    >
+                      <Plus className="w-3 h-3" /> Add
+                    </Button>
+                  </div>
+
+                  {/* Quick-add YouTube video (VOD) */}
+                  <div className="flex gap-2">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono">
+                      <Youtube className="w-3.5 h-3.5 text-red-500" /> youtube:
+                    </div>
+                    <Input
+                      placeholder="YouTube video ID (dQw4w9WgXcQ)"
+                      value={adminChannelUrl.startsWith('youtube:') && !adminChannelUrl.startsWith('youtube-live:') ? adminChannelUrl.slice(8) : ''}
+                      onChange={(e) => {
+                        const id = e.target.value.trim().replace(/^youtube:/i, '')
+                        setAdminChannelUrl(`youtube:${id}`)
+                        if (!adminChannelName) setAdminChannelName(`YouTube — ${id}`)
+                      }}
+                      className="bg-secondary/40 flex-1"
+                    />
+                    <Button
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => {
+                        if (!adminChannelUrl.startsWith('youtube:')) return
+                        const id = adminChannelUrl.slice(8)
+                        const ch: Channel = {
+                          id: `yt-vod-${Date.now()}`,
+                          name: adminChannelName || `YouTube — ${id}`,
+                          displayName: adminChannelName || `YouTube`,
+                          rawName: adminChannelName,
+                          url: `youtube:${id}`,
+                          group: 'YouTube VOD',
+                          isVod: true,
+                          logo: 'https://www.youtube.com/s/desktop/favicon.ico',
+                        }
+                        setCustomChannels(prev => [ch, ...prev])
+                        setAdminChannelName('')
+                        setAdminChannelUrl('')
+                      }}
+                    >
+                      <Plus className="w-3 h-3" /> Add
+                    </Button>
+                  </div>
+
+                  <div className="text-xs text-muted-foreground space-y-1 p-2 rounded-lg bg-secondary/20">
+                    <p className="font-semibold">URL formats:</p>
+                    <p>• <code className="text-primary">twitch:CHANNEL</code> — Twitch live</p>
+                    <p>• <code className="text-primary">twitch-vod:VIDEO_ID</code> — Twitch VOD</p>
+                    <p>• <code className="text-primary">twitch-clip:SLUG</code> — Twitch clip</p>
+                    <p>• <code className="text-primary">youtube:VIDEO_ID</code> — YouTube VOD</p>
+                    <p>• <code className="text-primary">youtube-live:CHANNEL_ID</code> — YouTube 24/7 live</p>
+                  </div>
+
+                  <p className="text-xs text-muted-foreground">
+                    Or browse the built-in popular channels via the <strong>Twitch &amp; YouTube</strong> provider in the provider grid above.
+                  </p>
                 </div>
               )}
             </div>
@@ -711,6 +1170,49 @@ export default function Home() {
                   Reset dead channel list ({deadChannels.size})
                 </button>
               )}
+
+              {/* ─── Tuliprox-style filter DSL ─── */}
+              <div className="sm:col-span-2 px-4 py-3 rounded-lg bg-secondary/40 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Code className="w-4 h-4 text-primary" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Filter expression (tuliprox-style)</p>
+                    <p className="text-xs text-muted-foreground">
+                      Boolean + regex DSL: <code className="text-primary/80">Name ~ ".*NBA.*" AND NOT Group ~ ".*XXX.*"</code>
+                    </p>
+                  </div>
+                </div>
+                <Input
+                  placeholder='e.g.  Group ~ "^News.*" OR Name ~ ".*World Cup.*"'
+                  value={filterExpr}
+                  onChange={(e) => setFilterExpr(e.target.value)}
+                  className="bg-background/60 font-mono text-xs"
+                />
+                {filterError && (
+                  <p className="text-xs text-destructive">⚠ {filterError}</p>
+                )}
+                <div className="flex flex-wrap gap-1">
+                  <span className="text-xs text-muted-foreground">Quick presets:</span>
+                  {[
+                    { label: 'News', expr: 'Group ~ ".*News.*" OR Name ~ ".*News.*"' },
+                    { label: 'Sports', expr: 'Group ~ ".*Sport.*" OR Name ~ ".*Sport.*"' },
+                    { label: 'Movies', expr: 'Group ~ ".*Movi.*" OR Name ~ ".*Cinema.*"' },
+                    { label: 'HD only', expr: 'Quality ~ "(1080|720|4K|FHD|HD)"' },
+                    { label: 'Not 4K', expr: 'NOT Quality ~ "4K"' },
+                    { label: 'No XXX', expr: 'NOT (Group ~ ".*XXX.*" OR Name ~ ".*XXX.*" OR Group ~ ".*Adult.*")' },
+                    { label: 'Arabic', expr: 'Group ~ ".*AR.*" OR Name ~ ".*beIN.*"' },
+                    { label: 'Clear', expr: '' },
+                  ].map(p => (
+                    <button
+                      key={p.label}
+                      onClick={() => setFilterExpr(p.expr)}
+                      className="px-2 py-0.5 rounded-full bg-secondary text-xs hover:bg-primary hover:text-primary-foreground transition"
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -1073,15 +1575,62 @@ export default function Home() {
           <section className="lg:w-2/3 xl:w-3/4 p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
             {currentChannel ? (
               <>
-                <VideoPlayer
-                  src={currentChannel.url}
-                  poster={currentChannel.logo}
-                  channelName={currentChannel.displayName}
-                  onError={handlePlayerError}
-                  onNext={goToNextChannel}
-                  autoSkip={autoSkip}
-                  maxQuality={maxQuality}
-                />
+                {/* ─── Player: HLS for streams, iframe for Twitch/YouTube ─── */}
+                {isEmbedUrl(currentChannel.url) ? (
+                  <EmbedPlayer
+                    url={currentChannel.url}
+                    channelName={currentChannel.displayName}
+                    poster={currentChannel.logo}
+                  />
+                ) : (
+                  <VideoPlayer
+                    src={currentChannel.url}
+                    poster={currentChannel.logo}
+                    channelName={currentChannel.displayName}
+                    onError={handlePlayerError}
+                    onNext={goToNextChannel}
+                    autoSkip={autoSkip}
+                    maxQuality={maxQuality}
+                  />
+                )}
+
+                {/* ─── EPG "Now Playing" panel (iptvnator-inspired) ─── */}
+                {currentChannel.tvgId && (
+                  <div className="p-3 rounded-xl bg-card/40 border border-border">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Calendar className="w-3.5 h-3.5 text-primary" />
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Now Playing</p>
+                      {epgLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />}
+                    </div>
+                    {epgNow ? (
+                      <div className="space-y-1.5">
+                        <p className="text-sm font-bold text-foreground">{epgNow.title}</p>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
+                            <div
+                              className="h-full bg-primary transition-all"
+                              style={{ width: `${epgNow.progress || 0}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-muted-foreground tabular-nums">{epgNow.progress || 0}%</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {epgNow.start && new Date(parseXmltvTime(epgNow.start)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          {' → '}
+                          {epgNow.stop && new Date(parseXmltvTime(epgNow.stop)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                        {epgNow.desc && (
+                          <p className="text-xs text-muted-foreground/80 line-clamp-2">{epgNow.desc}</p>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-muted-foreground">
+                        {epgLoading ? 'Loading EPG…' : 'No EPG data available for this channel.'}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex items-start gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -1092,6 +1641,12 @@ export default function Home() {
                         </span>
                         LIVE
                       </Badge>
+                      {isEmbedUrl(currentChannel.url) && (
+                        <Badge variant="outline" className="text-xs gap-1 text-purple-400 border-purple-400/40">
+                          {currentChannel.url.startsWith('twitch') ? <Twitch className="w-2.5 h-2.5" /> : <Youtube className="w-2.5 h-2.5" />}
+                          EMBED
+                        </Badge>
+                      )}
                       {currentChannel.countryCode && flagForCountry(currentChannel.countryCode) && (
                         <Badge variant="secondary" className="text-xs gap-1">
                           {flagForCountry(currentChannel.countryCode)} {currentChannel.countryCode.toUpperCase()}

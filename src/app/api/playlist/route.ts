@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { readFile } from 'fs/promises'
 import path from 'path'
 import { parseM3U } from '@/lib/m3u-parser'
-import { resolvePlaylistUrl } from '@/lib/playlists'
+import { resolvePlaylistUrl, getCategoryById } from '@/lib/playlists'
 
 export const dynamic = 'force-dynamic'
 
@@ -52,6 +52,8 @@ export async function GET(req: NextRequest) {
   const categoryId = searchParams.get('category')
   const playlistId = searchParams.get('playlist') || undefined
   const url = searchParams.get('url')
+  // refresh=1 bypasses cache — for auto-updating playlists (GitHub raw URLs)
+  const refresh = searchParams.get('refresh') === '1'
 
   // Determine what to fetch
   let target: string | null = null
@@ -80,8 +82,8 @@ export async function GET(req: NextRequest) {
     )
   }
 
-  // Check cache
-  if (cacheKey) {
+  // Check cache (unless refresh=1)
+  if (cacheKey && !refresh) {
     const cached = cache.get(cacheKey)
     if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
       return NextResponse.json({
@@ -91,6 +93,66 @@ export async function GET(req: NextRequest) {
         fetchedAt: cached.fetchedAt,
       })
     }
+  }
+
+  // For remote URLs with refresh=1, append a cache-busting query param
+  // so any HTTP-level caches also get the latest content.
+  if (refresh && target && /^https?:\/\//i.test(target)) {
+    try {
+      const u = new URL(target)
+      u.searchParams.set('_t', String(Date.now()))
+      target = u.toString()
+    } catch {}
+  }
+
+  // ─── Special case: Twitch / YouTube embed URLs ──────────────────────────
+  // These aren't real M3U files — they're single-channel embed URLs that the
+  // client renders as iframes. We return a synthetic "playlist" with every
+  // embed channel from the same category so users can switch between them.
+  if (/^(twitch:|twitch-vod:|twitch-clip:|youtube:|youtube-live:)/i.test(target)) {
+    if (providerId && categoryId) {
+      const cat = getCategoryById(providerId, categoryId)
+      if (cat?.playlists) {
+        const channels = cat.playlists.map((pl, i) => ({
+          id: `embed-${i}`,
+          name: pl.name,
+          displayName: pl.name,
+          rawName: pl.name,
+          url: pl.url,
+          logo: undefined,
+          group: cat.name,
+          quality: 'EMBED',
+          qualityTier: 0,
+          isVod: /^youtube:/.test(pl.url),
+        }))
+        return NextResponse.json({
+          channels,
+          groups: [cat.name],
+          totalCount: channels.length,
+          sourceKey: sourceLabel,
+          cached: false,
+          fetchedAt: Date.now(),
+        })
+      }
+    }
+    // Fallback: single channel
+    return NextResponse.json({
+      channels: [{
+        id: 'embed-0',
+        name: 'Embed Stream',
+        displayName: 'Embed Stream',
+        rawName: 'Embed Stream',
+        url: target,
+        group: 'Embed',
+        quality: 'EMBED',
+        qualityTier: 0,
+      }],
+      groups: ['Embed'],
+      totalCount: 1,
+      sourceKey: sourceLabel,
+      cached: false,
+      fetchedAt: Date.now(),
+    })
   }
 
   // Read the M3U content (local file or remote URL)

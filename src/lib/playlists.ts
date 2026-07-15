@@ -788,6 +788,173 @@ export const PROVIDERS: Provider[] = [
   },
 
   // ─────────────────────────────────────────────────────────────────────────
+  // Auto-updated GitHub playlists — these repos run GitHub Actions on a cron
+  // and commit fresh M3U files every 15min–2h. We pull them via raw URLs so
+  // every "Refresh" (cache-bust) gets the latest committed version.
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'auto-updated',
+    name: 'Auto-Updated',
+    description: 'GitHub Actions playlists — refreshed every 15min–2h automatically',
+    flag: '🔄',
+    categories: [
+      {
+        id: 'cric-sports',
+        name: 'Cricket & Sports',
+        flag: '🏏',
+        playlists: [
+          {
+            id: 'crichd',
+            name: 'CricHD (15min refresh)',
+            flag: '🏏',
+            url: 'https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/ALL.m3u',
+            count: 80,
+          },
+          {
+            id: 't-sports',
+            name: 'T-Sports BD (30min refresh)',
+            flag: '📺',
+            url: 'https://raw.githubusercontent.com/abusaeeidx/T-Sports-Playlist-Auto-Update/main/universal_player.m3u',
+            count: 6,
+          },
+          {
+            id: 'sm-live',
+            name: 'SM Live TV (1h refresh)',
+            flag: '🇧🇩',
+            url: 'https://raw.githubusercontent.com/sm-monirulislam/SM-Live-TV/main/Combined_Live_TV.m3u',
+            count: 50,
+          },
+        ],
+      },
+      {
+        id: 'ireentv',
+        name: 'IreenTV (2h refresh)',
+        flag: '🛰️',
+        playlists: [
+          {
+            id: 'toffee',
+            name: 'Toffee (Bangladesh sports)',
+            flag: '🇧🇩',
+            url: 'https://raw.githubusercontent.com/ireentv/IreenTv-Auto-Update-Json-M3u-Playlist/main/toffee_channel_data.m3u',
+            count: 60,
+          },
+          {
+            id: 'tapmad',
+            name: 'Tapmad BD',
+            flag: '🇧🇩',
+            url: 'https://raw.githubusercontent.com/ireentv/IreenTv-Auto-Update-Json-M3u-Playlist/main/tapmad_bd.m3u',
+            count: 20,
+          },
+          {
+            id: 'sonyliv',
+            name: 'SonyLIV (India)',
+            flag: '🇮🇳',
+            url: 'https://raw.githubusercontent.com/ireentv/IreenTv-Auto-Update-Json-M3u-Playlist/main/sonyliv.m3u',
+            count: 5,
+          },
+        ],
+      },
+      {
+        id: 'india',
+        name: 'India (m3u-merged sources)',
+        flag: '🇮🇳',
+        playlists: [
+          {
+            id: 'jcinema',
+            name: 'JioCinema',
+            flag: '🎬',
+            url: 'https://raw.githubusercontent.com/alex8875/m3u/main/jcinema.m3u',
+          },
+          {
+            id: 'jstar',
+            name: 'JioStar',
+            flag: '⭐',
+            url: 'https://raw.githubusercontent.com/alex8875/m3u/main/jstar.m3u',
+          },
+          {
+            id: 'jtv',
+            name: 'JioTV',
+            flag: '📺',
+            url: 'https://raw.githubusercontent.com/alex8875/m3u/main/jtv.m3u',
+          },
+          {
+            id: 'z5',
+            name: 'Zee5',
+            flag: '🎞️',
+            url: 'https://raw.githubusercontent.com/alex8875/m3u/main/z5.m3u',
+          },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Xtream Codes — login to any XC provider (or self-hosted kptv-proxy)
+  // Enter credentials in the Admin panel. Credentials are stored in localStorage.
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'xtream',
+    name: 'Xtream Codes',
+    description: 'Login to any XC provider — enter server + user + pass in Admin',
+    flag: '🔐',
+    categories: [
+      {
+        id: 'live',
+        name: 'Live TV',
+        flag: '📺',
+        playlists: [
+          { id: 'xc-live', name: 'Add XC account in Admin → Xtream tab', flag: '🔐', url: '/custom.m3u' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Twitch & YouTube — embed streams via official iframe players
+  // Add channels in the Admin panel using twitch:NAME or youtube:ID URLs
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'embeds',
+    name: 'Twitch & YouTube',
+    description: 'Embed Twitch / YouTube streams via iframe — no server needed',
+    flag: '🎥',
+    categories: [
+      {
+        id: 'twitch-popular',
+        name: 'Popular Twitch',
+        flag: '🎮',
+        playlists: [
+          // These are channel-name placeholders; the player renders the iframe.
+          { id: 'twitch-espn', name: 'ESPN', flag: '🏟️', url: 'twitch:espn' },
+          { id: 'twitch-nfl', name: 'NFL', flag: '🏈', url: 'twitch:nfl' },
+          { id: 'twitch-nba', name: 'NBA', flag: '🏀', url: 'twitch:nba' },
+          { id: 'twitch-xbox', name: 'Xbox', flag: '🎮', url: 'twitch:xbox' },
+          { id: 'twitch-playstation', name: 'PlayStation', flag: '🎮', url: 'twitch:playstation' },
+          { id: 'twitch-riotgames', name: 'Riot Games', flag: '⚔️', url: 'twitch:riotgames' },
+          { id: 'twitch-twitchpresents', name: 'Twitch Presents', flag: '🎞️', url: 'twitch:twitchpresents' },
+          { id: 'twitch-twitch', name: 'Twitch', flag: '🟣', url: 'twitch:twitch' },
+        ],
+      },
+      {
+        id: 'youtube-popular',
+        name: 'Popular YouTube Live',
+        flag: '▶️',
+        playlists: [
+          // youtube-live:<channelId> — these are real 24/7 live channels
+          { id: 'yt-skynews', name: 'Sky News', flag: '📰', url: 'youtube-live:UCYJDxjI3p3NxXtY9e3I2fzA' },
+          { id: 'yt-abcnews', name: 'ABC News Live', flag: '📰', url: 'youtube-live:UCBi2mrWuNuyYy4gbM6fU18Q' },
+          { id: 'yt-nbcnews', name: 'NBC News NOW', flag: '📰', url: 'youtube-live:UCeY0bbntWzzVIaj2z3QigXg' },
+          { id: 'yt-cbsnews', name: 'CBS News', flag: '📰', url: 'youtube-live:UC8p1vwvWtl6T73JiExfWs1g' },
+          { id: 'yt-aljazeera', name: 'Al Jazeera English', flag: '📰', url: 'youtube-live:UCNye-wNBqNL5ZzHSJj3l8Bg' },
+          { id: 'yt-france24', name: 'France 24 English', flag: '📰', url: 'youtube-live:UCQfwfsi5VrQ8yKZ-UWmAEFg' },
+          { id: 'yt-dw', name: 'DW News', flag: '📰', url: 'youtube-live:UCknLrEdhRCp1aegoMqRaCZg' },
+          { id: 'yt-lofi', name: 'Lofi Girl 24/7', flag: '🎵', url: 'youtube-live:UCSJ4gkVC6NrvII8umztf0Ow' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
   // Custom M3U Upload — paste a URL or upload a file (IPTVNator-inspired)
   // ─────────────────────────────────────────────────────────────────────────
   {
