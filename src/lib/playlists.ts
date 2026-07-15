@@ -725,6 +725,87 @@ export const PROVIDERS: Provider[] = [
       },
     ],
   },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Chinese & Asian IPTV (imDazui) — Chinese regional + international channels
+  // Source: https://github.com/imDazui/Tvlist-awesome-m3u-m3u8
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'cn-iptv',
+    name: 'China & Asia',
+    description: 'Chinese regional TV + Taiwan/HK + international channels',
+    flag: '🇨🇳',
+    categories: [
+      {
+        id: 'cn-regional',
+        name: 'China Regional',
+        flag: '🇨🇳',
+        playlists: [
+          { id: 'cn-national', name: 'CCTV + 卫视', flag: '📺', url: 'https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/国内电视台202509.m3u' },
+          { id: 'cn-scenic', name: 'Scenic Cameras (114)', flag: '🏔️', url: 'https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/全国景区源2025.m3u' },
+        ],
+      },
+      {
+        id: 'tw-hk',
+        name: 'Taiwan / HK / Macau',
+        flag: '🇹🇼',
+        playlists: [
+          { id: 'tw-hk-macau', name: 'Taiwan HK Macau (202)', flag: '🇹🇼', url: 'https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/台湾香港澳门202506.m3u' },
+        ],
+      },
+      {
+        id: 'international',
+        name: 'International (imDazui)',
+        flag: '🌍',
+        playlists: [
+          { id: 'intl-channels', name: 'Global Channels (666)', flag: '🌍', url: 'https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/国外电视台202409.m3u' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // YanG-1989 — Chinese Gather + Migu sports with EPG
+  // Source: https://github.com/YanG-1989/m3u
+  // EPG: https://material.yang-1989.xyz/epg.xml.gz (437 channels, 50K programs)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'yang-iptv',
+    name: 'YanG IPTV',
+    description: 'Chinese channels + Migu sports — with real EPG data',
+    flag: '📡',
+    categories: [
+      {
+        id: 'gather',
+        name: 'Gather (All)',
+        flag: '📡',
+        playlists: [
+          { id: 'gather-all', name: 'Gather (129ch + EPG)', flag: '📡', url: 'https://raw.githubusercontent.com/YanG-1989/m3u/main/Gather.m3u' },
+          { id: 'migu-sports', name: 'Migu Sports (45ch + EPG)', flag: '⚽', url: 'https://raw.githubusercontent.com/YanG-1989/m3u/main/Migu.m3u' },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Custom M3U Upload — paste a URL or upload a file (IPTVNator-inspired)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'custom-upload',
+    name: 'Custom M3U',
+    description: 'Paste a URL or upload your own M3U playlist',
+    flag: '📎',
+    categories: [
+      {
+        id: 'url',
+        name: 'Load by URL',
+        flag: '🔗',
+        playlists: [
+          { id: 'custom-url', name: 'Enter M3U URL in Admin panel', flag: '🔗', url: '/custom.m3u' },
+        ],
+      },
+    ],
+  },
 ]
 
 // ─── Lookup helpers ──────────────────────────────────────────────────────────

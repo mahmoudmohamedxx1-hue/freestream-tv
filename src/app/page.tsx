@@ -69,11 +69,18 @@ export default function Home() {
   const [currentChannel, setCurrentChannel] = useState<Channel | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [showAdmin, setShowAdmin] = useState(false)
   const [providerGridOpen, setProviderGridOpen] = useState(false)
   const [language, setLanguage] = useState<'en' | 'ar'>('en')
   const [sidebarView, setSidebarView] = useState<SidebarView>('channels')
   const [tvGuide, setTvGuide] = useState<any[]>([])
   const [guideLoading, setGuideLoading] = useState(false)
+  const [customChannels, setCustomChannels] = useState<Channel[]>([])
+  const [adminChannelName, setAdminChannelName] = useState('')
+  const [adminChannelUrl, setAdminChannelUrl] = useState('')
+  const [adminChannelLogo, setAdminChannelLogo] = useState('')
+  const [adminChannelGroup, setAdminChannelGroup] = useState('Custom')
+  const [customM3uUrl, setCustomM3uUrl] = useState('')
 
   // ─── Refs that mirror state ────────────────────────────────────────────
   const deadChannelsRef = useRef<Set<string>>(new Set())
@@ -189,6 +196,67 @@ export default function Home() {
   useEffect(() => {
     fetchPlaylist()
   }, [fetchPlaylist])
+
+  // ─── Admin: Add custom channel ──────────────────────────────────────────
+  const addCustomChannel = useCallback(() => {
+    if (!adminChannelName.trim() || !adminChannelUrl.trim()) return
+    const newCh: Channel = {
+      id: `custom-${Date.now()}`,
+      name: adminChannelName.trim(),
+      displayName: adminChannelName.trim(),
+      rawName: adminChannelName.trim(),
+      url: adminChannelUrl.trim(),
+      logo: adminChannelLogo.trim() || undefined,
+      group: adminChannelGroup.trim() || 'Custom',
+      not247: false,
+      isVod: /\.(mp4|mkv|avi|mov|webm)/.test(adminChannelUrl.toLowerCase()),
+      geoBlocked: false,
+    }
+    setCustomChannels(prev => [newCh, ...prev])
+    setAdminChannelName('')
+    setAdminChannelUrl('')
+    setAdminChannelLogo('')
+    setAdminChannelGroup('Custom')
+  }, [adminChannelName, adminChannelUrl, adminChannelLogo, adminChannelGroup])
+
+  // ─── Admin: Delete custom channel ───────────────────────────────────────
+  const deleteCustomChannel = useCallback((id: string) => {
+    setCustomChannels(prev => prev.filter(c => c.id !== id))
+  }, [])
+
+  // ─── Admin: Load custom M3U by URL ──────────────────────────────────────
+  const loadCustomM3u = useCallback(async () => {
+    if (!customM3uUrl.trim()) return
+    try {
+      const encoded = encodeURIComponent(customM3uUrl.trim())
+      const res = await fetch(`/api/playlist?url=${encoded}`)
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Failed to load')
+      const channels = (json.channels as Channel[]) || []
+      const loaded = channels.map((ch, i) => ({
+        ...ch,
+        id: `custom-m3u-${Date.now()}-${i}`,
+        group: ch.group || 'Custom M3U',
+      }))
+      setCustomChannels(prev => [...loaded, ...prev])
+      setCustomM3uUrl('')
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Unknown error'
+      alert(`Failed to load M3U: ${msg}`)
+    }
+  }, [customM3uUrl])
+
+  // ─── Load custom channels from localStorage on mount ────────────────────
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('freestream.customChannels')
+      if (raw) setCustomChannels(JSON.parse(raw))
+    } catch {}
+  }, [])
+
+  useEffect(() => {
+    try { localStorage.setItem('freestream.customChannels', JSON.stringify(customChannels)) } catch {}
+  }, [customChannels])
 
   // ─── Fetch TV Guide ─────────────────────────────────────────────────────
   const [guideGenres, setGuideGenres] = useState<any[]>([])
@@ -461,6 +529,19 @@ export default function Home() {
             {language === 'en' ? '🇸🇦 AR' : '🇬🇧 EN'}
           </Button>
 
+          {/* Admin button — add/delete channels + load custom M3U */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAdmin(v => !v)}
+            className="gap-2"
+            aria-label="Admin"
+            title="Admin — Add/Delete channels, Load custom M3U"
+          >
+            <Tv className="w-4 h-4" />
+            <span className="hidden sm:inline">Admin</span>
+          </Button>
+
           <Button
             variant="outline"
             size="sm"
@@ -472,6 +553,96 @@ export default function Home() {
             <span className="hidden sm:inline">{language === 'ar' ? 'الإعدادات' : 'Settings'}</span>
           </Button>
         </div>
+
+        {/* ─── Admin panel — add/delete channels + load custom M3U ─── */}
+        {showAdmin && (
+          <div className="px-4 md:px-6 pb-3 border-t border-border bg-card/40">
+            <div className="max-w-3xl mx-auto pt-3 space-y-3">
+              <h3 className="text-sm font-bold flex items-center gap-2">
+                <Tv className="w-4 h-4 text-primary" />
+                Admin — Custom Channels ({customChannels.length})
+              </h3>
+
+              {/* Load M3U by URL */}
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Paste M3U URL (https://...m3u8)"
+                  value={customM3uUrl}
+                  onChange={(e) => setCustomM3uUrl(e.target.value)}
+                  className="bg-secondary/40 flex-1"
+                />
+                <Button onClick={loadCustomM3u} size="sm" className="gap-2 shrink-0">
+                  <Search className="w-3 h-3" /> Load URL
+                </Button>
+              </div>
+
+              {/* Add single channel */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <Input
+                  placeholder="Channel name (e.g. My Channel)"
+                  value={adminChannelName}
+                  onChange={(e) => setAdminChannelName(e.target.value)}
+                  className="bg-secondary/40"
+                />
+                <Input
+                  placeholder="Stream URL (https://...m3u8)"
+                  value={adminChannelUrl}
+                  onChange={(e) => setAdminChannelUrl(e.target.value)}
+                  className="bg-secondary/40"
+                />
+                <Input
+                  placeholder="Logo URL (optional)"
+                  value={adminChannelLogo}
+                  onChange={(e) => setAdminChannelLogo(e.target.value)}
+                  className="bg-secondary/40"
+                />
+                <Input
+                  placeholder="Group (e.g. Sports, News)"
+                  value={adminChannelGroup}
+                  onChange={(e) => setAdminChannelGroup(e.target.value)}
+                  className="bg-secondary/40"
+                />
+              </div>
+              <Button onClick={addCustomChannel} size="sm" className="gap-2">
+                <Play className="w-3 h-3" /> Add Channel
+              </Button>
+
+              {/* Custom channels list */}
+              {customChannels.length > 0 && (
+                <div className="space-y-1 mt-2 max-h-60 overflow-y-auto thin-scroll">
+                  <p className="text-xs text-muted-foreground">Custom channels (click Play, × to delete):</p>
+                  {customChannels.map(ch => (
+                    <div key={ch.id} className="flex items-center gap-2 p-2 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition">
+                      {ch.logo ? (
+                        <img src={ch.logo} alt="" className="w-8 h-8 rounded object-contain bg-white/5" />
+                      ) : (
+                        <Tv className="w-5 h-5 text-muted-foreground" />
+                      )}
+                      <span className="text-sm font-medium flex-1 truncate">{ch.displayName}</span>
+                      <span className="text-xs text-muted-foreground">{ch.group}</span>
+                      <button
+                        onClick={() => {
+                          handleSelectChannel(ch)
+                          setShowAdmin(false)
+                        }}
+                        className="px-2 py-1 rounded text-xs bg-primary/20 text-primary hover:bg-primary/30 transition"
+                      >
+                        Play
+                      </button>
+                      <button
+                        onClick={() => deleteCustomChannel(ch.id)}
+                        className="p-1 rounded hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition"
+                        aria-label="Delete"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* ─── Settings panel ─── */}
         {showSettings && (
