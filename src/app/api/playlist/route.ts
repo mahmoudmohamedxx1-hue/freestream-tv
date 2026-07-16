@@ -68,6 +68,18 @@ export async function GET(req: NextRequest) {
         { status: 404 },
       )
     }
+    // "memory://" URLs are virtual — handled client-side, never fetched here.
+    // Return an empty playlist; the client overrides this with customChannels.
+    if (resolved.startsWith('memory://')) {
+      return NextResponse.json({
+        channels: [],
+        groups: [],
+        totalCount: 0,
+        sourceKey: 'memory',
+        cached: false,
+        fetchedAt: Date.now(),
+      })
+    }
     target = resolved
     cacheKey = `${providerId}:${categoryId}:${playlistId ?? '_direct'}`
     sourceLabel = `${providerId}/${categoryId}${playlistId ? '/' + playlistId : ''}`

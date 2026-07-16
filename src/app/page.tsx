@@ -49,6 +49,63 @@ function parseXmltvTime(s: string): number {
   return new Date(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}Z`).getTime()
 }
 
+// ─── Synthesized EPG (client-side fallback) ──────────────────────────────────
+// When no real EPG is available, generate a plausible "now playing" based on
+// the channel's group/name. This ensures the EPG panel always has content.
+const SYNTH_PROGRAMS: Record<string, string[]> = {
+  sports: ['Live Match Coverage', 'SportsCenter', 'Match Highlights', 'Pre-Game Show', 'Post-Game Analysis', 'Live: Premier League', 'Live: NBA Action', 'Live: NFL Game', 'Live: La Liga', 'Live: Champions League', 'Sports News', 'Transfer Talk', 'Tennis: ATP Tour', 'Golf: PGA Tour', 'F1 Race Replay', 'Cricket: Test Match'],
+  news: ['World News', 'Breaking News', 'News Bulletin', 'Business Report', 'Weather Forecast', 'Market Update', 'Top Stories', 'Live Coverage', 'News at Six', 'International Desk', 'Politics Today', 'Tech News'],
+  movies: ['Feature Presentation', 'Movie Marathon', 'Blockbuster Hits', 'Classic Cinema', 'Action Movies', 'Comedy Night', 'Drama Special', 'Horror Double Feature', 'Sci-Fi Showcase', 'Western Classics', 'Now Showing', 'Late Night Movie'],
+  music: ['Top 40 Countdown', 'Music Videos', 'Live Sessions', 'Artist Spotlight', 'Classic Hits', 'New Releases', 'Genre Mix', 'Late Night Beats', 'Morning Music', 'Hit Parade'],
+  kids: ['Cartoon Time', 'Kids Club', 'Animated Adventures', 'Educational Fun', 'Story Time', 'Sing Along', 'Kids Movies', 'Fun & Games', 'Nature for Kids', 'Art Time'],
+  entertainment: ['Talk Show', 'Game Show', 'Reality TV', 'Variety Show', 'Comedy Special', 'Late Night Talk', 'Celebrity Interview', 'Cooking Show', 'Travel Show'],
+  documentary: ['Nature Documentary', 'History Channel', 'Science Documentary', 'Wildlife', 'Space & Universe', 'Ancient Civilizations', 'True Crime', 'Planet Earth'],
+  general: ['Live Broadcast', 'Current Program', 'Featured Content', 'Prime Time', 'Morning Show', 'Afternoon Special', 'Evening Programming', 'Now Showing'],
+}
+
+function synthesizeNowPlaying(channel: Channel): any {
+  const g = ((channel.group || '') + ' ' + (channel.displayName || '') + ' ' + (channel.name || '')).toLowerCase()
+  let pool: string[]
+  if (/sport|football|soccer|basketball|baseball|hockey|cricket|tennis|golf|boxing|mma|ufc|f1|nfl|nba|mlb|nhl|espn|bein/.test(g)) {
+    pool = SYNTH_PROGRAMS.sports
+  } else if (/news|cnn|bbc|al.jazeera|fox.news|msnbc/.test(g)) {
+    pool = SYNTH_PROGRAMS.news
+  } else if (/movie|cinema|film|action|comedy|drama|horror|scifi|western|classic/.test(g)) {
+    pool = SYNTH_PROGRAMS.movies
+  } else if (/music|mtv|vh1|country|jazz|classical/.test(g)) {
+    pool = SYNTH_PROGRAMS.music
+  } else if (/kid|child|cartoon|disney|nick|baby/.test(g)) {
+    pool = SYNTH_PROGRAMS.kids
+  } else if (/entertain|talk|show|reality|game/.test(g)) {
+    pool = SYNTH_PROGRAMS.entertainment
+  } else if (/docu|nature|history|science|wildlife|discovery|national.geo/.test(g)) {
+    pool = SYNTH_PROGRAMS.documentary
+  } else {
+    pool = SYNTH_PROGRAMS.general
+  }
+  const seed = (channel.displayName || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0)
+  const title = pool[seed % pool.length]
+  const now = Date.now()
+  const start = now - (15 + (seed % 30)) * 60 * 1000
+  const end = start + (30 + (seed % 30)) * 60 * 1000
+  const progress = Math.min(Math.round((now - start) / (end - start) * 100), 100)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  const fmt = (t: number) => {
+    const d = new Date(t)
+    return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())} +0000`
+  }
+  return {
+    channel: channel.tvgId || channel.id,
+    title,
+    start: fmt(start),
+    stop: fmt(end),
+    desc: `Scheduled programming on ${channel.displayName}. (Synthesized — no real EPG source available.)`,
+    progress,
+    isNow: true,
+    synthesized: true,
+  }
+}
+
 const FAV_KEY = 'freestream.favorites'
 const DEAD_KEY = 'freestream.deadChannels'
 const RECENT_KEY = 'freestream.recentChannels'
@@ -97,6 +154,11 @@ export default function Home() {
   const [adminChannelGroup, setAdminChannelGroup] = useState('Custom')
   const [customM3uUrl, setCustomM3uUrl] = useState('')
 
+  // ─── Separate state for each quick-add embed input (avoids cross-tab bleed) ──
+  const [twitchInput, setTwitchInput] = useState('')
+  const [ytLiveInput, setYtLiveInput] = useState('')
+  const [ytVodInput, setYtVodInput] = useState('')
+
   // ─── Xtream Codes state ─────────────────────────────────────────────────
   const [adminTab, setAdminTab] = useState<'channels' | 'xtream' | 'embed'>('channels')
   const [xcServer, setXcServer] = useState('')
@@ -115,6 +177,9 @@ export default function Home() {
   // ─── EPG "Now Playing" for current channel ──────────────────────────────
   const [epgNow, setEpgNow] = useState<any>(null)
   const [epgLoading, setEpgLoading] = useState(false)
+
+  // ─── switchProvider ref (so callbacks defined earlier can call it) ────────
+  const switchProviderRef = useRef<(provider: Provider) => void>(() => {})
 
   // ─── Refs that mirror state ────────────────────────────────────────────
   const deadChannelsRef = useRef<Set<string>>(new Set())
@@ -199,6 +264,26 @@ export default function Home() {
   const fetchPlaylist = useCallback(async () => {
     if (!activeProvider || !activeCategory) return
 
+    // ─── "My Channels" provider — pure client-side, reads customChannels state ──
+    if (activeProvider.id === 'my-channels') {
+      setLoading(false)
+      setError(null)
+      const channels = customChannels
+      const groups = Array.from(new Set(channels.map(c => c.group || 'Other'))).sort()
+      setData({
+        channels,
+        groups,
+        totalCount: channels.length,
+        sourceKey: 'my-channels',
+      })
+      const deadSet = deadChannelsRef.current
+      const firstPlayable = channels.find(c => !deadSet.has(c.url))
+      if (firstPlayable) setCurrentChannel(firstPlayable)
+      else if (channels.length > 0) setCurrentChannel(channels[0])
+      else setCurrentChannel(null)
+      return
+    }
+
     // ─── Xtream Codes provider — load from XC server ─────────────────────
     if (activeProvider.id === 'xtream') {
       const creds = loadXtreamCreds()
@@ -274,7 +359,7 @@ export default function Home() {
     } finally {
       setLoading(false)
     }
-  }, [activeProvider, activeCategory, activePlaylistId, refreshNonce])
+  }, [activeProvider, activeCategory, activePlaylistId, refreshNonce, customChannels])
 
   useEffect(() => {
     fetchPlaylist()
@@ -300,6 +385,9 @@ export default function Home() {
     setAdminChannelUrl('')
     setAdminChannelLogo('')
     setAdminChannelGroup('Custom')
+    // Auto-switch to "My Channels" so the user sees the new channel immediately
+    const myProv = PROVIDERS.find(p => p.id === 'my-channels')
+    if (myProv) switchProviderRef.current(myProv)
   }, [adminChannelName, adminChannelUrl, adminChannelLogo, adminChannelGroup])
 
   // ─── Admin: Delete custom channel ───────────────────────────────────────
@@ -312,7 +400,8 @@ export default function Home() {
     if (!customM3uUrl.trim()) return
     try {
       const encoded = encodeURIComponent(customM3uUrl.trim())
-      const res = await fetch(`/api/playlist?url=${encoded}`)
+      // refresh=1 to bypass cache when loading a fresh URL
+      const res = await fetch(`/api/playlist?url=${encoded}&refresh=1`)
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Failed to load')
       const channels = (json.channels as Channel[]) || []
@@ -323,11 +412,73 @@ export default function Home() {
       }))
       setCustomChannels(prev => [...loaded, ...prev])
       setCustomM3uUrl('')
+      // Auto-switch to "My Channels" so the user sees the loaded channels immediately
+      const myProv = PROVIDERS.find(p => p.id === 'my-channels')
+      if (myProv) switchProviderRef.current(myProv)
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Unknown error'
       alert(`Failed to load M3U: ${msg}`)
     }
   }, [customM3uUrl])
+
+  // ─── Admin: Quick-add Twitch / YouTube channels (separate state per input) ──
+  const addTwitchChannel = useCallback(() => {
+    const name = twitchInput.trim().replace(/^twitch:/i, '')
+    if (!name) return
+    const ch: Channel = {
+      id: `twitch-${Date.now()}`,
+      name: `Twitch — ${name}`,
+      displayName: `Twitch — ${name}`,
+      rawName: `Twitch — ${name}`,
+      url: `twitch:${name}`,
+      group: 'Twitch',
+      isVod: false,
+      logo: 'https://assets.help.twitch.tv/article/img/658115-02.png',
+    }
+    setCustomChannels(prev => [ch, ...prev])
+    setTwitchInput('')
+    // Auto-switch to "My Channels" so the user sees it immediately
+    const myProv = PROVIDERS.find(p => p.id === 'my-channels')
+    if (myProv) switchProviderRef.current(myProv)
+  }, [twitchInput])
+
+  const addYtLiveChannel = useCallback(() => {
+    const id = ytLiveInput.trim().replace(/^youtube-live:/i, '')
+    if (!id) return
+    const ch: Channel = {
+      id: `yt-live-${Date.now()}`,
+      name: `YouTube Live — ${id.slice(0, 16)}`,
+      displayName: `YouTube Live — ${id.slice(0, 16)}`,
+      rawName: `YouTube Live — ${id}`,
+      url: `youtube-live:${id}`,
+      group: 'YouTube',
+      isVod: false,
+      logo: 'https://www.youtube.com/s/desktop/favicon.ico',
+    }
+    setCustomChannels(prev => [ch, ...prev])
+    setYtLiveInput('')
+    const myProv = PROVIDERS.find(p => p.id === 'my-channels')
+    if (myProv) switchProviderRef.current(myProv)
+  }, [ytLiveInput])
+
+  const addYtVodChannel = useCallback(() => {
+    const id = ytVodInput.trim().replace(/^youtube:/i, '')
+    if (!id) return
+    const ch: Channel = {
+      id: `yt-vod-${Date.now()}`,
+      name: `YouTube — ${id}`,
+      displayName: `YouTube — ${id}`,
+      rawName: `YouTube — ${id}`,
+      url: `youtube:${id}`,
+      group: 'YouTube VOD',
+      isVod: true,
+      logo: 'https://www.youtube.com/s/desktop/favicon.ico',
+    }
+    setCustomChannels(prev => [ch, ...prev])
+    setYtVodInput('')
+    const myProv = PROVIDERS.find(p => p.id === 'my-channels')
+    if (myProv) switchProviderRef.current(myProv)
+  }, [ytVodInput])
 
   // ─── Load custom channels from localStorage on mount ────────────────────
   useEffect(() => {
@@ -356,7 +507,7 @@ export default function Home() {
   const handleXtreamLogin = useCallback(async () => {
     if (!xcServer.trim() || !xcUser.trim() || !xcPass.trim()) return
     setXcStatus('loading')
-    setXcMessage('')
+    setXcMessage('Connecting…')
     try {
       const creds: XtreamCredentials = {
         server: xcServer.trim().replace(/\/+$/, ''),
@@ -364,23 +515,43 @@ export default function Home() {
         password: xcPass.trim(),
       }
       const info = await xtreamAuth(creds)
-      if (info?.user_info?.auth === 1 || info?.user_info?.status === 'Active') {
-        saveXtreamCreds(creds)
-        setXcCreds(creds)
-        setXcStatus('ok')
-        const exp = info.user_info.exp_date
-          ? new Date(parseInt(info.user_info.exp_date, 10) * 1000).toLocaleDateString()
-          : 'unknown'
-        setXcMessage(
-          `✓ Connected — ${info.user_info.username} · ${info.server_info.url}:${info.server_info.port} · max ${info.user_info.max_connections} connections · expires ${exp}`,
-        )
+      // Be lenient: if we got a JSON response with user_info, the server is
+      // reachable and credentials are accepted. Some servers return auth:0 but
+      // still allow M3U access; others return auth:1 without status:"Active".
+      const ui = info?.user_info
+      if (ui && info?.server_info) {
+        const ok = ui.auth === 1 ||
+                   ui.status === 'Active' ||
+                   ui.status === 'active' ||
+                   (ui.auth !== 0 && !ui.message?.toLowerCase?.().includes('invalid'))
+        if (ok) {
+          saveXtreamCreds(creds)
+          setXcCreds(creds)
+          setXcStatus('ok')
+          const exp = ui.exp_date
+            ? new Date(parseInt(ui.exp_date, 10) * 1000).toLocaleDateString()
+            : 'unknown'
+          setXcMessage(
+            `✓ Connected — ${ui.username} · ${info.server_info.url}:${info.server_info.port} · max ${ui.max_connections} connections · expires ${exp}`,
+          )
+        } else {
+          setXcStatus('error')
+          setXcMessage(`✗ Auth failed: ${ui.message || 'Server rejected credentials (auth=' + ui.auth + ', status=' + ui.status + ')'}`)
+        }
       } else {
         setXcStatus('error')
-        setXcMessage(`✗ Auth failed: ${info?.user_info?.message || 'Invalid credentials'}`)
+        setXcMessage('✗ Server did not return valid user_info — check the server URL is correct and includes the port (e.g. http://example.com:8080)')
       }
     } catch (e: unknown) {
       setXcStatus('error')
-      setXcMessage(`✗ ${e instanceof Error ? e.message : 'Connection failed'}`)
+      const msg = e instanceof Error ? e.message : 'Connection failed'
+      setXcMessage(`✗ ${msg}
+
+Common causes:
+• Server URL wrong or missing port (use http://host:port)
+• Server is HTTP-only but this site is HTTPS (mixed-content blocked) — use an HTTPS XC server or self-host kptv-proxy
+• Server is offline or behind a firewall
+• CORS blocked — but our /api/xtream proxy handles that, so this is unlikely`)
     }
   }, [xcServer, xcUser, xcPass])
 
@@ -411,21 +582,50 @@ export default function Home() {
 
   // ─── EPG "Now Playing" for the current channel ──────────────────────────
   useEffect(() => {
-    if (!currentChannel?.tvgId) {
+    if (!currentChannel) {
       setEpgNow(null)
       return
     }
     let cancelled = false
     setEpgLoading(true)
-    fetch(`/api/epg?channel=${encodeURIComponent(currentChannel.tvgId)}&limit=1`)
+    // Try matching by tvg-id first, then fall back to channel display name
+    const matchKey = currentChannel.tvgId || currentChannel.displayName || ''
+    if (!matchKey) {
+      setEpgNow(null)
+      setEpgLoading(false)
+      return
+    }
+    fetch(`/api/epg?channel=${encodeURIComponent(matchKey)}&limit=5`)
       .then(r => r.ok ? r.json() : null)
       .then(json => {
         if (cancelled) return
-        const ch = json?.channels?.[0]
-        const now = ch?.programs?.find((p: any) => p.isNow)
-        setEpgNow(now || null)
+        // Find the best match: prefer exact tvg-id, then name contains
+        const channels = json?.channels || []
+        let best = channels.find((c: any) => c.id === matchKey)
+        if (!best && currentChannel.tvgId) {
+          const tvgId = currentChannel.tvgId
+          best = channels.find((c: any) => c.id.toLowerCase().endsWith('.' + tvgId.toLowerCase()))
+        }
+        if (!best) {
+          best = channels.find((c: any) =>
+            c.name.toLowerCase().includes(currentChannel.displayName.toLowerCase()) ||
+            currentChannel.displayName.toLowerCase().includes(c.name.toLowerCase()),
+          )
+        }
+        const now = best?.programs?.find((p: any) => p.isNow)
+        if (now) {
+          setEpgNow(now)
+        } else {
+          // ─── Synthesize a "now playing" entry client-side ───────────────
+          // No real EPG match — generate a plausible program based on channel
+          // group/name so the EPG panel always has content.
+          setEpgNow(synthesizeNowPlaying(currentChannel))
+        }
       })
-      .catch(() => setEpgNow(null))
+      .catch(() => {
+        // On fetch failure, also synthesize
+        if (!cancelled) setEpgNow(synthesizeNowPlaying(currentChannel))
+      })
       .finally(() => { if (!cancelled) setEpgLoading(false) })
     return () => { cancelled = true }
   }, [currentChannel])
@@ -638,6 +838,8 @@ export default function Home() {
     const firstCat = provider.categories[0]
     setActivePlaylistId(firstCat.playlists && firstCat.playlists.length > 0 ? firstCat.playlists[0].id : undefined)
   }, [])
+  // Keep the ref in sync so callbacks defined earlier in the component can call it
+  useEffect(() => { switchProviderRef.current = switchProvider }, [switchProvider])
 
   const switchCategory = useCallback((category: ProviderCategory) => {
     setActiveCategory(category)
@@ -963,43 +1165,26 @@ export default function Home() {
                 <div className="space-y-3">
                   <p className="text-xs text-muted-foreground">
                     Add Twitch / YouTube streams. Use the official embed player — no server needed.
+                    Added streams appear in the <strong>"My Channels"</strong> provider at the top of the provider grid.
                   </p>
 
                   {/* Quick-add Twitch */}
                   <div className="flex gap-2">
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono shrink-0">
                       <Twitch className="w-3.5 h-3.5 text-purple-500" /> twitch:
                     </div>
                     <Input
                       placeholder="Twitch channel name (e.g. shroud)"
-                      value={adminChannelUrl === '' && adminChannelName ? '' : adminChannelUrl}
-                      onChange={(e) => {
-                        const name = e.target.value.trim().replace(/^twitch:/i, '')
-                        setAdminChannelUrl(`twitch:${name}`)
-                        if (!adminChannelName) setAdminChannelName(`Twitch — ${name}`)
-                      }}
+                      value={twitchInput}
+                      onChange={(e) => setTwitchInput(e.target.value.trim())}
+                      onKeyDown={(e) => { if (e.key === 'Enter' && twitchInput) addTwitchChannel() }}
                       className="bg-secondary/40 flex-1"
                     />
                     <Button
                       size="sm"
-                      className="gap-2"
-                      onClick={() => {
-                        if (!adminChannelUrl.startsWith('twitch:')) return
-                        const name = adminChannelUrl.slice(7)
-                        const ch: Channel = {
-                          id: `twitch-${Date.now()}`,
-                          name: adminChannelName || `Twitch — ${name}`,
-                          displayName: adminChannelName || `Twitch — ${name}`,
-                          rawName: adminChannelName,
-                          url: `twitch:${name}`,
-                          group: 'Twitch',
-                          isVod: false,
-                          logo: 'https://assets.help.twitch.tv/article/img/658115-02.png',
-                        }
-                        setCustomChannels(prev => [ch, ...prev])
-                        setAdminChannelName('')
-                        setAdminChannelUrl('')
-                      }}
+                      className="gap-2 shrink-0"
+                      onClick={() => addTwitchChannel()}
+                      disabled={!twitchInput}
                     >
                       <Plus className="w-3 h-3" /> Add
                     </Button>
@@ -1007,39 +1192,21 @@ export default function Home() {
 
                   {/* Quick-add YouTube live (by channel ID) */}
                   <div className="flex gap-2">
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono shrink-0">
                       <Youtube className="w-3.5 h-3.5 text-red-500" /> youtube-live:
                     </div>
                     <Input
                       placeholder="YouTube channel ID (UCxxxx...)"
-                      value={adminChannelUrl.startsWith('youtube-live:') ? adminChannelUrl.slice(14) : ''}
-                      onChange={(e) => {
-                        const id = e.target.value.trim().replace(/^youtube-live:/i, '')
-                        setAdminChannelUrl(`youtube-live:${id}`)
-                        if (!adminChannelName) setAdminChannelName(`YouTube Live — ${id.slice(0, 12)}…`)
-                      }}
+                      value={ytLiveInput}
+                      onChange={(e) => setYtLiveInput(e.target.value.trim())}
+                      onKeyDown={(e) => { if (e.key === 'Enter' && ytLiveInput) addYtLiveChannel() }}
                       className="bg-secondary/40 flex-1"
                     />
                     <Button
                       size="sm"
-                      className="gap-2"
-                      onClick={() => {
-                        if (!adminChannelUrl.startsWith('youtube-live:')) return
-                        const id = adminChannelUrl.slice(14)
-                        const ch: Channel = {
-                          id: `yt-live-${Date.now()}`,
-                          name: adminChannelName || `YouTube Live — ${id.slice(0, 12)}`,
-                          displayName: adminChannelName || `YouTube Live`,
-                          rawName: adminChannelName,
-                          url: `youtube-live:${id}`,
-                          group: 'YouTube',
-                          isVod: false,
-                          logo: 'https://www.youtube.com/s/desktop/favicon.ico',
-                        }
-                        setCustomChannels(prev => [ch, ...prev])
-                        setAdminChannelName('')
-                        setAdminChannelUrl('')
-                      }}
+                      className="gap-2 shrink-0"
+                      onClick={() => addYtLiveChannel()}
+                      disabled={!ytLiveInput}
                     >
                       <Plus className="w-3 h-3" /> Add
                     </Button>
@@ -1047,46 +1214,28 @@ export default function Home() {
 
                   {/* Quick-add YouTube video (VOD) */}
                   <div className="flex gap-2">
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/40 text-xs font-mono shrink-0">
                       <Youtube className="w-3.5 h-3.5 text-red-500" /> youtube:
                     </div>
                     <Input
                       placeholder="YouTube video ID (dQw4w9WgXcQ)"
-                      value={adminChannelUrl.startsWith('youtube:') && !adminChannelUrl.startsWith('youtube-live:') ? adminChannelUrl.slice(8) : ''}
-                      onChange={(e) => {
-                        const id = e.target.value.trim().replace(/^youtube:/i, '')
-                        setAdminChannelUrl(`youtube:${id}`)
-                        if (!adminChannelName) setAdminChannelName(`YouTube — ${id}`)
-                      }}
+                      value={ytVodInput}
+                      onChange={(e) => setYtVodInput(e.target.value.trim())}
+                      onKeyDown={(e) => { if (e.key === 'Enter' && ytVodInput) addYtVodChannel() }}
                       className="bg-secondary/40 flex-1"
                     />
                     <Button
                       size="sm"
-                      className="gap-2"
-                      onClick={() => {
-                        if (!adminChannelUrl.startsWith('youtube:')) return
-                        const id = adminChannelUrl.slice(8)
-                        const ch: Channel = {
-                          id: `yt-vod-${Date.now()}`,
-                          name: adminChannelName || `YouTube — ${id}`,
-                          displayName: adminChannelName || `YouTube`,
-                          rawName: adminChannelName,
-                          url: `youtube:${id}`,
-                          group: 'YouTube VOD',
-                          isVod: true,
-                          logo: 'https://www.youtube.com/s/desktop/favicon.ico',
-                        }
-                        setCustomChannels(prev => [ch, ...prev])
-                        setAdminChannelName('')
-                        setAdminChannelUrl('')
-                      }}
+                      className="gap-2 shrink-0"
+                      onClick={() => addYtVodChannel()}
+                      disabled={!ytVodInput}
                     >
                       <Plus className="w-3 h-3" /> Add
                     </Button>
                   </div>
 
                   <div className="text-xs text-muted-foreground space-y-1 p-2 rounded-lg bg-secondary/20">
-                    <p className="font-semibold">URL formats:</p>
+                    <p className="font-semibold">URL formats (also work in "Custom Channels" tab → Stream URL):</p>
                     <p>• <code className="text-primary">twitch:CHANNEL</code> — Twitch live</p>
                     <p>• <code className="text-primary">twitch-vod:VIDEO_ID</code> — Twitch VOD</p>
                     <p>• <code className="text-primary">twitch-clip:SLUG</code> — Twitch clip</p>
@@ -1595,41 +1744,53 @@ export default function Home() {
                 )}
 
                 {/* ─── EPG "Now Playing" panel (iptvnator-inspired) ─── */}
-                {currentChannel.tvgId && (
-                  <div className="p-3 rounded-xl bg-card/40 border border-border">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Calendar className="w-3.5 h-3.5 text-primary" />
-                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Now Playing</p>
-                      {epgLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />}
-                    </div>
-                    {epgNow ? (
-                      <div className="space-y-1.5">
-                        <p className="text-sm font-bold text-foreground">{epgNow.title}</p>
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
-                            <div
-                              className="h-full bg-primary transition-all"
-                              style={{ width: `${epgNow.progress || 0}%` }}
-                            />
-                          </div>
-                          <span className="text-xs text-muted-foreground tabular-nums">{epgNow.progress || 0}%</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          {epgNow.start && new Date(parseXmltvTime(epgNow.start)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          {' → '}
-                          {epgNow.stop && new Date(parseXmltvTime(epgNow.stop)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </p>
-                        {epgNow.desc && (
-                          <p className="text-xs text-muted-foreground/80 line-clamp-2">{epgNow.desc}</p>
-                        )}
-                      </div>
-                    ) : (
-                      <p className="text-xs text-muted-foreground">
-                        {epgLoading ? 'Loading EPG…' : 'No EPG data available for this channel.'}
-                      </p>
+                <div className="p-3 rounded-xl bg-card/40 border border-border">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Calendar className="w-3.5 h-3.5 text-primary" />
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Now Playing</p>
+                    {epgLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />}
+                    {epgNow?.synthesized && (
+                      <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 text-amber-500 border-amber-500/40 ml-auto">
+                        SYNTH
+                      </Badge>
+                    )}
+                    {currentChannel.tvgId && !epgNow?.synthesized && (
+                      <span className="text-xs text-muted-foreground/70 font-mono ml-auto truncate">
+                        tvg-id: {currentChannel.tvgId}
+                      </span>
                     )}
                   </div>
-                )}
+                  {epgNow ? (
+                    <div className="space-y-1.5">
+                      <p className="text-sm font-bold text-foreground">{epgNow.title}</p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
+                          <div
+                            className="h-full bg-primary transition-all"
+                            style={{ width: `${epgNow.progress || 0}%` }}
+                          />
+                        </div>
+                        <span className="text-xs text-muted-foreground tabular-nums">{epgNow.progress || 0}%</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {epgNow.start && new Date(parseXmltvTime(epgNow.start)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {' → '}
+                        {epgNow.stop && new Date(parseXmltvTime(epgNow.stop)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                      {epgNow.desc && (
+                        <p className="text-xs text-muted-foreground/80 line-clamp-2">{epgNow.desc}</p>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-muted-foreground">
+                      {epgLoading
+                        ? 'Loading EPG…'
+                        : currentChannel.tvgId
+                          ? 'No EPG data available for this channel. (EPG covers channels with matching tvg-id from YanG-1989 + iptv-org sources.)'
+                          : 'This channel has no tvg-id, so EPG cannot be matched. EPG works for channels from IPTV-org, YanG-1989, and Xtream Codes (with XMLTV).'}
+                    </p>
+                  )}
+                </div>
 
                 <div className="flex items-start gap-4">
                   <div className="flex-1 min-w-0">
