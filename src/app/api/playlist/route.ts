@@ -20,7 +20,27 @@ const CACHE_TTL_MS = 10 * 60 * 1000 // 10 minutes
  * - Paths starting with "/" are resolved against the project's public/ directory.
  * - Other strings are treated as remote URLs and fetched over HTTP.
  */
-async function readPlaylistContent(target: string): Promise<string> {
+async function readPlaylistContent(target: string, req?: NextRequest): Promise<string> {
+  // Same-origin API route (e.g. /api/xtream-mock?path=get.php)
+  // Fetch via HTTP using the request's origin so it works in dev + prod.
+  if (target.startsWith('/api/') || target.startsWith('/custom.m3u')) {
+    // For /custom.m3u we still fall through to file read below.
+    if (target.startsWith('/api/')) {
+      const origin = req?.nextUrl?.origin || `http://localhost:${process.env.PORT || 3000}`
+      const fullUrl = new URL(target, origin).toString()
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 30000)
+      try {
+        const response = await fetch(fullUrl, { signal: controller.signal })
+        if (!response.ok) {
+          throw new Error(`Failed to fetch ${target}: ${response.status} ${response.statusText}`)
+        }
+        return await response.text()
+      } finally {
+        clearTimeout(timeout)
+      }
+    }
+  }
   // Local public file?
   if (target.startsWith('/') && !target.startsWith('//')) {
     const filePath = path.join(process.cwd(), 'public', target)
@@ -169,7 +189,7 @@ export async function GET(req: NextRequest) {
 
   // Read the M3U content (local file or remote URL)
   try {
-    const content = await readPlaylistContent(target!)
+    const content = await readPlaylistContent(target!, req)
     const parsed = parseM3U(content)
 
     // Cache it

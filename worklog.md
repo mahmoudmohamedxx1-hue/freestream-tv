@@ -64,3 +64,32 @@ Stage Summary:
 - Xtream Codes auth more lenient + better error messages
 - EmbedPlayer has loading state + parent-domain debug bar for Twitch troubleshooting
 - Build passes cleanly, all endpoints verified
+
+---
+Task ID: 18-20 (Twitch fix + mock XC + improvements)
+Agent: main (super-z)
+Task: Fix Twitch embeds not working, add free Xtream Codes test server, suggest improvements
+
+Work Log:
+- Diagnosed Twitch issue: the `parent` parameter only sent the current hostname, but preview proxy serves from a long subdomain (preview-xxx.space-z.ai) which Twitch may reject
+- Fixed embed-player.tsx: now sends MULTIPLE parent params — current hostname + parent domain (space-z.ai) + localhost — so Twitch accepts the embed regardless of how it's served
+- Added validation: if Twitch channel name doesn't match the valid pattern (4-25 chars, alphanumeric+underscore), shows a helpful error with suggestions
+- Researched free XC test servers: NO reliable free public XC servers exist (all are paid trials requiring WhatsApp signup, or stale leaked credentials). Found bsogulcan/xtream-codes-mock-server but its hosted demo is DOWN.
+- Built a built-in mock XC server at /api/xtream-mock that implements the full XC protocol with REAL playable streams from iptv-org:
+  • player_api.php: auth (returns auth:1, status:Active), get_live_categories (6 cats), get_live_streams (16 channels), get_vod_categories (2), get_vod_streams (5), get_series_categories, get_series, get_short_epg, get_simple_data_table
+  • get.php: full M3U playlist with absolute URLs
+  • xmltv.php: XMLTV EPG with current programs
+  • /live/user/pass/id.m3u8: 302 redirect to real HLS stream (Al Jazeera, DW, NFL Channel, etc.)
+  • /movie/user/pass/id.mp4: 302 redirect to public-domain VOD (Big Buck Bunny, Sintel, etc.)
+- Added catch-all route /api/xtream-mock/[...path]/route.ts for direct stream URLs
+- Updated xtream.ts: handles mock server (same-origin, no CORS proxy needed) vs real XC server (uses /api/xtream proxy)
+- Added "Load Demo" button in Admin → Xtream Codes tab — fills credentials, connects, shows DEMO MODE badge
+- Updated playlist API to handle /api/ paths (fetches same-origin HTTP instead of trying to read from public/ directory)
+- Verified all endpoints: auth=1, 16 streams, 302 redirect to real HLS, 21 channels parsed via playlist API, 8 Twitch channels, 8 YouTube channels
+
+Stage Summary:
+- Twitch fixed: multiple parent domains sent, validation added for invalid channel names
+- Mock XC server built: /api/xtream-mock implements full XC protocol with 16 real playable channels + 5 VOD
+- "Load Demo" button: one click connects to mock XC, tests entire flow (auth → categories → streams → M3U → playback)
+- All endpoints verified working
+- Build passes, /api/xtream-mock and /api/xtream-mock/[...path] routes registered

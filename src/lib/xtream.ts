@@ -67,6 +67,15 @@ export type XtreamAuthInfo = {
 
 const STORAGE_KEY = 'freestream.xtream'
 
+/** Demo credentials — point at our built-in mock XC server at /api/xtream-mock.
+ *  The mock returns real iptv-org HLS streams so users can test the XC flow
+ *  end-to-end without needing a real XC server. */
+export const DEMO_XTREAM_CREDS: XtreamCredentials = {
+  server: '/api/xtream-mock',
+  username: 'test',
+  password: 'test',
+}
+
 export function loadXtreamCreds(): XtreamCredentials | null {
   if (typeof window === 'undefined') return null
   try {
@@ -92,8 +101,33 @@ export function clearXtreamCreds() {
   } catch {}
 }
 
+/** Returns true if the given creds are the demo/mock account. */
+export function isDemoCreds(creds: XtreamCredentials | null): boolean {
+  if (!creds) return false
+  return creds.server === DEMO_XTREAM_CREDS.server
+}
+
 function buildUrl(creds: XtreamCredentials, action?: string, extra?: Record<string, string | number>): string {
   const base = creds.server.replace(/\/+$/, '')
+
+  // ─── Mock server uses a different URL scheme ────────────────────────────
+  // /api/xtream-mock?path=player_api.php&username=X&password=Y&action=Z
+  if (base.startsWith('/api/xtream-mock')) {
+    const params = new URLSearchParams({
+      path: 'player_api.php',
+      username: creds.username,
+      password: creds.password,
+    })
+    if (action) params.set('action', action)
+    if (extra) {
+      for (const [k, v] of Object.entries(extra)) {
+        params.set(k, String(v))
+      }
+    }
+    return `${base}?${params.toString()}`
+  }
+
+  // ─── Real XC server ─────────────────────────────────────────────────────
   const u = new URL('/player_api.php', base)
   u.searchParams.set('username', creds.username)
   u.searchParams.set('password', creds.password)
@@ -113,6 +147,18 @@ async function callXtream<T>(
   signal?: AbortSignal,
 ): Promise<T> {
   const url = buildUrl(creds, action, extra)
+
+  // ─── Mock server is same-origin — fetch directly, no proxy needed ────────
+  if (creds.server.startsWith('/api/xtream-mock')) {
+    const res = await fetch(url, { signal })
+    if (!res.ok) {
+      const txt = await res.text().catch(() => '')
+      throw new Error(`Mock XC error ${res.status}: ${txt || res.statusText}`)
+    }
+    return res.json() as Promise<T>
+  }
+
+  // ─── Real XC server — use the CORS proxy ────────────────────────────────
   const res = await fetch('/api/xtream', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -180,6 +226,22 @@ export async function xtreamM3U(creds: XtreamCredentials): Promise<{
   totalCount: number
 }> {
   const base = creds.server.replace(/\/+$/, '')
+
+  // ─── Mock server: build URL for /api/xtream-mock?path=get.php ────────────
+  if (base.startsWith('/api/xtream-mock')) {
+    const params = new URLSearchParams({
+      path: 'get.php',
+      username: creds.username,
+      password: creds.password,
+      type: 'm3u_plus',
+      output: 'm3u8',
+    })
+    const res = await fetch(`/api/playlist?url=${encodeURIComponent(`${base}?${params.toString()}`)}&refresh=1`)
+    if (!res.ok) throw new Error('Failed to fetch mock XC M3U')
+    return res.json()
+  }
+
+  // ─── Real XC server ──────────────────────────────────────────────────────
   const u = new URL('/get.php', base)
   u.searchParams.set('username', creds.username)
   u.searchParams.set('password', creds.password)
@@ -211,6 +273,18 @@ export function xtreamSeriesUrl(creds: XtreamCredentials, streamId: number | str
 /** Build the XMLTV EPG URL for the account. */
 export function xtreamEpgUrl(creds: XtreamCredentials): string {
   const base = creds.server.replace(/\/+$/, '')
+
+  // ─── Mock server ─────────────────────────────────────────────────────────
+  if (base.startsWith('/api/xtream-mock')) {
+    const params = new URLSearchParams({
+      path: 'xmltv.php',
+      username: creds.username,
+      password: creds.password,
+    })
+    return `${base}?${params.toString()}`
+  }
+
+  // ─── Real XC server ──────────────────────────────────────────────────────
   const u = new URL('/xmltv.php', base)
   u.searchParams.set('username', creds.username)
   u.searchParams.set('password', creds.password)

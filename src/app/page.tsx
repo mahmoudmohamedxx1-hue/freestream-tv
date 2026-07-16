@@ -26,6 +26,7 @@ import { cn } from '@/lib/utils'
 import {
   loadXtreamCreds, saveXtreamCreds, clearXtreamCreds,
   xtreamAuth, xtreamM3U, type XtreamCredentials,
+  DEMO_XTREAM_CREDS, isDemoCreds,
 } from '@/lib/xtream'
 import { tryCompileFilter } from '@/lib/filter-dsl'
 
@@ -563,6 +564,27 @@ Common causes:
     setXcMessage('Logged out.')
   }, [])
 
+  // ─── Xtream Codes: load demo (mock) server ──────────────────────────────
+  const handleXtreamDemo = useCallback(async () => {
+    setXcServer(DEMO_XTREAM_CREDS.server)
+    setXcUser(DEMO_XTREAM_CREDS.username)
+    setXcPass(DEMO_XTREAM_CREDS.password)
+    setXcStatus('loading')
+    setXcMessage('Connecting to demo (mock) XC server…')
+    try {
+      const info = await xtreamAuth(DEMO_XTREAM_CREDS)
+      saveXtreamCreds(DEMO_XTREAM_CREDS)
+      setXcCreds(DEMO_XTREAM_CREDS)
+      setXcStatus('ok')
+      setXcMessage(
+        `✓ Demo connected — ${info.user_info.username} · mock server with ${info.server_info.url} · 16 live channels + 5 VOD (real iptv-org streams). Click "Open XC channels" to browse.`,
+      )
+    } catch (e: unknown) {
+      setXcStatus('error')
+      setXcMessage(`✗ Demo failed: ${e instanceof Error ? e.message : 'unknown error'}`)
+    }
+  }, [])
+
   // ─── Filter DSL: recompile on change ────────────────────────────────────
   useEffect(() => {
     if (!filterExpr.trim()) {
@@ -1078,12 +1100,35 @@ Common causes:
                     Login to any Xtream Codes provider (or a self-hosted <a href="https://github.com/kpirnie/kptv-proxy" target="_blank" rel="noreferrer" className="text-primary underline">kptv-proxy</a> server). Credentials are stored in your browser only.
                   </p>
 
+                  {/* ─── Demo button — uses built-in mock XC server ─── */}
+                  <div className="p-3 rounded-lg bg-primary/10 border border-primary/30 flex items-center gap-3">
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-primary">Try the Demo (no server needed)</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Loads a built-in mock XC server with 16 real iptv-org channels (Al Jazeera, DW, NFL Channel, etc.) + 5 public-domain VOD titles. Tests the full XC flow — auth, categories, streams, M3U, EPG, playback.
+                      </p>
+                    </div>
+                    <Button
+                      onClick={handleXtreamDemo}
+                      size="sm"
+                      disabled={xcStatus === 'loading'}
+                      className="gap-2 shrink-0"
+                    >
+                      {xcStatus === 'loading' ? (
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                      ) : (
+                        <Play className="w-3 h-3" />
+                      )}
+                      Load Demo
+                    </Button>
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <Input
-                      placeholder="Server URL (http://host:port)"
+                      placeholder="Server URL (http://host:port) or /api/xtream-mock"
                       value={xcServer}
                       onChange={(e) => setXcServer(e.target.value)}
-                      className="bg-secondary/40 sm:col-span-3"
+                      className="bg-secondary/40 sm:col-span-3 font-mono text-xs"
                     />
                     <Input
                       placeholder="Username"
@@ -1102,7 +1147,7 @@ Common causes:
                     />
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Button
                       onClick={handleXtreamLogin}
                       size="sm"
@@ -1137,11 +1182,16 @@ Common causes:
                         <Play className="w-3 h-3" /> Open XC channels
                       </Button>
                     )}
+                    {xcCreds && isDemoCreds(xcCreds) && (
+                      <Badge variant="outline" className="text-xs gap-1 text-purple-400 border-purple-400/40">
+                        DEMO MODE
+                      </Badge>
+                    )}
                   </div>
 
                   {xcMessage && (
                     <p className={cn(
-                      'text-xs p-2 rounded-lg',
+                      'text-xs p-2 rounded-lg whitespace-pre-wrap',
                       xcStatus === 'ok' && 'bg-green-500/10 text-green-500',
                       xcStatus === 'error' && 'bg-destructive/10 text-destructive',
                       xcStatus === 'idle' && 'bg-secondary/40 text-muted-foreground',
