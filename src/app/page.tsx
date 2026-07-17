@@ -168,6 +168,19 @@ export default function Home() {
   const [showUploadDropzone, setShowUploadDropzone] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
+  // ─── Twitch live stream resolution ─────────────────────────────────────
+  // When a twitch:CHANNEL URL is selected, the EmbedPlayer calls onTwitchResolved
+  // with the HLS URL from our /api/twitch proxy. We store it and switch to the
+  // HLS video player instead of the iframe embed.
+  const [twitchHlsUrl, setTwitchHlsUrl] = useState<string | null>(null)
+  const handleTwitchResolved = useCallback((hlsUrl: string, _channel: string) => {
+    setTwitchHlsUrl(hlsUrl)
+  }, [])
+  // Clear the resolved URL when the channel changes
+  useEffect(() => {
+    setTwitchHlsUrl(null)
+  }, [currentChannel])
+
   // ─── Separate state for each quick-add embed input (avoids cross-tab bleed) ──
   const [twitchInput, setTwitchInput] = useState('')
   const [ytLiveInput, setYtLiveInput] = useState('')
@@ -2146,12 +2159,28 @@ Common causes:
           <section className="lg:w-2/3 xl:w-3/4 p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
             {currentChannel ? (
               <>
-                {/* ─── Player: HLS for streams, iframe for Twitch/YouTube ─── */}
-                {isEmbedUrl(currentChannel.url) ? (
+                {/* ─── Player routing ──────────────────────────────────────────
+                  • twitch:CHANNEL → if HLS resolved, use VideoPlayer; else EmbedPlayer (resolves it)
+                  • twitch-vod/twitch-clip/youtube/youtube-live → EmbedPlayer (iframe)
+                  • everything else (HLS .m3u8, .mp4) → VideoPlayer
+                */}
+                {currentChannel.url.match(/^twitch:[a-zA-Z0-9_]{4,25}$/i) && twitchHlsUrl ? (
+                  <VideoPlayer
+                    src={twitchHlsUrl}
+                    poster={currentChannel.logo}
+                    channelName={currentChannel.displayName}
+                    onError={handlePlayerError}
+                    onNext={goToNextChannel}
+                    autoSkip={autoSkip}
+                    maxQuality={maxQuality}
+                    externalVideoRef={videoRef}
+                  />
+                ) : isEmbedUrl(currentChannel.url) ? (
                   <EmbedPlayer
                     url={currentChannel.url}
                     channelName={currentChannel.displayName}
                     poster={currentChannel.logo}
+                    onTwitchResolved={handleTwitchResolved}
                   />
                 ) : (
                   <VideoPlayer
@@ -2272,8 +2301,8 @@ Common causes:
                     </p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 shrink-0 flex-wrap">
-                    {/* Prev / Next channel (keyboard: ↑↓) */}
-                    {!isEmbedUrl(currentChannel.url) && (
+                    {/* Prev / Next channel (keyboard: ↑↓) — show for HLS + resolved Twitch */}
+                    {(!isEmbedUrl(currentChannel.url) || (currentChannel.url.match(/^twitch:/i) && twitchHlsUrl)) && (
                       <>
                         <Button
                           variant="outline"
@@ -2295,8 +2324,8 @@ Common causes:
                         </Button>
                       </>
                     )}
-                    {/* PiP toggle (keyboard: P) */}
-                    {!isEmbedUrl(currentChannel.url) && (
+                    {/* PiP toggle (keyboard: P) — show for HLS + resolved Twitch */}
+                    {(!isEmbedUrl(currentChannel.url) || (currentChannel.url.match(/^twitch:/i) && twitchHlsUrl)) && (
                       <Button
                         variant={pipActive ? 'default' : 'outline'}
                         size="sm"

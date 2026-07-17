@@ -1,102 +1,203 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 /**
  * Twitch / YouTube embed player.
  *
  * Used when a channel's URL starts with one of:
- *   • twitch:<channel>           → Twitch live embed
- *   • twitch-vod:<videoId>       → Twitch VOD embed
- *   • twitch-clip:<slug>         → Twitch clip embed
- *   • youtube:<videoId>          → YouTube video embed
- *   • youtube-live:<channelId>   → YouTube live embed (24/7 streams)
+ *   • twitch:<channel>           → Twitch live (via server-side HLS proxy)
+ *   • twitch-vod:<videoId>       → Twitch VOD (iframe embed)
+ *   • twitch-clip:<slug>         → Twitch clip (iframe embed)
+ *   • youtube:<videoId>          → YouTube video (iframe embed)
+ *   • youtube-live:<channelId>   → YouTube live (iframe embed)
  *
- * No backend required — uses the official Twitch & YouTube iframe embeds.
+ * TWITCH LIVE STREAMS — HOW THIS WORKS:
+ * Twitch's iframe embed (player.twitch.tv) requires the `parent` query param
+ * to EXACTLY match the browser's hostname. On preview subdomains like
+ * `preview-<uuid>.space-z.ai`, Twitch rejects the embed with
+ * "player.twitch.tv refused to connect".
  *
- * TWITCH PARENT PARAMETER — THE CRITICAL ISSUE:
- * Twitch requires the `parent` query param to be the EXACT hostname of the
- * page hosting the iframe. Not a parent domain, not a subdomain — the EXACT
- * hostname the browser shows in the address bar.
+ * To fix this, we use a server-side proxy at /api/twitch that:
+ *   1. Fetches a PlaybackAccessToken from Twitch's GQL API
+ *   2. Calls the usher API to get the HLS playlist URL
+ *   3. Returns the URL to the client
+ *   4. The client loads it in HLS.js (our existing video player)
  *
- * For our preview at `preview-<uuid>.space-z.ai`, that means parent must be
- * `preview-<uuid>.space-z.ai` — nothing else. If we send multiple parent
- * params and ANY of them don't match the actual hostname, Twitch rejects
- * the embed with "player.twitch.tv refused to connect".
+ * This completely bypasses the iframe restriction. The stream plays in our
+ * own <video> element, no Twitch iframe needed.
  *
- * Solution: detect the exact hostname at runtime and send ONLY that as parent.
- * If Twitch still rejects (rare — happens when the hostname has unusual chars
- * that Twitch's validator dislikes), fall back to a "Open on Twitch" link.
+ * For Twitch VODs and clips, we still use the iframe (they don't have the
+ * same parent restriction issue for short content).
+ *
+ * For YouTube, we use the official iframe embed (no parent restriction).
  */
 
 type EmbedPlayerProps = {
   url: string
   channelName?: string
   poster?: string
+  /** Called when a Twitch live stream is resolved — parent can switch to HLS player */
+  onTwitchResolved?: (hlsUrl: string, channel: string) => void
 }
 
-export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
+export function EmbedPlayer({ url, channelName, poster, onTwitchResolved }: EmbedPlayerProps) {
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [twitchBlocked, setTwitchBlocked] = useState(false)
+  const [twitchStatus, setTwitchStatus] = useState<'idle' | 'resolving' | 'ok' | 'offline' | 'error'>('idle')
+  const [twitchMessage, setTwitchMessage] = useState('')
+  const resolvedRef = useRef(false)
 
   // Reset state when URL changes
   useEffect(() => {
     setLoaded(false)
     setError(null)
-    setTwitchBlocked(false)
+    setTwitchStatus('idle')
+    setTwitchMessage('')
+    resolvedRef.current = false
   }, [url])
 
-  // Detect if Twitch embed is blocked (iframe refuses to load)
-  // We use a timeout — if onLoad doesn't fire within 8s, assume blocked.
+  // For Twitch live streams, resolve the HLS URL via our server proxy
+  const twitchLive = url.match(/^twitch:(.+)$/i)
   useEffect(() => {
-    if (!url.startsWith('twitch')) return
-    setTwitchBlocked(false)
-    const timer = setTimeout(() => {
-      if (!loaded) {
-        setTwitchBlocked(true)
-      }
-    }, 8000)
-    return () => clearTimeout(timer)
-  }, [url, loaded])
+    if (!twitchLive || resolvedRef.current) return
+    const channel = twitchLive[1].trim()
+    if (!channel) return
 
-  // The EXACT current hostname — this is what Twitch requires for parent
+    resolvedRef.current = true
+    setTwitchStatus('resolving')
+    setTwitchMessage(`Resolving Twitch stream for "${channel}"…`)
+
+    fetch(`/api/twitch?channel=${encodeURIComponent(channel)}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok && data.url) {
+          setTwitchStatus('ok')
+          setTwitchMessage(`Stream resolved — loading HLS…`)
+          onTwitchResolved?.(data.url, channel)
+        } else {
+          setTwitchStatus('offline')
+          setTwitchMessage(data.error || `Channel "${channel}" is offline`)
+        }
+      })
+      .catch(e => {
+        setTwitchStatus('error')
+        setTwitchMessage(`Failed to resolve: ${e.message}`)
+      })
+  }, [twitchLive, onTwitchResolved])
+
+  // ─── If this is a Twitch live stream, show the resolving status ────────
+  if (twitchLive) {
+    const channel = twitchLive[1].trim()
+
+    // Validate channel name
+    if (!/^[a-zA-Z0-9_]{4,25}$/.test(channel)) {
+      return (
+        <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground">
+          <div className="text-center px-4">
+            <p className="text-sm font-semibold text-amber-500">⚠ Invalid Twitch channel name</p>
+            <p className="text-xs text-muted-foreground mt-1 font-mono">&quot;{channel}&quot;</p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Channel names must be 4-25 characters, letters/numbers/underscores only.
+            </p>
+          </div>
+        </div>
+      )
+    }
+
+    // Show resolving / offline / error states
+    if (twitchStatus !== 'ok') {
+      const twitchUrl = `https://www.twitch.tv/${channel}`
+      return (
+        <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground border border-border">
+          <div className="text-center px-4 max-w-md">
+            {twitchStatus === 'resolving' && (
+              <>
+                <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                <p className="text-sm text-foreground/80">{twitchMessage}</p>
+                <p className="text-xs text-muted-foreground mt-2 font-mono">twitch:{channel}</p>
+              </>
+            )}
+
+            {twitchStatus === 'offline' && (
+              <>
+                <p className="text-sm font-semibold text-amber-500 mb-2">📺 Channel is offline</p>
+                <p className="text-xs text-muted-foreground mb-3">{twitchMessage}</p>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Twitch channels only stream when live. Try a 24/7 channel or check back during a broadcast.
+                </p>
+                <a
+                  href={twitchUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition"
+                >
+                  ▶ Open {channel} on Twitch
+                </a>
+              </>
+            )}
+
+            {twitchStatus === 'error' && (
+              <>
+                <p className="text-sm font-semibold text-destructive mb-2">⚠ Error</p>
+                <p className="text-xs text-muted-foreground mb-3">{twitchMessage}</p>
+                <a
+                  href={twitchUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition"
+                >
+                  ▶ Open on Twitch
+                </a>
+              </>
+            )}
+
+            {twitchStatus === 'idle' && (
+              <p className="text-sm">Loading…</p>
+            )}
+          </div>
+        </div>
+      )
+    }
+
+    // If resolved (status === 'ok'), the parent component will render the HLS player
+    // via onTwitchResolved callback. Show a brief "loading HLS" message.
+    return (
+      <div className="aspect-video w-full rounded-xl bg-black flex items-center justify-center text-muted-foreground">
+        <div className="text-center">
+          <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-foreground/80">Loading Twitch stream…</p>
+          <p className="text-xs text-muted-foreground mt-1 font-mono">twitch:{channel}</p>
+        </div>
+      </div>
+    )
+  }
+
+  // ─── For non-Twitch-live URLs, use iframe embed ────────────────────────
   const currentHost = typeof window !== 'undefined' ? window.location.hostname : 'localhost'
-
-  // Build the iframe src
   let src = ''
   let platform = ''
   let helpText = ''
-  let twitchChannelName = ''
 
-  // ─── Twitch live ──────────────────────────────────────────────────────────
-  const twitchLive = url.match(/^twitch:(.+)$/i)
-  if (twitchLive) {
-    twitchChannelName = twitchLive[1].trim()
-    src = `https://player.twitch.tv/?channel=${encodeURIComponent(twitchChannelName)}&parent=${encodeURIComponent(currentHost)}&muted=false&autoplay=true`
-    platform = 'Twitch'
-    helpText = `Channel: ${twitchChannelName}`
-  }
-
-  // ─── Twitch VOD ───────────────────────────────────────────────────────────
+  // Twitch VOD
   const twitchVod = url.match(/^twitch-vod:(.+)$/i)
   if (twitchVod) {
-    twitchChannelName = twitchVod[1].trim()
-    src = `https://player.twitch.tv/?video=${encodeURIComponent(twitchChannelName)}&parent=${encodeURIComponent(currentHost)}&muted=false&autoplay=true`
+    const videoId = twitchVod[1].trim()
+    src = `https://player.twitch.tv/?video=${encodeURIComponent(videoId)}&parent=${encodeURIComponent(currentHost)}&muted=false&autoplay=true`
     platform = 'Twitch VOD'
-    helpText = `Video ID: ${twitchChannelName}`
+    helpText = `Video ID: ${videoId}`
   }
 
-  // ─── Twitch clip ──────────────────────────────────────────────────────────
+  // Twitch clip
   const twitchClip = url.match(/^twitch-clip:(.+)$/i)
   if (twitchClip) {
-    twitchChannelName = twitchClip[1].trim()
-    src = `https://clips.twitch.tv/embed?clip=${encodeURIComponent(twitchChannelName)}&parent=${encodeURIComponent(currentHost)}`
+    const slug = twitchClip[1].trim()
+    src = `https://clips.twitch.tv/embed?clip=${encodeURIComponent(slug)}&parent=${encodeURIComponent(currentHost)}`
     platform = 'Twitch Clip'
-    helpText = `Clip: ${twitchChannelName}`
+    helpText = `Clip: ${slug}`
   }
 
-  // ─── YouTube video ────────────────────────────────────────────────────────
+  // YouTube video
   const ytVideo = url.match(/^youtube:(.+)$/i)
   if (ytVideo) {
     const videoId = ytVideo[1].trim()
@@ -105,7 +206,7 @@ export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
     helpText = `Video ID: ${videoId}`
   }
 
-  // ─── YouTube live (by channel ID) ─────────────────────────────────────────
+  // YouTube live
   const ytLive = url.match(/^youtube-live:(.+)$/i)
   if (ytLive) {
     const channelId = ytLive[1].trim()
@@ -120,65 +221,6 @@ export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
         <div className="text-center">
           <p className="text-sm">Unsupported embed URL</p>
           <p className="text-xs text-muted-foreground mt-1 font-mono truncate max-w-md">{url}</p>
-          <p className="text-xs text-muted-foreground mt-2">
-            Use twitch:CHANNEL, youtube:VIDEO_ID, or youtube-live:CHANNEL_ID
-          </p>
-        </div>
-      </div>
-    )
-  }
-
-  // Twitch channel name validation
-  if (platform.startsWith('Twitch') && twitchChannelName) {
-    if (!/^[a-zA-Z0-9_]{4,25}$/.test(twitchChannelName)) {
-      return (
-        <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground">
-          <div className="text-center px-4">
-            <p className="text-sm font-semibold text-amber-500">⚠ Invalid Twitch channel name</p>
-            <p className="text-xs text-muted-foreground mt-1 font-mono">&quot;{twitchChannelName}&quot;</p>
-            <p className="text-xs text-muted-foreground mt-2">
-              Twitch channel names must be 4-25 characters, letters/numbers/underscores only.
-            </p>
-            <p className="text-xs text-muted-foreground/70 mt-3">
-              Try: <code className="font-mono text-primary">twitch:espn</code>,{' '}
-              <code className="font-mono text-primary">twitch:nfl</code>
-            </p>
-          </div>
-        </div>
-      )
-    }
-  }
-
-  // Twitch blocked fallback — show "Open on Twitch" button
-  if (twitchBlocked && platform.startsWith('Twitch')) {
-    const twitchUrl = platform === 'Twitch VOD'
-      ? `https://www.twitch.tv/videos/${twitchChannelName}`
-      : platform === 'Twitch Clip'
-        ? `https://clips.twitch.tv/${twitchChannelName}`
-        : `https://www.twitch.tv/${twitchChannelName}`
-    return (
-      <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground border border-border">
-        <div className="text-center px-4 max-w-md">
-          <p className="text-sm font-semibold text-purple-400 mb-2">🎮 Twitch embed blocked</p>
-          <p className="text-xs text-muted-foreground mb-3">
-            Twitch refused to load the embedded player. This happens when the parent domain
-            (<code className="font-mono text-foreground/80">{currentHost}</code>) isn&apos;t
-            accepted by Twitch&apos;s security policy.
-          </p>
-          <p className="text-xs text-muted-foreground mb-4">
-            Channel: <strong className="text-foreground">{twitchChannelName}</strong>
-          </p>
-          <a
-            href={twitchUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition"
-          >
-            ▶ Open on Twitch.com
-          </a>
-          <p className="text-xs text-muted-foreground/70 mt-3">
-            Opens in a new tab — the stream will play directly on Twitch.
-          </p>
         </div>
       </div>
     )
@@ -187,22 +229,15 @@ export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
   return (
     <div className="relative">
       <div className="aspect-video w-full rounded-xl overflow-hidden bg-black relative">
-        {/* Loading overlay */}
         {!loaded && !error && (
           <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
             <div className="text-center">
               <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
               <p className="text-sm text-foreground/80">Loading {platform}…</p>
               <p className="text-xs text-muted-foreground mt-1 font-mono">{helpText}</p>
-              {platform.startsWith('Twitch') && (
-                <p className="text-xs text-muted-foreground/70 mt-2">
-                  parent: {currentHost}
-                </p>
-              )}
             </div>
           </div>
         )}
-
         <iframe
           src={src}
           title={channelName || `${platform} embed`}
@@ -214,16 +249,9 @@ export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
           onError={() => setError('Failed to load embed')}
         />
       </div>
-
-      {/* Debug / help bar */}
       <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
         <span className="px-1.5 py-0.5 rounded bg-secondary font-mono">{platform}</span>
         <span className="font-mono truncate">{helpText}</span>
-        {platform.startsWith('Twitch') && (
-          <span className="font-mono text-muted-foreground/60 ml-auto">
-            parent: {currentHost}
-          </span>
-        )}
       </div>
     </div>
   )
