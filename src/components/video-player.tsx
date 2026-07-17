@@ -23,10 +23,19 @@ type VideoPlayerProps = {
   autoSkip?: boolean
   /** Global max quality cap (e.g., '720p' limits to 720p and below) */
   maxQuality?: 'auto' | '480p' | '720p' | '1080p'
+  /** Optional ref to expose the underlying <video> element to the parent (for PiP, keyboard shortcuts) */
+  externalVideoRef?: React.MutableRefObject<HTMLVideoElement | null>
 }
 
-export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSkip = false, maxQuality = 'auto' }: VideoPlayerProps) {
+export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSkip = false, maxQuality = 'auto', externalVideoRef }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  // Keep the external ref in sync with our internal ref
+  useEffect(() => {
+    if (externalVideoRef) {
+      externalVideoRef.current = videoRef.current
+    }
+  }, [externalVideoRef, src]) // re-sync when src changes (video element may be recreated)
   const hlsRef = useRef<Hls | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const errorCountRef = useRef(0)

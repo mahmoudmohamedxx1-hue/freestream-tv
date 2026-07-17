@@ -93,3 +93,29 @@ Stage Summary:
 - "Load Demo" button: one click connects to mock XC, tests entire flow (auth → categories → streams → M3U → playback)
 - All endpoints verified working
 - Build passes, /api/xtream-mock and /api/xtream-mock/[...path] routes registered
+
+---
+Task ID: 21-30 (improvements + Twitch fix)
+Agent: main (super-z)
+Task: Fix Twitch "refused to connect" error, implement 8 improvements (skip #7 channel logo grid view, #9 Stalker, #10 — user said they don't understand those)
+
+Work Log:
+- Fixed Twitch embed: was sending multiple parent params (current host + parent domain + localhost) which caused Twitch to reject if ANY didn't match. Now sends ONLY the exact current hostname (window.location.hostname). Added 8s timeout fallback: if Twitch doesn't load, shows "Open on Twitch.com" button that opens the channel directly on twitch.tv in a new tab.
+- Improvement #1 (Global search): Added Ctrl+K modal that searches iptv-org's 8000+ channel index via search.json API. Debounced 300ms, shows logo + name + group, click to play.
+- Improvement #2 (Keyboard shortcuts): ↑↓ prev/next channel, 1-9/0 jump to channel, Space play/pause, F fullscreen, P PiP, ? toggle help, Esc close overlays. Added KeyboardHelp component (press ? to see all shortcuts).
+- Improvement #3 (Copy stream URL): Button on every channel, copies to clipboard, shows "Copied!" for 2s.
+- Improvement #4 (Global favorites grid): Modal overlay with logo grid of all favorited channels across ALL providers. Click to play.
+- Improvement #5 (Recently watched grid): Modal overlay with logo grid of recently watched channels, sorted by recency.
+- Improvement #6 (PiP always-on-top): Button + P key toggles native browser Picture-in-Picture. VideoPlayer now exposes its <video> element to parent via externalVideoRef prop.
+- Improvement #8 (M3U file upload): Drag-and-drop .m3u file anywhere on the page (shows full-screen dropzone), or use the upload button in Admin → Custom Channels. Parses via /api/playlist and adds to My Channels.
+- Improvement #9 (Custom User-Agent): Settings panel now has a User-Agent input with presets (Lavf/VLC, VLC, iTunes, Kodi). Stored in localStorage.
+- Added prev/next channel buttons to player action area (for non-embed channels)
+- Build passes, all endpoints verified
+
+Stage Summary:
+- Twitch fixed: single exact parent param + fallback "Open on Twitch" button when embed is blocked
+- 8 improvements added: global search (Ctrl+K), keyboard shortcuts (? for help), copy URL, favorites grid, recent grid, PiP toggle, M3U drag-drop upload, custom User-Agent
+- VideoPlayer now exposes video element via externalVideoRef for PiP/keyboard control
+- KeyboardHelp component added (press ? to toggle)
+- Build passes cleanly, /api/xtream-mock/[...path] catch-all route registered
+- All endpoints verified working

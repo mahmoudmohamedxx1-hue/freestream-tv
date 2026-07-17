@@ -14,14 +14,19 @@ import { useState, useEffect } from 'react'
  *
  * No backend required — uses the official Twitch & YouTube iframe embeds.
  *
- * TWITCH PARENT PARAMETER:
- * Twitch requires the `parent` query param to match the EXACT hostname of the
- * page hosting the iframe. When served through a preview proxy like
- * `preview-xxx.space-z.ai`, we send MULTIPLE parent params to cover all cases:
- *   • The full current hostname (e.g. preview-xxx.space-z.ai)
- *   • The parent domain (space-z.ai) — in case Twitch treats subdomains leniently
- *   • localhost — for local dev
- * Twitch accepts multiple &parent= params and will use whichever matches.
+ * TWITCH PARENT PARAMETER — THE CRITICAL ISSUE:
+ * Twitch requires the `parent` query param to be the EXACT hostname of the
+ * page hosting the iframe. Not a parent domain, not a subdomain — the EXACT
+ * hostname the browser shows in the address bar.
+ *
+ * For our preview at `preview-<uuid>.space-z.ai`, that means parent must be
+ * `preview-<uuid>.space-z.ai` — nothing else. If we send multiple parent
+ * params and ANY of them don't match the actual hostname, Twitch rejects
+ * the embed with "player.twitch.tv refused to connect".
+ *
+ * Solution: detect the exact hostname at runtime and send ONLY that as parent.
+ * If Twitch still rejects (rare — happens when the hostname has unusual chars
+ * that Twitch's validator dislikes), fall back to a "Open on Twitch" link.
  */
 
 type EmbedPlayerProps = {
@@ -30,83 +35,65 @@ type EmbedPlayerProps = {
   poster?: string
 }
 
-/** Build the list of parent domains Twitch should accept. */
-function getParentDomains(): string[] {
-  if (typeof window === 'undefined') return ['localhost']
-  const host = window.location.hostname
-  const parents = new Set<string>([host, 'localhost'])
-
-  // Add the parent domain (last 2 segments) — e.g. space-z.ai from preview-xxx.space-z.ai
-  const parts = host.split('.')
-  if (parts.length >= 2) {
-    // For preview-xxx.space-z.ai → space-z.ai
-    // For foo.bar.example.com → example.com
-    if (parts.length >= 3 && parts[parts.length - 2].length <= 3) {
-      // TLD like .co.uk — take last 3 segments
-      parents.add(parts.slice(-3).join('.'))
-    } else {
-      parents.add(parts.slice(-2).join('.'))
-    }
-  }
-
-  // Known preview domains — add space-z.ai explicitly
-  if (host.includes('space-z.ai')) {
-    parents.add('space-z.ai')
-    parents.add('preview-z.ai')
-  }
-
-  return Array.from(parents)
-}
-
-/** Build the &parent= query string for Twitch URLs. */
-function buildParentQuery(): string {
-  return getParentDomains()
-    .map(p => `parent=${encodeURIComponent(p)}`)
-    .join('&')
-}
-
 export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [twitchBlocked, setTwitchBlocked] = useState(false)
 
   // Reset state when URL changes
   useEffect(() => {
     setLoaded(false)
     setError(null)
+    setTwitchBlocked(false)
   }, [url])
+
+  // Detect if Twitch embed is blocked (iframe refuses to load)
+  // We use a timeout — if onLoad doesn't fire within 8s, assume blocked.
+  useEffect(() => {
+    if (!url.startsWith('twitch')) return
+    setTwitchBlocked(false)
+    const timer = setTimeout(() => {
+      if (!loaded) {
+        setTwitchBlocked(true)
+      }
+    }, 8000)
+    return () => clearTimeout(timer)
+  }, [url, loaded])
+
+  // The EXACT current hostname — this is what Twitch requires for parent
+  const currentHost = typeof window !== 'undefined' ? window.location.hostname : 'localhost'
 
   // Build the iframe src
   let src = ''
   let platform = ''
   let helpText = ''
-
-  const parentQuery = buildParentQuery()
+  let twitchChannelName = ''
 
   // ─── Twitch live ──────────────────────────────────────────────────────────
   const twitchLive = url.match(/^twitch:(.+)$/i)
   if (twitchLive) {
-    const channel = twitchLive[1].trim()
-    src = `https://player.twitch.tv/?channel=${encodeURIComponent(channel)}&${parentQuery}&muted=false&autoplay=true`
+    twitchChannelName = twitchLive[1].trim()
+    src = `https://player.twitch.tv/?channel=${encodeURIComponent(twitchChannelName)}&parent=${encodeURIComponent(currentHost)}&muted=false&autoplay=true`
     platform = 'Twitch'
-    helpText = `Channel: ${channel}`
+    helpText = `Channel: ${twitchChannelName}`
   }
 
   // ─── Twitch VOD ───────────────────────────────────────────────────────────
   const twitchVod = url.match(/^twitch-vod:(.+)$/i)
   if (twitchVod) {
-    const videoId = twitchVod[1].trim()
-    src = `https://player.twitch.tv/?video=${encodeURIComponent(videoId)}&${parentQuery}&muted=false&autoplay=true`
+    twitchChannelName = twitchVod[1].trim()
+    src = `https://player.twitch.tv/?video=${encodeURIComponent(twitchChannelName)}&parent=${encodeURIComponent(currentHost)}&muted=false&autoplay=true`
     platform = 'Twitch VOD'
-    helpText = `Video ID: ${videoId}`
+    helpText = `Video ID: ${twitchChannelName}`
   }
 
   // ─── Twitch clip ──────────────────────────────────────────────────────────
   const twitchClip = url.match(/^twitch-clip:(.+)$/i)
   if (twitchClip) {
-    const slug = twitchClip[1].trim()
-    src = `https://clips.twitch.tv/embed?clip=${encodeURIComponent(slug)}&${parentQuery}`
+    twitchChannelName = twitchClip[1].trim()
+    src = `https://clips.twitch.tv/embed?clip=${encodeURIComponent(twitchChannelName)}&parent=${encodeURIComponent(currentHost)}`
     platform = 'Twitch Clip'
-    helpText = `Clip: ${slug}`
+    helpText = `Clip: ${twitchChannelName}`
   }
 
   // ─── YouTube video ────────────────────────────────────────────────────────
@@ -141,29 +128,60 @@ export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
     )
   }
 
-  // If Twitch and the channel name looks invalid (contains spaces, special chars)
-  if (platform.startsWith('Twitch')) {
-    const channelName = url.replace(/^twitch[^:]*:/i, '').trim()
-    if (!/^[a-zA-Z0-9_]{4,25}$/.test(channelName)) {
+  // Twitch channel name validation
+  if (platform.startsWith('Twitch') && twitchChannelName) {
+    if (!/^[a-zA-Z0-9_]{4,25}$/.test(twitchChannelName)) {
       return (
         <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground">
           <div className="text-center px-4">
             <p className="text-sm font-semibold text-amber-500">⚠ Invalid Twitch channel name</p>
-            <p className="text-xs text-muted-foreground mt-1 font-mono">&quot;{channelName}&quot;</p>
+            <p className="text-xs text-muted-foreground mt-1 font-mono">&quot;{twitchChannelName}&quot;</p>
             <p className="text-xs text-muted-foreground mt-2">
               Twitch channel names must be 4-25 characters, letters/numbers/underscores only.
-              <br />
-              The channel &quot;{channelName}&quot; may not exist or may have been renamed.
             </p>
             <p className="text-xs text-muted-foreground/70 mt-3">
-              Try a known-good channel: <code className="font-mono text-primary">twitch:espn</code>,{' '}
-              <code className="font-mono text-primary">twitch:nfl</code>,{' '}
-              <code className="font-mono text-primary">twitch:nba</code>
+              Try: <code className="font-mono text-primary">twitch:espn</code>,{' '}
+              <code className="font-mono text-primary">twitch:nfl</code>
             </p>
           </div>
         </div>
       )
     }
+  }
+
+  // Twitch blocked fallback — show "Open on Twitch" button
+  if (twitchBlocked && platform.startsWith('Twitch')) {
+    const twitchUrl = platform === 'Twitch VOD'
+      ? `https://www.twitch.tv/videos/${twitchChannelName}`
+      : platform === 'Twitch Clip'
+        ? `https://clips.twitch.tv/${twitchChannelName}`
+        : `https://www.twitch.tv/${twitchChannelName}`
+    return (
+      <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground border border-border">
+        <div className="text-center px-4 max-w-md">
+          <p className="text-sm font-semibold text-purple-400 mb-2">🎮 Twitch embed blocked</p>
+          <p className="text-xs text-muted-foreground mb-3">
+            Twitch refused to load the embedded player. This happens when the parent domain
+            (<code className="font-mono text-foreground/80">{currentHost}</code>) isn&apos;t
+            accepted by Twitch&apos;s security policy.
+          </p>
+          <p className="text-xs text-muted-foreground mb-4">
+            Channel: <strong className="text-foreground">{twitchChannelName}</strong>
+          </p>
+          <a
+            href={twitchUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition"
+          >
+            ▶ Open on Twitch.com
+          </a>
+          <p className="text-xs text-muted-foreground/70 mt-3">
+            Opens in a new tab — the stream will play directly on Twitch.
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -176,6 +194,11 @@ export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
               <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
               <p className="text-sm text-foreground/80">Loading {platform}…</p>
               <p className="text-xs text-muted-foreground mt-1 font-mono">{helpText}</p>
+              {platform.startsWith('Twitch') && (
+                <p className="text-xs text-muted-foreground/70 mt-2">
+                  parent: {currentHost}
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -192,19 +215,14 @@ export function EmbedPlayer({ url, channelName, poster }: EmbedPlayerProps) {
         />
       </div>
 
-      {/* Debug / help bar — shows parents (critical for Twitch) */}
+      {/* Debug / help bar */}
       <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
         <span className="px-1.5 py-0.5 rounded bg-secondary font-mono">{platform}</span>
         <span className="font-mono truncate">{helpText}</span>
         {platform.startsWith('Twitch') && (
-          <>
-            <span className="font-mono text-muted-foreground/60">parents: {getParentDomains().join(', ')}</span>
-            {!loaded && (
-              <span className="text-amber-500/80 ml-auto">
-                ⚠ If blank after 10s, the channel may be offline or parents not accepted.
-              </span>
-            )}
-          </>
+          <span className="font-mono text-muted-foreground/60 ml-auto">
+            parent: {currentHost}
+          </span>
         )}
       </div>
     </div>

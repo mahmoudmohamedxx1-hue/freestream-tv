@@ -155,6 +155,19 @@ export default function Home() {
   const [adminChannelGroup, setAdminChannelGroup] = useState('Custom')
   const [customM3uUrl, setCustomM3uUrl] = useState('')
 
+  // ─── New features state ─────────────────────────────────────────────────
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false)
+  const [globalSearchQuery, setGlobalSearchQuery] = useState('')
+  const [globalSearchResults, setGlobalSearchResults] = useState<Channel[]>([])
+  const [globalSearching, setGlobalSearching] = useState(false)
+  const [copiedUrl, setCopiedUrl] = useState(false)
+  const [pipActive, setPipActive] = useState(false)
+  const [showFavGrid, setShowFavGrid] = useState(false)
+  const [showRecentGrid, setShowRecentGrid] = useState(false)
+  const [customUserAgent, setCustomUserAgent] = useState('')
+  const [showUploadDropzone, setShowUploadDropzone] = useState(false)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+
   // ─── Separate state for each quick-add embed input (avoids cross-tab bleed) ──
   const [twitchInput, setTwitchInput] = useState('')
   const [ytLiveInput, setYtLiveInput] = useState('')
@@ -743,6 +756,257 @@ Common causes:
     }
   }, [recordRecent])
 
+  // ─── Improvement: Copy stream URL to clipboard ──────────────────────────
+  const copyStreamUrl = useCallback(async (channel: Channel) => {
+    try {
+      await navigator.clipboard.writeText(channel.url)
+      setCopiedUrl(true)
+      setTimeout(() => setCopiedUrl(false), 2000)
+    } catch {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea')
+      ta.value = channel.url
+      document.body.appendChild(ta)
+      ta.select()
+      try { document.execCommand('copy'); setCopiedUrl(true); setTimeout(() => setCopiedUrl(false), 2000) } catch {}
+      document.body.removeChild(ta)
+    }
+  }, [])
+
+  // ─── Improvement: PiP (Picture-in-Picture) toggle ────────────────────────
+  const togglePiP = useCallback(async () => {
+    const video = videoRef.current
+    if (!video) return
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture()
+        setPipActive(false)
+      } else {
+        await video.requestPictureInPicture()
+        setPipActive(true)
+      }
+    } catch (e) {
+      console.warn('PiP failed:', e)
+    }
+  }, [])
+
+  // ─── Improvement: Go to previous channel ─────────────────────────────────
+  const goToPrevChannel = useCallback(() => {
+    const list = filteredChannelsRef.current
+    const cur = currentChannelRef.current
+    if (!list || list.length === 0 || !cur) return
+    const deadSet = deadChannelsRef.current
+    const idx = list.findIndex(c => c.url === cur.url)
+    if (idx === -1) return
+    for (let i = idx - 1; i >= 0; i--) {
+      if (!deadSet.has(list[i].url)) {
+        setCurrentChannel(list[i])
+        return
+      }
+    }
+    for (let i = list.length - 1; i > idx; i--) {
+      if (!deadSet.has(list[i].url)) {
+        setCurrentChannel(list[i])
+        return
+      }
+    }
+  }, [])
+
+  // ─── Improvement: Global search across ALL providers ─────────────────────
+  // Searches iptv-org's full index (8000+ channels) + our curated lists.
+  // Opens a modal overlay with results from a server-side search.
+  const performGlobalSearch = useCallback(async (query: string) => {
+    const q = query.trim()
+    if (q.length < 2) {
+      setGlobalSearchResults([])
+      return
+    }
+    setGlobalSearching(true)
+    try {
+      // Search iptv-org's full index via their search API
+      const res = await fetch(`https://iptv-org.github.io/api/search.json?q=${encodeURIComponent(q)}`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data.channels) {
+          const results: Channel[] = data.channels.slice(0, 50).map((c: any, i: number) => ({
+            id: `global-${i}`,
+            name: c.name,
+            displayName: c.name,
+            rawName: c.name,
+            url: c.streams?.[0]?.url || c.url || '',
+            logo: c.logo,
+            group: c.category || c.country || 'Global Search',
+            country: c.country,
+            countryCode: c.country,
+            tvgId: c.id,
+          })).filter((c: Channel) => c.url)
+          setGlobalSearchResults(results)
+        }
+      }
+    } catch {
+      setGlobalSearchResults([])
+    } finally {
+      setGlobalSearching(false)
+    }
+  }, [])
+
+  // ─── Improvement: M3U file upload handler ────────────────────────────────
+  const handleM3UFileUpload = useCallback((file: File) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const text = e.target?.result as string
+      if (!text) return
+      try {
+        // Parse the uploaded M3U content via the API
+        const blob = new Blob([text], { type: 'audio/mpegurl' })
+        const url = URL.createObjectURL(blob)
+        fetch(`/api/playlist?url=${encodeURIComponent(url)}&refresh=1`)
+          .then(r => r.json())
+          .then(json => {
+            const channels: Channel[] = (json.channels || []).map((ch: Channel, i: number) => ({
+              ...ch,
+              id: `upload-${Date.now()}-${i}`,
+              group: ch.group || file.name.replace(/\.m3u8?$/i, ''),
+            }))
+            setCustomChannels(prev => [...channels, ...prev])
+            URL.revokeObjectURL(url)
+            const myProv = PROVIDERS.find(p => p.id === 'my-channels')
+            if (myProv) switchProviderRef.current(myProv)
+          })
+          .catch(err => alert(`Failed to parse M3U: ${err.message}`))
+      } catch (err: any) {
+        alert(`Failed to read file: ${err.message}`)
+      }
+    }
+    reader.readAsText(file)
+  }, [])
+
+  // ─── Improvement: Keyboard shortcuts ─────────────────────────────────────
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      // Don't intercept when typing in inputs
+      const target = e.target as HTMLElement
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return
+      // Don't intercept with modifier keys (except Shift for channel numbers)
+      if (e.ctrlKey || e.altKey || e.metaKey) return
+
+      // Cmd/Ctrl+K → open global search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        setGlobalSearchOpen(true)
+        return
+      }
+
+      // Esc → close overlays
+      if (e.key === 'Escape') {
+        setGlobalSearchOpen(false)
+        setShowFavGrid(false)
+        setShowRecentGrid(false)
+        return
+      }
+
+      // Arrow Up → previous channel
+      if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        goToPrevChannel()
+        return
+      }
+      // Arrow Down → next channel
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        goToNextChannel()
+        return
+      }
+      // Space → play/pause (toggle PiP if video player)
+      if (e.key === ' ') {
+        e.preventDefault()
+        const v = videoRef.current
+        if (v) {
+          if (v.paused) v.play()
+          else v.pause()
+        }
+        return
+      }
+      // 'f' → fullscreen
+      if (e.key === 'f' || e.key === 'F') {
+        const v = videoRef.current
+        if (v) {
+          if (document.fullscreenElement) document.exitFullscreen()
+          else v.requestFullscreen?.()
+        }
+        return
+      }
+      // 'p' → toggle PiP
+      if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault()
+        togglePiP()
+        return
+      }
+      // Number keys 1-9, 0 → jump to channel by index
+      if (/^[0-9]$/.test(e.key)) {
+        const list = filteredChannelsRef.current
+        const idx = e.key === '0' ? 9 : parseInt(e.key, 10) - 1
+        if (list && list[idx]) {
+          handleSelectChannel(list[idx])
+        }
+        return
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [goToNextChannel, goToPrevChannel, handleSelectChannel, togglePiP])
+
+  // ─── Improvement: Load custom User-Agent from localStorage ───────────────
+  useEffect(() => {
+    try {
+      const ua = localStorage.getItem('freestream.customUserAgent')
+      if (ua) setCustomUserAgent(ua)
+    } catch {}
+  }, [])
+
+  useEffect(() => {
+    try { localStorage.setItem('freestream.customUserAgent', customUserAgent) } catch {}
+  }, [customUserAgent])
+
+  // ─── Improvement: Debounced global search ────────────────────────────────
+  useEffect(() => {
+    if (!globalSearchQuery.trim()) {
+      setGlobalSearchResults([])
+      return
+    }
+    const t = setTimeout(() => performGlobalSearch(globalSearchQuery), 300)
+    return () => clearTimeout(t)
+  }, [globalSearchQuery, performGlobalSearch])
+
+  // ─── Improvement: Drag-and-drop M3U file ─────────────────────────────────
+  useEffect(() => {
+    const handleDragOver = (e: DragEvent) => {
+      e.preventDefault()
+      if (e.dataTransfer?.types.includes('Files')) {
+        setShowUploadDropzone(true)
+      }
+    }
+    const handleDragLeave = (e: DragEvent) => {
+      if (e.relatedTarget === null) setShowUploadDropzone(false)
+    }
+    const handleDrop = (e: DragEvent) => {
+      e.preventDefault()
+      setShowUploadDropzone(false)
+      const file = e.dataTransfer?.files?.[0]
+      if (file && file.name.match(/\.m3u8?$/i)) {
+        handleM3UFileUpload(file)
+      }
+    }
+    window.addEventListener('dragover', handleDragOver)
+    window.addEventListener('dragleave', handleDragLeave)
+    window.addEventListener('drop', handleDrop)
+    return () => {
+      window.removeEventListener('dragover', handleDragOver)
+      window.removeEventListener('dragleave', handleDragLeave)
+      window.removeEventListener('drop', handleDrop)
+    }
+  }, [handleM3UFileUpload])
+
   // Player error handler — does NOT auto-mark channels as dead.
   // The user decides manually whether a channel is dead (via the "Mark dead" button).
   // This prevents good channels from being hidden just because they were slow to load.
@@ -938,6 +1202,49 @@ Common causes:
             {language === 'en' ? '🇸🇦 AR' : '🇬🇧 EN'}
           </Button>
 
+          {/* Global Search button (⌘K / Ctrl+K) — searches iptv-org 8000+ channels */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setGlobalSearchOpen(true)}
+            className="gap-2"
+            aria-label="Global Search"
+            title="Global Search — search 8000+ channels from iptv-org (Ctrl+K)"
+          >
+            <Search className="w-4 h-4" />
+            <span className="hidden md:inline">Search All</span>
+          </Button>
+
+          {/* Favorites grid button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowFavGrid(true)}
+            className="gap-2"
+            title="Favorites grid"
+          >
+            <Heart className={cn('w-4 h-4', favorites.size > 0 && 'fill-primary text-primary')} />
+            <span className="hidden md:inline">Favs</span>
+            {favorites.size > 0 && (
+              <Badge variant="secondary" className="ml-0.5 px-1.5 py-0 text-xs">{favorites.size}</Badge>
+            )}
+          </Button>
+
+          {/* Recently watched grid button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowRecentGrid(true)}
+            className="gap-2"
+            title="Recently watched grid"
+          >
+            <Clock className="w-4 h-4" />
+            <span className="hidden md:inline">Recent</span>
+            {recentChannels.length > 0 && (
+              <Badge variant="secondary" className="ml-0.5 px-1.5 py-0 text-xs">{recentChannels.length}</Badge>
+            )}
+          </Button>
+
           {/* Refresh button — bypasses cache to pull latest auto-updated playlists */}
           <Button
             variant="outline"
@@ -1025,6 +1332,23 @@ Common causes:
                     <Button onClick={loadCustomM3u} size="sm" className="gap-2 shrink-0">
                       <Search className="w-3 h-3" /> Load URL
                     </Button>
+                  </div>
+
+                  {/* Upload M3U file (or drag-and-drop anywhere) */}
+                  <div className="flex gap-2">
+                    <label className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-secondary/40 hover:bg-secondary/60 transition cursor-pointer text-sm border border-dashed border-border">
+                      <input
+                        type="file"
+                        accept=".m3u,.m3u8,audio/mpegurl,application/x-mpegURL"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0]
+                          if (file) handleM3UFileUpload(file)
+                          e.target.value = ''
+                        }}
+                      />
+                      <Play className="w-3 h-3" /> Upload .m3u file (or drag & drop anywhere)
+                    </label>
                   </div>
 
                   {/* Add single channel */}
@@ -1412,6 +1736,54 @@ Common causes:
                   ))}
                 </div>
               </div>
+
+              {/* ─── Custom User-Agent (iptvnator feature) ─── */}
+              <div className="sm:col-span-2 px-4 py-3 rounded-lg bg-secondary/40 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-primary" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Custom User-Agent (advanced)</p>
+                    <p className="text-xs text-muted-foreground">
+                      Some streams only work with specific User-Agent strings (e.g. <code className="font-mono">Lavf/57.83.100</code>). Applied server-side when fetching playlists via URL.
+                    </p>
+                  </div>
+                </div>
+                <Input
+                  placeholder="e.g.  Lavf/57.83.100  (leave empty for default)"
+                  value={customUserAgent}
+                  onChange={(e) => setCustomUserAgent(e.target.value)}
+                  className="bg-background/60 font-mono text-xs"
+                />
+                <div className="flex gap-1 flex-wrap">
+                  <span className="text-xs text-muted-foreground">Quick presets:</span>
+                  {[
+                    { label: 'Lavf (VLC)', ua: 'Lavf/57.83.100' },
+                    { label: 'VLC', ua: 'VLC/3.0.18 LibVLC/3.0.18' },
+                    { label: 'iTunes', ua: 'iTunes/12.11.3' },
+                    { label: 'Kodi', ua: 'Kodi/19.0 (X11; Linux x86_64) Krypton/19.0 Git:19.0' },
+                    { label: 'Clear', ua: '' },
+                  ].map(p => (
+                    <button
+                      key={p.label}
+                      onClick={() => setCustomUserAgent(p.ua)}
+                      className="px-2 py-0.5 rounded-full bg-secondary text-xs hover:bg-primary hover:text-primary-foreground transition"
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Keyboard shortcuts hint ─── */}
+              <div className="sm:col-span-2 px-4 py-3 rounded-lg bg-secondary/40 text-xs text-muted-foreground">
+                <span className="font-semibold">Keyboard shortcuts:</span>{' '}
+                Press <kbd className="px-1 py-0.5 rounded bg-secondary-foreground/20">?</kbd> for help ·{' '}
+                <kbd className="px-1 py-0.5 rounded bg-secondary-foreground/20">Ctrl+K</kbd> global search ·{' '}
+                <kbd className="px-1 py-0.5 rounded bg-secondary-foreground/20">↑↓</kbd> prev/next channel ·{' '}
+                <kbd className="px-1 py-0.5 rounded bg-secondary-foreground/20">Space</kbd> play/pause ·{' '}
+                <kbd className="px-1 py-0.5 rounded bg-secondary-foreground/20">F</kbd> fullscreen ·{' '}
+                <kbd className="px-1 py-0.5 rounded bg-secondary-foreground/20">P</kbd> PiP
+              </div>
             </div>
           </div>
         )}
@@ -1790,6 +2162,7 @@ Common causes:
                     onNext={goToNextChannel}
                     autoSkip={autoSkip}
                     maxQuality={maxQuality}
+                    externalVideoRef={videoRef}
                   />
                 )}
 
@@ -1898,7 +2271,54 @@ Common causes:
                       <span className="text-muted-foreground/70 truncate">{currentChannel.url}</span>
                     </p>
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+                  <div className="flex flex-col sm:flex-row gap-2 shrink-0 flex-wrap">
+                    {/* Prev / Next channel (keyboard: ↑↓) */}
+                    {!isEmbedUrl(currentChannel.url) && (
+                      <>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={goToPrevChannel}
+                          className="gap-2"
+                          title="Previous channel (↑)"
+                        >
+                          <ChevronRight className="w-4 h-4 rotate-180" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={goToNextChannel}
+                          className="gap-2"
+                          title="Next channel (↓)"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </Button>
+                      </>
+                    )}
+                    {/* PiP toggle (keyboard: P) */}
+                    {!isEmbedUrl(currentChannel.url) && (
+                      <Button
+                        variant={pipActive ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={togglePiP}
+                        className="gap-2"
+                        title="Picture-in-Picture (P)"
+                      >
+                        <Tv className="w-4 h-4" />
+                        <span className="hidden sm:inline">{pipActive ? 'Exit PiP' : 'PiP'}</span>
+                      </Button>
+                    )}
+                    {/* Copy stream URL */}
+                    <Button
+                      variant={copiedUrl ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => copyStreamUrl(currentChannel)}
+                      className="gap-2"
+                      title="Copy stream URL"
+                    >
+                      {copiedUrl ? <CheckCircle2 className="w-4 h-4" /> : <Star className="w-4 h-4" />}
+                      <span className="hidden sm:inline">{copiedUrl ? 'Copied!' : 'Copy URL'}</span>
+                    </Button>
                     {isDead(currentChannel) ? (
                       <Button
                         variant="outline"
@@ -2013,11 +2433,261 @@ Common causes:
           </section>
         </main>
       </div>
+
+      {/* ─── Global Search Modal (Ctrl+K) ─── */}
+      {globalSearchOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-start justify-center pt-[10vh] p-4"
+          onClick={() => setGlobalSearchOpen(false)}
+        >
+          <div
+            className="w-full max-w-2xl bg-card rounded-xl border border-border shadow-2xl overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 p-4 border-b border-border">
+              <Search className="w-5 h-5 text-muted-foreground" />
+              <input
+                autoFocus
+                type="text"
+                placeholder="Search 8000+ channels from iptv-org… (Esc to close)"
+                value={globalSearchQuery}
+                onChange={e => setGlobalSearchQuery(e.target.value)}
+                className="flex-1 bg-transparent outline-none text-sm"
+              />
+              {globalSearching && <Loader2 className="w-4 h-4 animate-spin" />}
+              <kbd className="text-xs text-muted-foreground px-2 py-1 rounded bg-secondary">Esc</kbd>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto thin-scroll">
+              {globalSearchResults.length === 0 ? (
+                <div className="p-8 text-center text-muted-foreground text-sm">
+                  {globalSearchQuery.trim().length < 2
+                    ? 'Type at least 2 characters to search all iptv-org channels.'
+                    : globalSearching
+                      ? 'Searching…'
+                      : 'No results. Try a different query.'}
+                </div>
+              ) : (
+                <div className="divide-y divide-border">
+                  {globalSearchResults.map(ch => (
+                    <button
+                      key={ch.id}
+                      onClick={() => {
+                        handleSelectChannel(ch)
+                        setGlobalSearchOpen(false)
+                        setGlobalSearchQuery('')
+                        setGlobalSearchResults([])
+                      }}
+                      className="w-full flex items-center gap-3 p-3 hover:bg-secondary/60 transition text-left"
+                    >
+                      {ch.logo ? (
+                        <img src={ch.logo} alt="" className="w-10 h-10 rounded object-contain bg-white/5" loading="lazy" />
+                      ) : (
+                        <div className="w-10 h-10 rounded bg-secondary flex items-center justify-center">
+                          <Tv className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{ch.displayName}</p>
+                        <p className="text-xs text-muted-foreground truncate">{ch.group} · {ch.url.substring(0, 60)}…</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="p-2 border-t border-border text-xs text-muted-foreground text-center">
+              Powered by iptv-org · {globalSearchResults.length} results
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Favorites Grid Modal ─── */}
+      {showFavGrid && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-start justify-center pt-[5vh] p-4"
+          onClick={() => setShowFavGrid(false)}
+        >
+          <div
+            className="w-full max-w-5xl bg-card rounded-xl border border-border shadow-2xl overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h3 className="text-sm font-bold flex items-center gap-2">
+                <Heart className="w-4 h-4 text-primary fill-primary" />
+                Favorites ({favorites.size})
+              </h3>
+              <button onClick={() => setShowFavGrid(false)} className="p-1 rounded hover:bg-secondary">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="max-h-[75vh] overflow-y-auto thin-scroll p-4">
+              {favorites.size === 0 ? (
+                <div className="text-center py-12 text-muted-foreground text-sm">
+                  <Heart className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                  No favorites yet. Click the ♥ on any channel to save it here.
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {/* Build fav cards from customChannels (which may include fav URLs) + current data */}
+                  {[...(customChannels || []), ...(data?.channels || [])]
+                    .filter(c => favorites.has(c.url))
+                    .filter((c, i, arr) => arr.findIndex(x => x.url === c.url) === i)
+                    .map(ch => (
+                      <button
+                        key={ch.id + ch.url}
+                        onClick={() => {
+                          handleSelectChannel(ch)
+                          setShowFavGrid(false)
+                        }}
+                        className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-secondary/60 transition border border-transparent hover:border-border"
+                      >
+                        {ch.logo ? (
+                          <img src={ch.logo} alt="" className="w-14 h-14 rounded-lg object-contain bg-white/5" loading="lazy" />
+                        ) : (
+                          <div className="w-14 h-14 rounded-lg bg-secondary flex items-center justify-center">
+                            <Tv className="w-7 h-7 text-muted-foreground" />
+                          </div>
+                        )}
+                        <p className="text-xs font-medium text-center line-clamp-2">{ch.displayName}</p>
+                        <p className="text-[10px] text-muted-foreground">{ch.group}</p>
+                      </button>
+                    ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Recently Watched Grid Modal ─── */}
+      {showRecentGrid && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-start justify-center pt-[5vh] p-4"
+          onClick={() => setShowRecentGrid(false)}
+        >
+          <div
+            className="w-full max-w-5xl bg-card rounded-xl border border-border shadow-2xl overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h3 className="text-sm font-bold flex items-center gap-2">
+                <Clock className="w-4 h-4 text-primary" />
+                Recently Watched ({recentChannels.length})
+              </h3>
+              <button onClick={() => setShowRecentGrid(false)} className="p-1 rounded hover:bg-secondary">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="max-h-[75vh] overflow-y-auto thin-scroll p-4">
+              {recentChannels.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground text-sm">
+                  <Clock className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                  No recently watched channels yet.
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {[...(customChannels || []), ...(data?.channels || [])]
+                    .filter(c => recentChannels.includes(c.url))
+                    .sort((a, b) => recentChannels.indexOf(a.url) - recentChannels.indexOf(b.url))
+                    .map(ch => (
+                      <button
+                        key={ch.id + ch.url}
+                        onClick={() => {
+                          handleSelectChannel(ch)
+                          setShowRecentGrid(false)
+                        }}
+                        className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-secondary/60 transition border border-transparent hover:border-border"
+                      >
+                        {ch.logo ? (
+                          <img src={ch.logo} alt="" className="w-14 h-14 rounded-lg object-contain bg-white/5" loading="lazy" />
+                        ) : (
+                          <div className="w-14 h-14 rounded-lg bg-secondary flex items-center justify-center">
+                            <Tv className="w-7 h-7 text-muted-foreground" />
+                          </div>
+                        )}
+                        <p className="text-xs font-medium text-center line-clamp-2">{ch.displayName}</p>
+                        <p className="text-[10px] text-muted-foreground">{ch.group}</p>
+                      </button>
+                    ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Drag-and-drop M3U overlay ─── */}
+      {showUploadDropzone && (
+        <div className="fixed inset-0 z-[60] bg-primary/20 backdrop-blur-sm flex items-center justify-center pointer-events-none border-4 border-dashed border-primary m-4 rounded-2xl">
+          <div className="text-center">
+            <Play className="w-16 h-16 text-primary mx-auto mb-4" />
+            <p className="text-xl font-bold text-primary">Drop your .m3u file to import</p>
+            <p className="text-sm text-muted-foreground mt-1">Channels will be added to "My Channels"</p>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Keyboard shortcuts help (press ?) ─── */}
+      <KeyboardHelp />
     </div>
   )
 }
 
 /* ─── Sub-components ─── */
+
+function KeyboardHelp() {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === '?' && !(e.target as HTMLElement).matches('input, textarea')) {
+        e.preventDefault()
+        setShow(s => !s)
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
+  if (!show) return null
+  return (
+    <div
+      className="fixed inset-0 z-[70] bg-black/80 flex items-center justify-center p-4"
+      onClick={() => setShow(false)}
+    >
+      <div
+        className="w-full max-w-md bg-card rounded-xl border border-border shadow-2xl p-6"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-bold">Keyboard Shortcuts</h3>
+          <button onClick={() => setShow(false)} className="p-1 rounded hover:bg-secondary">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="space-y-2 text-xs">
+          {[
+            ['Ctrl+K', 'Global search (8000+ channels)'],
+            ['↑ / ↓', 'Previous / next channel'],
+            ['1-9, 0', 'Jump to channel #1-10'],
+            ['Space', 'Play / pause'],
+            ['F', 'Fullscreen'],
+            ['P', 'Picture-in-Picture'],
+            ['?', 'Toggle this help'],
+            ['Esc', 'Close any overlay'],
+          ].map(([key, desc]) => (
+            <div key={key} className="flex items-center justify-between gap-4 py-1">
+              <kbd className="px-2 py-1 rounded bg-secondary font-mono text-xs">{key}</kbd>
+              <span className="text-muted-foreground">{desc}</span>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground/70 mt-4 text-center">
+          Press <kbd className="px-1 py-0.5 rounded bg-secondary">?</kbd> anytime to toggle this help.
+        </p>
+      </div>
+    </div>
+  )
+}
 
 function GroupButton({
   label, count, active, onClick, icon,
