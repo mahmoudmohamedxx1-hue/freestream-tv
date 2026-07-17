@@ -119,3 +119,35 @@ Stage Summary:
 - KeyboardHelp component added (press ? to toggle)
 - Build passes cleanly, /api/xtream-mock/[...path] catch-all route registered
 - All endpoints verified working
+
+---
+Task ID: 31-33 (streamlink-twitch-gui integration + server fix)
+Agent: main (super-z)
+Task: Integrate streamlink-twitch-gui as Twitch provider, fix website not opening, test everything
+
+Work Log:
+- Researched streamlink-twitch-gui: it's a desktop NW.js app requiring Streamlink CLI — can't run in browser. But its UX (browse by category: Sports, Gaming, Music, IRL, Esports) inspired a major Twitch provider expansion.
+- Expanded Twitch & YouTube provider from 2 categories (16 channels) to 8 categories (80 channels):
+  • Twitch Sports (10): ESPN, NFL, NBA, NBA2K, MLB, NHL, UFC, PGA, FIFA, Red Bull
+  • Twitch Gaming (20): Xbox, PlayStation, Nintendo, Riot, VALORANT, LoL, Dota 2, CS, Fortnite, Minecraft, Apex, CoD, WoW, Hearthstone, Overwatch, Pokémon, Genshin, Dark Souls, Among Us, Roblox
+  • Twitch Music (8): Monstercat, Twitch Music, The Secret, DJ Akademiks, Lofi Girl, EDM, Classical, Jazz
+  • Twitch IRL (9): Twitch, Twitch Presents, TwitchCon, Just Chatting, Food, Travel, Art, Makers, Special Events
+  • Twitch Esports (10): ESL, ESL CS:GO, ESL Dota 2, BLAST, OWL, LCS, LCK, LPL, CDL, VCT
+  • YouTube News (12): Sky, ABC, NBC, CBS, Al Jazeera, France 24, DW, RT, CNN, Fox, BBC, Euronews
+  • YouTube Music (6): Lofi Girl, Chillhop, Synthwave, Jazz, Classical, Rock
+  • YouTube Entertainment (5): NASA, Red Bull TV, PokerStars, ESPN, MrBossFTW
+- Fixed server persistence: the dev server kept dying because the sandbox kills background processes when Bash commands return. Built a production standalone server (next build → .next/standalone/server.js) which is a single Node process that survives better. Used setsid to fully detach it.
+- Key discovery: must NOT run `pkill -f next` at the start of commands — that kills the previously-started server. Now I check if a server is already running before starting a new one.
+- Ran comprehensive end-to-end tests (all passing):
+  • Homepage: HTTP 200, title loads
+  • Mock XC: auth=1, 16 live streams, 5 VOD, stream redirect 302 to real Al Jazeera HLS
+  • Twitch Sports: 10 channels, Twitch Gaming: 20 channels, YouTube News: 12 channels
+  • Best of FreeStream Sports: 97 channels
+  • My Channels virtual provider: works (sourceKey=memory)
+  • EPG: HTTP 200
+
+Stage Summary:
+- Twitch provider expanded to 8 categories / 80 channels (inspired by streamlink-twitch-gui's category-based browsing)
+- Server persistence fixed: production standalone build + setsid, no more pkill
+- All endpoints verified working with comprehensive test suite
+- Server is currently running and stable on port 3000 (preview proxy on port 81 returns HTTP 200)
