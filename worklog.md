@@ -203,3 +203,29 @@ Stage Summary:
 - Offline channels show "Channel is offline" + "Open on Twitch" button
 - No iframe parent-domain issues — completely bypassed
 - Server stable on port 3000 + preview proxy on port 81
+
+---
+Task ID: 38 (Twitch keeps loading fix — HLS.js config)
+Agent: main (super-z)
+Task: Fix Twitch stream showing "Loading..." forever — stream resolves but never plays
+
+Work Log:
+- User reported: "IT KEEPS LOADING ONLY" — the Twitch resolver works (returns HLS URL) but the video never plays
+- Diagnosed: Twitch HLS live playlists have 2-second segments (#EXTINF:2.000) and use Twitch-specific tags. The VideoPlayer's HLS.js config had `lowLatencyMode: true` which expects LL-HLS protocol — Twitch doesn't use LL-HLS, causing HLS.js to fail silently.
+- Fixed VideoPlayer HLS.js config for Twitch streams:
+  • Detect Twitch URLs (ttvnw.net, twitch.tv)
+  • Set lowLatencyMode: false (Twitch uses regular HLS with 2s segments)
+  • Add Twitch-specific buffer tuning: liveDurationInfinity, liveBackBufferLength: 30, maxBufferLength: 30, maxMaxBufferLength: 60
+  • Add startFragPrefetch: true for faster start
+  • Add testBandwidth: false (Twitch doesn't need ABR)
+  • Add xhrSetup for proper credential handling (withCredentials: false for Twitch CDN)
+  • Add error logging to console for debugging (console.warn for all HLS errors, not just fatal)
+- Killed old server (was running stale build with EADDRINUSE), restarted with new build
+- Verified: server HTTP 200, stableronaldo resolver ok=True, HLS URL valid
+
+Stage Summary:
+- Twitch "keeps loading" fix: HLS.js config tuned for Twitch's live playlist format
+- lowLatencyMode disabled (was the main culprit)
+- Twitch-specific buffer/ABR settings added
+- Error logging added for future debugging
+- Server running with new build on port 3000 + preview proxy on port 81

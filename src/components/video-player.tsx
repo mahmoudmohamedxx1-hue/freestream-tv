@@ -148,9 +148,14 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
     video.addEventListener('canplaythrough', resetLoadTimeout)
 
     if (isHls && Hls.isSupported()) {
+      // Detect Twitch streams — they need special handling
+      const isTwitch = src.includes('ttvnw.net') || src.includes('twitch.tv')
+
       const hls = new Hls({
         enableWorker: true,
-        lowLatencyMode: true,
+        // Twitch live playlists have 2-second segments; disable low-latency mode
+        // which can cause issues with non-LL-HLS streams
+        lowLatencyMode: false,
         backBufferLength: 30,
         manifestLoadingTimeOut: 20000,
         manifestLoadingMaxRetry: 3,
@@ -158,6 +163,24 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
         levelLoadingMaxRetry: 4,
         fragLoadingTimeOut: 30000,
         fragLoadingMaxRetry: 6,
+        // For Twitch: set proper credentials mode and headers
+        xhrSetup: (xhr, url) => {
+          // Twitch CDN requires credentials for some segments
+          if (isTwitch || url.includes('ttvnw.net')) {
+            xhr.withCredentials = false
+          }
+        },
+        // For Twitch: tune for live 2s segments
+        ...(isTwitch ? {
+          liveDurationInfinity: true,
+          liveBackBufferLength: 30,
+          maxBufferLength: 30,
+          maxMaxBufferLength: 60,
+          startFragPrefetch: true,
+          testBandwidth: false,
+          // Don't auto-start quality switching for Twitch (causes buffering)
+          abrEwmaDefaultEstimate: 1000000,
+        } : {}),
       })
       hlsRef.current = hls
       hls.loadSource(src)
@@ -221,6 +244,8 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
         setSubtitleTracks(subs)
       })
       hls.on(Hls.Events.ERROR, (_event, data) => {
+        // Log ALL errors for debugging (non-fatal too)
+        console.warn('[HLS] Error:', data.type, data.details, data.fatal ? '(FATAL)' : '', data.url ? `url=${data.url.substring(0, 80)}` : '')
         if (data.fatal) {
           errorCountRef.current += 1
           switch (data.type) {
