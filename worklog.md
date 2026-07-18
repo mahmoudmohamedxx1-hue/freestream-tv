@@ -176,3 +176,30 @@ Stage Summary:
 - Offline channels show clear message + "Open on Twitch" link
 - All 8 Twitch/YouTube categories verified working (10/20/8/9/10/12/6/5 channels)
 - Server stable on port 3000, preview proxy on port 81 returns HTTP 200
+
+---
+Task ID: 37 (Twitch fix — EmbedPlayer renders VideoPlayer internally)
+Agent: main (super-z)
+Task: Fix Twitch not working when user adds a live channel like stableronaldo
+
+Work Log:
+- User reported: "IT ALSO DONT WORK AND WHEN I ADD A TWITCH LIVE LINK IT DOESNT WORK HERE IS THE LINK https://www.twitch.tv/stableronaldo"
+- Tested /api/twitch with stableronaldo: WORKS — returns valid HLS URL (924 chars), stream is LIVE
+- Diagnosed the client-side bug: the old architecture had a race condition. EmbedPlayer called onTwitchResolved callback → parent set twitchHlsUrl state → parent re-rendered → passed new currentChannel object → EmbedPlayer remounted → state reset → infinite loop / dead end
+- Fixed by moving the VideoPlayer rendering INSIDE EmbedPlayer. Now:
+  1. EmbedPlayer receives url, onError, onNext, autoSkip, maxQuality, externalVideoRef props
+  2. For twitch:CHANNEL URLs, it calls /api/twitch to resolve the HLS URL
+  3. When resolved, it renders <VideoPlayer src={twitchHlsUrl} /> directly — no parent state change needed
+  4. No race condition, no remounting, clean flow
+- Removed twitchHlsUrl state and handleTwitchResolved callback from page.tsx (no longer needed)
+- Updated player routing: all embed URLs (twitch:*, twitch-vod:*, twitch-clip:*, youtube:*, youtube-live:*) → EmbedPlayer (which internally handles Twitch live vs iframe for others)
+- Updated action button conditions: PiP/prev/next now show for twitch:CHANNEL URLs (since they play via VideoPlayer internally) + regular HLS streams
+- Verified stableronaldo resolves to a live HLS URL and the stream plays
+- All tests passing: homepage 200, stableronaldo ok=True, mock XC auth=1 + 16 streams + 302 redirect, all Twitch/YouTube categories (10/20/8/12/6 channels), Best of FreeStream 97ch, server stable
+
+Stage Summary:
+- Twitch live streams now work end-to-end: click channel → resolve via /api/twitch → play in HLS.js VideoPlayer
+- stableronaldo (and any other live Twitch channel) works
+- Offline channels show "Channel is offline" + "Open on Twitch" button
+- No iframe parent-domain issues — completely bypassed
+- Server stable on port 3000 + preview proxy on port 81

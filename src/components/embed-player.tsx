@@ -1,173 +1,168 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { VideoPlayer } from './video-player'
 
 /**
  * Twitch / YouTube embed player.
  *
  * Used when a channel's URL starts with one of:
- *   • twitch:<channel>           → Twitch live (via server-side HLS proxy)
+ *   • twitch:<channel>           → Twitch live (via server-side HLS proxy → VideoPlayer)
  *   • twitch-vod:<videoId>       → Twitch VOD (iframe embed)
  *   • twitch-clip:<slug>         → Twitch clip (iframe embed)
  *   • youtube:<videoId>          → YouTube video (iframe embed)
  *   • youtube-live:<channelId>   → YouTube live (iframe embed)
  *
- * TWITCH LIVE STREAMS — HOW THIS WORKS:
- * Twitch's iframe embed (player.twitch.tv) requires the `parent` query param
- * to EXACTLY match the browser's hostname. On preview subdomains like
- * `preview-<uuid>.space-z.ai`, Twitch rejects the embed with
- * "player.twitch.tv refused to connect".
+ * TWITCH LIVE STREAMS:
+ * Twitch's iframe embed requires the `parent` param to EXACTLY match the
+ * browser's hostname. On preview subdomains, Twitch rejects the embed.
  *
- * To fix this, we use a server-side proxy at /api/twitch that:
- *   1. Fetches a PlaybackAccessToken from Twitch's GQL API
- *   2. Calls the usher API to get the HLS playlist URL
- *   3. Returns the URL to the client
- *   4. The client loads it in HLS.js (our existing video player)
+ * Fix: for twitch:CHANNEL URLs, we call /api/twitch which resolves the HLS
+ * URL server-side (via Twitch GQL + usher API), then render our own
+ * VideoPlayer (HLS.js) with that URL. No Twitch iframe needed — the stream
+ * plays in our <video> element with full controls, PiP, quality selection.
  *
- * This completely bypasses the iframe restriction. The stream plays in our
- * own <video> element, no Twitch iframe needed.
- *
- * For Twitch VODs and clips, we still use the iframe (they don't have the
- * same parent restriction issue for short content).
- *
- * For YouTube, we use the official iframe embed (no parent restriction).
+ * For VODs/clips/YouTube, we use the iframe embed (no parent restriction).
  */
 
 type EmbedPlayerProps = {
   url: string
   channelName?: string
   poster?: string
-  /** Called when a Twitch live stream is resolved — parent can switch to HLS player */
-  onTwitchResolved?: (hlsUrl: string, channel: string) => void
+  onError?: (msg: string) => void
+  onNext?: () => void
+  autoSkip?: boolean
+  maxQuality?: 'auto' | '480p' | '720p' | '1080p'
+  externalVideoRef?: React.MutableRefObject<HTMLVideoElement | null>
 }
 
-export function EmbedPlayer({ url, channelName, poster, onTwitchResolved }: EmbedPlayerProps) {
+export function EmbedPlayer({
+  url,
+  channelName,
+  poster,
+  onError,
+  onNext,
+  autoSkip,
+  maxQuality,
+  externalVideoRef,
+}: EmbedPlayerProps) {
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // ─── Twitch live stream resolution state ────────────────────────────────
+  const [twitchHlsUrl, setTwitchHlsUrl] = useState<string | null>(null)
   const [twitchStatus, setTwitchStatus] = useState<'idle' | 'resolving' | 'ok' | 'offline' | 'error'>('idle')
   const [twitchMessage, setTwitchMessage] = useState('')
-  const resolvedRef = useRef(false)
 
   // Reset state when URL changes
   useEffect(() => {
     setLoaded(false)
     setError(null)
+    setTwitchHlsUrl(null)
     setTwitchStatus('idle')
     setTwitchMessage('')
-    resolvedRef.current = false
   }, [url])
 
-  // For Twitch live streams, resolve the HLS URL via our server proxy
-  const twitchLive = url.match(/^twitch:(.+)$/i)
+  // ─── For Twitch live streams, resolve the HLS URL via our server proxy ─
+  const twitchLive = url.match(/^twitch:([a-zA-Z0-9_]{4,25})$/i)
   useEffect(() => {
-    if (!twitchLive || resolvedRef.current) return
+    if (!twitchLive) return
     const channel = twitchLive[1].trim()
-    if (!channel) return
 
-    resolvedRef.current = true
+    let cancelled = false
     setTwitchStatus('resolving')
     setTwitchMessage(`Resolving Twitch stream for "${channel}"…`)
 
     fetch(`/api/twitch?channel=${encodeURIComponent(channel)}`)
       .then(r => r.json())
       .then(data => {
+        if (cancelled) return
         if (data.ok && data.url) {
+          setTwitchHlsUrl(data.url)
           setTwitchStatus('ok')
-          setTwitchMessage(`Stream resolved — loading HLS…`)
-          onTwitchResolved?.(data.url, channel)
+          setTwitchMessage('Stream resolved — loading HLS…')
         } else {
           setTwitchStatus('offline')
           setTwitchMessage(data.error || `Channel "${channel}" is offline`)
         }
       })
       .catch(e => {
+        if (cancelled) return
         setTwitchStatus('error')
         setTwitchMessage(`Failed to resolve: ${e.message}`)
       })
-  }, [twitchLive, onTwitchResolved])
 
-  // ─── If this is a Twitch live stream, show the resolving status ────────
+    return () => { cancelled = true }
+  }, [twitchLive])
+
+  // ─── Twitch live: if resolved, render VideoPlayer directly ──────────────
+  if (twitchLive && twitchStatus === 'ok' && twitchHlsUrl) {
+    return (
+      <VideoPlayer
+        src={twitchHlsUrl}
+        poster={poster}
+        channelName={channelName}
+        onError={onError}
+        onNext={onNext}
+        autoSkip={autoSkip}
+        maxQuality={maxQuality}
+        externalVideoRef={externalVideoRef}
+      />
+    )
+  }
+
+  // ─── Twitch live: show resolving / offline / error states ───────────────
   if (twitchLive) {
     const channel = twitchLive[1].trim()
+    const twitchUrl = `https://www.twitch.tv/${channel}`
 
-    // Validate channel name
-    if (!/^[a-zA-Z0-9_]{4,25}$/.test(channel)) {
-      return (
-        <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground">
-          <div className="text-center px-4">
-            <p className="text-sm font-semibold text-amber-500">⚠ Invalid Twitch channel name</p>
-            <p className="text-xs text-muted-foreground mt-1 font-mono">&quot;{channel}&quot;</p>
-            <p className="text-xs text-muted-foreground mt-2">
-              Channel names must be 4-25 characters, letters/numbers/underscores only.
-            </p>
-          </div>
-        </div>
-      )
-    }
-
-    // Show resolving / offline / error states
-    if (twitchStatus !== 'ok') {
-      const twitchUrl = `https://www.twitch.tv/${channel}`
-      return (
-        <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground border border-border">
-          <div className="text-center px-4 max-w-md">
-            {twitchStatus === 'resolving' && (
-              <>
-                <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-                <p className="text-sm text-foreground/80">{twitchMessage}</p>
-                <p className="text-xs text-muted-foreground mt-2 font-mono">twitch:{channel}</p>
-              </>
-            )}
-
-            {twitchStatus === 'offline' && (
-              <>
-                <p className="text-sm font-semibold text-amber-500 mb-2">📺 Channel is offline</p>
-                <p className="text-xs text-muted-foreground mb-3">{twitchMessage}</p>
-                <p className="text-xs text-muted-foreground mb-4">
-                  Twitch channels only stream when live. Try a 24/7 channel or check back during a broadcast.
-                </p>
-                <a
-                  href={twitchUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition"
-                >
-                  ▶ Open {channel} on Twitch
-                </a>
-              </>
-            )}
-
-            {twitchStatus === 'error' && (
-              <>
-                <p className="text-sm font-semibold text-destructive mb-2">⚠ Error</p>
-                <p className="text-xs text-muted-foreground mb-3">{twitchMessage}</p>
-                <a
-                  href={twitchUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition"
-                >
-                  ▶ Open on Twitch
-                </a>
-              </>
-            )}
-
-            {twitchStatus === 'idle' && (
-              <p className="text-sm">Loading…</p>
-            )}
-          </div>
-        </div>
-      )
-    }
-
-    // If resolved (status === 'ok'), the parent component will render the HLS player
-    // via onTwitchResolved callback. Show a brief "loading HLS" message.
     return (
-      <div className="aspect-video w-full rounded-xl bg-black flex items-center justify-center text-muted-foreground">
-        <div className="text-center">
-          <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm text-foreground/80">Loading Twitch stream…</p>
-          <p className="text-xs text-muted-foreground mt-1 font-mono">twitch:{channel}</p>
+      <div className="aspect-video w-full rounded-xl bg-card flex items-center justify-center text-muted-foreground border border-border">
+        <div className="text-center px-4 max-w-md">
+          {twitchStatus === 'resolving' && (
+            <>
+              <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+              <p className="text-sm text-foreground/80">{twitchMessage}</p>
+              <p className="text-xs text-muted-foreground mt-2 font-mono">twitch:{channel}</p>
+            </>
+          )}
+
+          {twitchStatus === 'offline' && (
+            <>
+              <p className="text-sm font-semibold text-amber-500 mb-2">📺 Channel is offline</p>
+              <p className="text-xs text-muted-foreground mb-3">{twitchMessage}</p>
+              <p className="text-xs text-muted-foreground mb-4">
+                Twitch channels only stream when live. Try during a broadcast, or open directly on Twitch.
+              </p>
+              <a
+                href={twitchUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition"
+              >
+                ▶ Open {channel} on Twitch
+              </a>
+            </>
+          )}
+
+          {twitchStatus === 'error' && (
+            <>
+              <p className="text-sm font-semibold text-destructive mb-2">⚠ Error</p>
+              <p className="text-xs text-muted-foreground mb-3">{twitchMessage}</p>
+              <a
+                href={twitchUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition"
+              >
+                ▶ Open on Twitch
+              </a>
+            </>
+          )}
+
+          {twitchStatus === 'idle' && (
+            <p className="text-sm">Loading…</p>
+          )}
         </div>
       </div>
     )
