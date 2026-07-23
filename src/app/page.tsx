@@ -6,7 +6,7 @@ import {
   Globe, ChevronRight, Star, Zap, Filter, ZapOff, EyeOff,
   Settings, RotateCcw, Clock, ArrowDownAZ, ArrowUpAZ, Flame,
   CheckCircle2, Calendar, Play, ChevronDown, RefreshCw, Key,
-  Code, Twitch, Youtube, Plus,
+  Code, Twitch, Youtube, Plus, Circle, Grid3x3, Cloud, Download,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,6 +19,8 @@ import {
 } from '@/components/ui/select'
 import { VideoPlayer } from '@/components/video-player'
 import { EmbedPlayer, isEmbedUrl } from '@/components/embed-player'
+import { MultiView } from '@/components/multiview'
+import { DVRPanel } from '@/components/dvr-panel'
 import { PROVIDERS, type Provider, type ProviderCategory } from '@/lib/playlists'
 import type { Channel } from '@/lib/m3u-parser'
 import { flagForCountry } from '@/lib/countries'
@@ -28,6 +30,10 @@ import {
   xtreamAuth, xtreamM3U, type XtreamCredentials,
   DEMO_XTREAM_CREDS, isDemoCreds,
 } from '@/lib/xtream'
+import {
+  loadStalkerCreds, saveStalkerCreds, clearStalkerCreds,
+  stalkerHandshake, stalkerGetChannels, type StalkerCredentials,
+} from '@/lib/stalker'
 import { tryCompileFilter } from '@/lib/filter-dsl'
 
 type PlaylistData = {
@@ -168,13 +174,31 @@ export default function Home() {
   const [showUploadDropzone, setShowUploadDropzone] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
+  // ─── Multi-view, DVR, Stalker, Cloud sync state ────────────────────────
+  const [showMultiView, setShowMultiView] = useState(false)
+  const [showDVR, setShowDVR] = useState(false)
+  const [showSync, setShowSync] = useState(false)
+  const [syncKey, setSyncKey] = useState('')
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'ok' | 'error'>('idle')
+
+  // ─── Stalker Portal state ───────────────────────────────────────────────
+  const [adminTab, setAdminTab] = useState<'channels' | 'xtream' | 'stalker' | 'embed'>('channels')
+  const [stalkerUrl, setStalkerUrl] = useState('')
+  const [stalkerMac, setStalkerMac] = useState('')
+  const [stalkerCreds, setStalkerCreds] = useState<StalkerCredentials | null>(null)
+  const [stalkerStatus, setStalkerStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
+  const [stalkerMessage, setStalkerMessage] = useState('')
+  const [stalkerChannels, setStalkerChannels] = useState<Channel[]>([])
+
+  // ─── DVR state ──────────────────────────────────────────────────────────
+  const [dvrRecording, setDvrRecording] = useState(false)
+
   // ─── Separate state for each quick-add embed input (avoids cross-tab bleed) ──
   const [twitchInput, setTwitchInput] = useState('')
   const [ytLiveInput, setYtLiveInput] = useState('')
   const [ytVodInput, setYtVodInput] = useState('')
 
   // ─── Xtream Codes state ─────────────────────────────────────────────────
-  const [adminTab, setAdminTab] = useState<'channels' | 'xtream' | 'embed'>('channels')
   const [xcServer, setXcServer] = useState('')
   const [xcUser, setXcUser] = useState('')
   const [xcPass, setXcPass] = useState('')
@@ -576,6 +600,163 @@ Common causes:
     setXcStatus('idle')
     setXcMessage('Logged out.')
   }, [])
+
+  // ─── Stalker Portal: load saved creds on mount ─────────────────────────
+  useEffect(() => {
+    const saved = loadStalkerCreds()
+    if (saved) {
+      setStalkerCreds(saved)
+      setStalkerUrl(saved.portalUrl)
+      setStalkerMac(saved.mac)
+    }
+  }, [])
+
+  // ─── Stalker Portal: login handler ─────────────────────────────────────
+  const handleStalkerLogin = useCallback(async () => {
+    if (!stalkerUrl.trim() || !stalkerMac.trim()) return
+    setStalkerStatus('loading')
+    setStalkerMessage('Connecting to portal…')
+    try {
+      const creds: StalkerCredentials = {
+        portalUrl: stalkerUrl.trim().replace(/\/+$/, ''),
+        mac: stalkerMac.trim(),
+      }
+      const handshake = await stalkerHandshake(creds)
+      saveStalkerCreds(creds)
+      setStalkerCreds(creds)
+      setStalkerStatus('ok')
+      setStalkerMessage(`✓ Connected — token received. Click "Load channels" to browse.`)
+    } catch (e: unknown) {
+      setStalkerStatus('error')
+      setStalkerMessage(`✗ ${e instanceof Error ? e.message : 'Connection failed'}`)
+    }
+  }, [stalkerUrl, stalkerMac])
+
+  const handleStalkerLogout = useCallback(() => {
+    clearStalkerCreds()
+    setStalkerCreds(null)
+    setStalkerChannels([])
+    setStalkerStatus('idle')
+    setStalkerMessage('Logged out.')
+  }, [])
+
+  const handleStalkerLoadChannels = useCallback(async () => {
+    if (!stalkerCreds) return
+    setStalkerStatus('loading')
+    setStalkerMessage('Loading channels…')
+    try {
+      const { channels } = await stalkerGetChannels(stalkerCreds)
+      const mapped: Channel[] = channels.map((ch, i) => ({
+        id: `stalker-${i}`,
+        name: ch.name,
+        displayName: ch.name,
+        rawName: ch.name,
+        url: ch.url || ch.cmd || '',
+        logo: ch.logo,
+        group: ch.category || 'Stalker',
+      })).filter(c => c.url)
+      setStalkerChannels(mapped)
+      setStalkerStatus('ok')
+      setStalkerMessage(`✓ Loaded ${mapped.length} channels from Stalker portal.`)
+    } catch (e: unknown) {
+      setStalkerStatus('error')
+      setStalkerMessage(`✗ ${e instanceof Error ? e.message : 'Failed to load channels'}`)
+    }
+  }, [stalkerCreds])
+
+  // ─── Cloud sync: load key from localStorage ────────────────────────────
+  useEffect(() => {
+    const key = localStorage.getItem('freestream.syncKey')
+    if (key) setSyncKey(key)
+  }, [])
+
+  // ─── Cloud sync: push local data to server ─────────────────────────────
+  const handleSyncPush = useCallback(async () => {
+    if (!syncKey) return
+    setSyncStatus('syncing')
+    try {
+      await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: syncKey,
+          favorites: Array.from(favorites),
+          recent: recentChannels,
+          customChannels,
+        }),
+      })
+      setSyncStatus('ok')
+      setTimeout(() => setSyncStatus('idle'), 3000)
+    } catch {
+      setSyncStatus('error')
+    }
+  }, [syncKey, favorites, recentChannels, customChannels])
+
+  // ─── Cloud sync: pull data from server ─────────────────────────────────
+  const handleSyncPull = useCallback(async () => {
+    if (!syncKey) return
+    setSyncStatus('syncing')
+    try {
+      const res = await fetch(`/api/sync?key=${syncKey}`)
+      const data = await res.json()
+      if (data.ok) {
+        if (data.favorites) setFavorites(new Set(data.favorites))
+        if (data.recent) setRecentChannels(data.recent)
+        if (data.customChannels) setCustomChannels(data.customChannels)
+        setSyncStatus('ok')
+        setTimeout(() => setSyncStatus('idle'), 3000)
+      } else {
+        setSyncStatus('error')
+      }
+    } catch {
+      setSyncStatus('error')
+    }
+  }, [syncKey])
+
+  // ─── Cloud sync: create new sync key ───────────────────────────────────
+  const handleSyncCreate = useCallback(async () => {
+    setSyncStatus('syncing')
+    try {
+      const res = await fetch('/api/sync?new=1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          favorites: Array.from(favorites),
+          recent: recentChannels,
+          customChannels,
+        }),
+      })
+      const data = await res.json()
+      if (data.key) {
+        setSyncKey(data.key)
+        localStorage.setItem('freestream.syncKey', data.key)
+        setSyncStatus('ok')
+        setTimeout(() => setSyncStatus('idle'), 3000)
+      }
+    } catch {
+      setSyncStatus('error')
+    }
+  }, [favorites, recentChannels, customChannels])
+
+  // ─── DVR: start recording current channel ──────────────────────────────
+  const startDVR = useCallback(async () => {
+    if (!currentChannel || isEmbedUrl(currentChannel.url)) return
+    setDvrRecording(true)
+    try {
+      await fetch('/api/dvr', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: currentChannel.url,
+          name: currentChannel.displayName,
+          channel: currentChannel.group || '',
+          duration: 3600,
+        }),
+      })
+    } catch {} finally {
+      setDvrRecording(false)
+    }
+  }, [currentChannel])
 
   // ─── Xtream Codes: load demo (mock) server ──────────────────────────────
   const handleXtreamDemo = useCallback(async () => {
@@ -1245,6 +1426,43 @@ Common causes:
             )}
           </Button>
 
+          {/* Multi-view button — watch 2-4 channels simultaneously */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowMultiView(true)}
+            className="gap-2"
+            title="Multi-View — watch multiple channels at once"
+          >
+            <Grid3x3 className="w-4 h-4" />
+            <span className="hidden lg:inline">Multi-View</span>
+          </Button>
+
+          {/* DVR button — record current channel */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowDVR(true)}
+            className="gap-2"
+            title="DVR — Record & manage recordings"
+          >
+            <Circle className={cn('w-4 h-4', dvrRecording && 'fill-red-500 text-red-500 animate-pulse')} />
+            <span className="hidden lg:inline">DVR</span>
+          </Button>
+
+          {/* Cloud sync button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowSync(true)}
+            className="gap-2"
+            title="Cloud Sync — share favorites across devices"
+          >
+            <Cloud className={cn('w-4 h-4', syncStatus === 'ok' && 'text-green-500', syncStatus === 'syncing' && 'animate-pulse')} />
+            <span className="hidden lg:inline">Sync</span>
+            {syncKey && <Badge variant="secondary" className="ml-0.5 px-1 py-0 text-[10px]">✓</Badge>}
+          </Button>
+
           {/* Refresh button — bypasses cache to pull latest auto-updated playlists */}
           <Button
             variant="outline"
@@ -1288,33 +1506,42 @@ Common causes:
           <div className="px-4 md:px-6 pb-3 border-t border-border bg-card/40">
             <div className="max-w-3xl mx-auto pt-3 space-y-3">
               {/* Tab bar */}
-              <div className="flex gap-1 border-b border-border">
+              <div className="flex gap-1 border-b border-border overflow-x-auto no-scrollbar">
                 <button
                   onClick={() => setAdminTab('channels')}
                   className={cn(
-                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition',
+                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition whitespace-nowrap',
                     adminTab === 'channels' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground',
                   )}
                 >
-                  <Tv className="w-3.5 h-3.5" /> Custom Channels ({customChannels.length})
+                  <Tv className="w-3.5 h-3.5" /> Channels ({customChannels.length})
                 </button>
                 <button
                   onClick={() => setAdminTab('xtream')}
                   className={cn(
-                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition',
+                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition whitespace-nowrap',
                     adminTab === 'xtream' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground',
                   )}
                 >
-                  <Key className="w-3.5 h-3.5" /> Xtream Codes {xcCreds && <span className="text-green-500">✓</span>}
+                  <Key className="w-3.5 h-3.5" /> Xtream {xcCreds && <span className="text-green-500">✓</span>}
+                </button>
+                <button
+                  onClick={() => setAdminTab('stalker')}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition whitespace-nowrap',
+                    adminTab === 'stalker' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <Radio className="w-3.5 h-3.5" /> Stalker {stalkerCreds && <span className="text-green-500">✓</span>}
                 </button>
                 <button
                   onClick={() => setAdminTab('embed')}
                   className={cn(
-                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition',
+                    'flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition whitespace-nowrap',
                     adminTab === 'embed' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground',
                   )}
                 >
-                  <Twitch className="w-3.5 h-3.5" /> Twitch & YouTube
+                  <Twitch className="w-3.5 h-3.5" /> Twitch & YT
                 </button>
               </div>
 
@@ -1530,6 +1757,103 @@ Common causes:
                     <p>• <code className="text-primary">get.php</code> — full M3U playlist (parsed as channels)</p>
                     <p>• <code className="text-primary">xmltv.php</code> — full XMLTV EPG (fetched on demand)</p>
                     <p>• Live stream URL: <code className="text-primary">/live/user/pass/id.m3u8</code></p>
+                  </div>
+                </div>
+              )}
+
+              {/* ─── Tab: Stalker Portal ─── */}
+              {adminTab === 'stalker' && (
+                <div className="space-y-3">
+                  <p className="text-xs text-muted-foreground">
+                    Login to a Stalker / Ministra portal using a MAC address (00:1A:79:XX:XX:XX).
+                    Credentials are stored in your browser only.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <Input
+                      placeholder="Portal URL (http://portal.example.com)"
+                      value={stalkerUrl}
+                      onChange={(e) => setStalkerUrl(e.target.value)}
+                      className="bg-secondary/40 sm:col-span-3 font-mono text-xs"
+                    />
+                    <Input
+                      placeholder="MAC address (00:1A:79:XX:XX:XX)"
+                      value={stalkerMac}
+                      onChange={(e) => setStalkerMac(e.target.value)}
+                      className="bg-secondary/40 sm:col-span-3 font-mono text-xs"
+                    />
+                  </div>
+
+                  <div className="flex gap-2 flex-wrap">
+                    <Button
+                      onClick={handleStalkerLogin}
+                      size="sm"
+                      disabled={stalkerStatus === 'loading'}
+                      className="gap-2"
+                    >
+                      {stalkerStatus === 'loading' ? (
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                      ) : (
+                        <Radio className="w-3 h-3" />
+                      )}
+                      {stalkerCreds ? 'Test & Save' : 'Connect'}
+                    </Button>
+                    {stalkerCreds && (
+                      <Button onClick={handleStalkerLogout} size="sm" variant="outline" className="gap-2">
+                        Logout
+                      </Button>
+                    )}
+                    {stalkerCreds && (
+                      <Button
+                        onClick={handleStalkerLoadChannels}
+                        size="sm"
+                        variant="outline"
+                        className="gap-2"
+                      >
+                        <Play className="w-3 h-3" /> Load channels
+                      </Button>
+                    )}
+                  </div>
+
+                  {stalkerMessage && (
+                    <p className={cn(
+                      'text-xs p-2 rounded-lg whitespace-pre-wrap',
+                      stalkerStatus === 'ok' && 'bg-green-500/10 text-green-500',
+                      stalkerStatus === 'error' && 'bg-destructive/10 text-destructive',
+                      stalkerStatus === 'idle' && 'bg-secondary/40 text-muted-foreground',
+                    )}>
+                      {stalkerMessage}
+                    </p>
+                  )}
+
+                  {stalkerChannels.length > 0 && (
+                    <div className="space-y-1 mt-2 max-h-60 overflow-y-auto thin-scroll">
+                      <p className="text-xs text-muted-foreground">{stalkerChannels.length} channels loaded — click to play:</p>
+                      {stalkerChannels.slice(0, 50).map(ch => (
+                        <div key={ch.id} className="flex items-center gap-2 p-2 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition">
+                          <span className="text-sm font-medium flex-1 truncate">{ch.displayName}</span>
+                          <button
+                            onClick={() => { handleSelectChannel(ch); setShowAdmin(false) }}
+                            className="px-2 py-1 rounded text-xs bg-primary/20 text-primary hover:bg-primary/30 transition"
+                          >
+                            Play
+                          </button>
+                          <button
+                            onClick={() => setCustomChannels(prev => [ch, ...prev])}
+                            className="px-2 py-1 rounded text-xs bg-secondary hover:bg-secondary/80 transition"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="text-xs text-muted-foreground space-y-1 p-2 rounded-lg bg-secondary/20">
+                    <p className="font-semibold">Stalker Portal API (via /api/stalker proxy):</p>
+                    <p>• <code className="text-primary">/stalker_portal/server/load.php</code> — handshake, channels, EPG</p>
+                    <p>• Auth: MAC address (no username/password)</p>
+                    <p>• Common portals: Ministra, Stalker TV, MAG portal</p>
                   </div>
                 </div>
               )}
@@ -2634,6 +2958,101 @@ Common causes:
             <Play className="w-16 h-16 text-primary mx-auto mb-4" />
             <p className="text-xl font-bold text-primary">Drop your .m3u file to import</p>
             <p className="text-sm text-muted-foreground mt-1">Channels will be added to "My Channels"</p>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Multi-view modal ─── */}
+      {showMultiView && (
+        <MultiView
+          channels={filteredChannels}
+          onClose={() => setShowMultiView(false)}
+          onSelectChannel={(ch) => handleSelectChannel(ch)}
+        />
+      )}
+
+      {/* ─── DVR panel modal ─── */}
+      {showDVR && (
+        <DVRPanel
+          currentChannel={currentChannel}
+          onClose={() => setShowDVR(false)}
+          onPlayRecording={(rec) => {
+            handleSelectChannel({
+              id: rec.id,
+              name: rec.name,
+              displayName: rec.name,
+              rawName: rec.name,
+              url: `/api/dvr?id=${rec.id}&download=1`,
+              group: 'DVR Recording',
+            })
+            setShowDVR(false)
+          }}
+        />
+      )}
+
+      {/* ─── Cloud sync modal ─── */}
+      {showSync && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={() => setShowSync(false)}>
+          <div className="w-full max-w-md bg-card rounded-xl border border-border shadow-2xl p-6" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold flex items-center gap-2">
+                <Cloud className="w-4 h-4 text-primary" />
+                Cloud Sync
+              </h3>
+              <button onClick={() => setShowSync(false)} className="p-1 rounded hover:bg-secondary">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-xs text-muted-foreground mb-4">
+              Sync your favorites, recently watched, and custom channels across devices.
+              Generate a sync key on one device, enter it on another.
+            </p>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-medium mb-1 block">Your sync key:</label>
+                <Input
+                  placeholder="No key yet — click 'Generate' to create one"
+                  value={syncKey}
+                  onChange={e => {
+                    setSyncKey(e.target.value)
+                    localStorage.setItem('freestream.syncKey', e.target.value)
+                  }}
+                  className="font-mono text-xs"
+                />
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {!syncKey && (
+                  <Button onClick={handleSyncCreate} size="sm" className="gap-2" disabled={syncStatus === 'syncing'}>
+                    {syncStatus === 'syncing' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
+                    Generate Key
+                  </Button>
+                )}
+                {syncKey && (
+                  <>
+                    <Button onClick={handleSyncPush} size="sm" className="gap-2" disabled={syncStatus === 'syncing'}>
+                      <Cloud className="w-3 h-3" />
+                      Push
+                    </Button>
+                    <Button onClick={handleSyncPull} size="sm" variant="outline" className="gap-2" disabled={syncStatus === 'syncing'}>
+                      <Download className="w-3 h-3" />
+                      Pull
+                    </Button>
+                  </>
+                )}
+              </div>
+              {syncStatus === 'ok' && (
+                <p className="text-xs text-green-500">✓ Synced successfully!</p>
+              )}
+              {syncStatus === 'error' && (
+                <p className="text-xs text-destructive">✗ Sync failed. Check your key.</p>
+              )}
+              {syncStatus === 'syncing' && (
+                <p className="text-xs text-muted-foreground">Syncing…</p>
+              )}
+              <p className="text-xs text-muted-foreground/70 pt-2 border-t border-border">
+                Copy this key to your other devices and paste it in the sync field to share favorites and history.
+              </p>
+            </div>
           </div>
         </div>
       )}

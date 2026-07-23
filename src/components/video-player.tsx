@@ -156,7 +156,9 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
         // Twitch live playlists have 2-second segments; disable low-latency mode
         // which can cause issues with non-LL-HLS streams
         lowLatencyMode: false,
-        backBufferLength: 30,
+        // Catchup/Timeshift: keep 10 minutes of back-buffer so users can seek backward
+        backBufferLength: 600,
+        liveBackBufferLength: 600,
         manifestLoadingTimeOut: 20000,
         manifestLoadingMaxRetry: 3,
         levelLoadingTimeOut: 20000,
@@ -165,7 +167,6 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
         fragLoadingMaxRetry: 6,
         // For Twitch: set proper credentials mode and headers
         xhrSetup: (xhr, url) => {
-          // Twitch CDN requires credentials for some segments
           if (isTwitch || url.includes('ttvnw.net')) {
             xhr.withCredentials = false
           }
@@ -173,7 +174,6 @@ export function VideoPlayer({ src, poster, channelName, onError, onNext, autoSki
         // For Twitch: tune for live 2s segments
         ...(isTwitch ? {
           liveDurationInfinity: true,
-          liveBackBufferLength: 30,
           maxBufferLength: 30,
           maxMaxBufferLength: 60,
           startFragPrefetch: true,

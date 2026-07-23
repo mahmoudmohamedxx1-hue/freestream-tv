@@ -128,7 +128,7 @@ export async function stalkerGetChannels(
   creds: StalkerCredentials,
   token?: string,
 ): Promise<{ channels: StalkerChannel[]; categories: StalkerCategory[] }> {
-  const extra = token ? { token } : {}
+  const extra: Record<string, string> = token ? { token } : {}
   const data = await callStalker<any>(creds, 'get_epg_info', extra)
 
   const channels: StalkerChannel[] = []
@@ -176,7 +176,7 @@ export async function stalkerGetStreamUrl(
   channelId: string,
   token?: string,
 ): Promise<string | null> {
-  const extra = { ch_id: channelId, ...(token ? { token } : {}) }
+  const extra: Record<string, string> = { ch_id: channelId, ...(token ? { token } : {}) }
   try {
     const data = await callStalker<any>(creds, 'get_url', extra)
     const url = data?.js?.cmd || data?.cmd || data?.js?.url || data?.url
