@@ -1315,190 +1315,152 @@ Common causes:
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* ─── Header ─── */}
+      {/* ─── Header — clean, organized, Pluto TV style ─── */}
       <header className="sticky top-0 z-30 glass border-b border-white/5">
-        <div className="px-4 md:px-6 py-3 flex items-center gap-3">
-          <button
-            onClick={() => setSidebarOpen(v => !v)}
-            className="lg:hidden p-2 rounded-lg hover:bg-secondary"
-            aria-label="Toggle sidebar"
-          >
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-              <Radio className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-lg font-bold tracking-tight">FreeStream TV</h1>
-              <p className="text-xs text-muted-foreground -mt-0.5">{language === 'ar' ? 'تلفزيون مجاني — بدون تسجيل' : 'Free live TV — no signup'}</p>
+        <div className="px-3 md:px-6 py-2.5 flex items-center gap-2 md:gap-4">
+          {/* Left: Logo + mobile menu */}
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setSidebarOpen(v => !v)}
+              className="lg:hidden p-2 rounded-lg hover:bg-white/5"
+              aria-label="Toggle sidebar"
+            >
+              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/30">
+                <Radio className="w-4 h-4 text-white" />
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-base font-bold tracking-tight leading-none">FreeStream TV</h1>
+                <p className="text-[10px] text-muted-foreground mt-0.5">{language === 'ar' ? 'تلفزيون مجاني' : 'Free live TV'}</p>
+              </div>
             </div>
           </div>
 
-          <div className="flex-1 max-w-xl mx-auto relative">
+          {/* Center: Search */}
+          <div className="flex-1 max-w-md mx-auto relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
               placeholder="Search channels…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 bg-secondary/60 border-border focus-visible:bg-secondary"
+              className="pl-9 bg-white/5 border-white/5 focus-visible:bg-white/10 h-9"
             />
           </div>
 
-          <Button
-            variant={showRecentOnly ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => { setShowRecentOnly(v => !v); setShowFavsOnly(false) }}
-            className="gap-2"
-            title="Recently watched"
-          >
-            <Clock className="w-4 h-4" />
-            <span className="hidden sm:inline">Recent</span>
-          </Button>
+          {/* Right: Grouped icon sections */}
+          <div className="flex items-center gap-1 shrink-0">
+            {/* Group 1: Quick filters (Recent + Favs) */}
+            <div className="flex items-center gap-0.5">
+              <button
+                onClick={() => { setShowRecentOnly(v => !v); setShowFavsOnly(false) }}
+                className={cn(
+                  'p-2 rounded-lg transition-colors',
+                  showRecentOnly ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                )}
+                title="Recently watched"
+              >
+                <Clock className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => { setShowFavsOnly(v => !v); setShowRecentOnly(false) }}
+                className={cn(
+                  'p-2 rounded-lg transition-colors relative',
+                  showFavsOnly ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                )}
+                title="Favorites"
+              >
+                <Heart className={cn('w-4 h-4', showFavsOnly && 'fill-current')} />
+                {favorites.size > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary text-[8px] flex items-center justify-center text-white font-bold">
+                    {favorites.size > 9 ? '9+' : favorites.size}
+                  </span>
+                )}
+              </button>
+            </div>
 
-          <Button
-            variant={showFavsOnly ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => { setShowFavsOnly(v => !v); setShowRecentOnly(false) }}
-            className="gap-2"
-          >
-            <Heart className={cn('w-4 h-4', showFavsOnly && 'fill-current')} />
-            <span className="hidden sm:inline">Favorites</span>
-            {favorites.size > 0 && (
-              <Badge variant="secondary" className="ml-1 px-1.5 py-0 text-xs">
-                {favorites.size}
-              </Badge>
-            )}
-          </Button>
+            {/* Divider */}
+            <div className="w-px h-5 bg-white/10 mx-1" />
 
-          {/* Language toggle */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setLanguage(l => l === 'en' ? 'ar' : 'en')}
-            className="gap-1.5 font-bold"
-            title={language === 'en' ? 'التبديل إلى العربية' : 'Switch to English'}
-          >
-            {language === 'en' ? '🇸🇦 AR' : '🇬🇧 EN'}
-          </Button>
+            {/* Group 2: Advanced features (icons only on mobile, labeled on desktop) */}
+            <div className="flex items-center gap-0.5">
+              <button
+                onClick={() => setGlobalSearchOpen(true)}
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+                title="Global Search (Ctrl+K)"
+              >
+                <Search className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setShowMultiView(true)}
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+                title="Multi-View"
+              >
+                <Grid3x3 className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setShowDVR(true)}
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+                title="DVR Recordings"
+              >
+                <Circle className={cn('w-4 h-4', dvrRecording && 'fill-red-500 text-red-500 animate-pulse')} />
+              </button>
+              <button
+                onClick={() => setShowSync(true)}
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+                title="Cloud Sync"
+              >
+                <Cloud className={cn('w-4 h-4', syncStatus === 'ok' && 'text-green-500', syncStatus === 'syncing' && 'animate-pulse')} />
+              </button>
+            </div>
 
-          {/* Global Search button (⌘K / Ctrl+K) — searches iptv-org 8000+ channels */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setGlobalSearchOpen(true)}
-            className="gap-2"
-            aria-label="Global Search"
-            title="Global Search — search 8000+ channels from iptv-org (Ctrl+K)"
-          >
-            <Search className="w-4 h-4" />
-            <span className="hidden md:inline">Search All</span>
-          </Button>
+            {/* Divider */}
+            <div className="w-px h-5 bg-white/10 mx-1" />
 
-          {/* Favorites grid button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowFavGrid(true)}
-            className="gap-2"
-            title="Favorites grid"
-          >
-            <Heart className={cn('w-4 h-4', favorites.size > 0 && 'fill-primary text-primary')} />
-            <span className="hidden md:inline">Favs</span>
-            {favorites.size > 0 && (
-              <Badge variant="secondary" className="ml-0.5 px-1.5 py-0 text-xs">{favorites.size}</Badge>
-            )}
-          </Button>
+            {/* Group 3: Settings/Admin */}
+            <div className="flex items-center gap-0.5">
+              <button
+                onClick={() => setRefreshNonce(n => n + 1)}
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+                title="Refresh"
+              >
+                <RefreshCw className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setShowAdmin(v => !v)}
+                className={cn(
+                  'p-2 rounded-lg transition-colors',
+                  showAdmin ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                )}
+                title="Admin"
+              >
+                <Tv className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setShowSettings(v => !v)}
+                className={cn(
+                  'p-2 rounded-lg transition-colors',
+                  showSettings ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                )}
+                title="Settings"
+              >
+                <Settings className="w-4 h-4" />
+              </button>
+            </div>
 
-          {/* Recently watched grid button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowRecentGrid(true)}
-            className="gap-2"
-            title="Recently watched grid"
-          >
-            <Clock className="w-4 h-4" />
-            <span className="hidden md:inline">Recent</span>
-            {recentChannels.length > 0 && (
-              <Badge variant="secondary" className="ml-0.5 px-1.5 py-0 text-xs">{recentChannels.length}</Badge>
-            )}
-          </Button>
+            {/* Divider */}
+            <div className="w-px h-5 bg-white/10 mx-1" />
 
-          {/* Multi-view button — watch 2-4 channels simultaneously */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowMultiView(true)}
-            className="gap-2"
-            title="Multi-View — watch multiple channels at once"
-          >
-            <Grid3x3 className="w-4 h-4" />
-            <span className="hidden lg:inline">Multi-View</span>
-          </Button>
-
-          {/* DVR button — record current channel */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowDVR(true)}
-            className="gap-2"
-            title="DVR — Record & manage recordings"
-          >
-            <Circle className={cn('w-4 h-4', dvrRecording && 'fill-red-500 text-red-500 animate-pulse')} />
-            <span className="hidden lg:inline">DVR</span>
-          </Button>
-
-          {/* Cloud sync button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowSync(true)}
-            className="gap-2"
-            title="Cloud Sync — share favorites across devices"
-          >
-            <Cloud className={cn('w-4 h-4', syncStatus === 'ok' && 'text-green-500', syncStatus === 'syncing' && 'animate-pulse')} />
-            <span className="hidden lg:inline">Sync</span>
-            {syncKey && <Badge variant="secondary" className="ml-0.5 px-1 py-0 text-[10px]">✓</Badge>}
-          </Button>
-
-          {/* Refresh button — bypasses cache to pull latest auto-updated playlists */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setRefreshNonce(n => n + 1)}
-            className="gap-2"
-            aria-label="Refresh"
-            title="Refresh — pull the latest version of this playlist (bypasses cache)"
-          >
-            <RefreshCw className="w-4 h-4" />
-            <span className="hidden sm:inline">Refresh</span>
-          </Button>
-
-          {/* Admin button — add/delete channels + load custom M3U + Xtream + Twitch/YT */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowAdmin(v => !v)}
-            className="gap-2"
-            aria-label="Admin"
-            title="Admin — Custom channels, Xtream Codes, Twitch/YouTube"
-          >
-            <Tv className="w-4 h-4" />
-            <span className="hidden sm:inline">Admin</span>
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowSettings(v => !v)}
-            className="gap-2"
-            aria-label="Settings"
-          >
-            <Settings className="w-4 h-4" />
-            <span className="hidden sm:inline">{language === 'ar' ? 'الإعدادات' : 'Settings'}</span>
-          </Button>
+            {/* Group 4: Language */}
+            <button
+              onClick={() => setLanguage(l => l === 'en' ? 'ar' : 'en')}
+              className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+              title={language === 'en' ? 'التبديل إلى العربية' : 'Switch to English'}
+            >
+              {language === 'en' ? 'ع' : 'EN'}
+            </button>
+          </div>
         </div>
 
         {/* ─── Admin panel — tabbed: Custom Channels / Xtream Codes / Twitch+YT ─── */}
@@ -2112,32 +2074,32 @@ Common causes:
           </div>
         )}
 
-        {/* ─── Provider selector — collapsible grid with logos ─── */}
-        <div className="px-4 md:px-6 pb-2">
+        {/* ─── Provider selector — compact, clean bar ─── */}
+        <div className="px-3 md:px-6 pb-2">
           {/* Active provider bar (click to expand grid) */}
           <button
             onClick={() => setProviderGridOpen(v => !v)}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl bg-secondary/60 hover:bg-secondary transition border border-border"
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/8 transition-colors group"
           >
             {activeProvider.logo ? (
               <img
                 src={activeProvider.logo}
                 alt={activeProvider.name}
-                className="w-7 h-7 object-contain"
+                className="w-6 h-6 object-contain"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement
                   target.style.display = 'none'
                   const parent = target.parentElement
                   if (parent && !parent.querySelector('.fallback-flag')) {
                     const span = document.createElement('span')
-                    span.className = 'fallback-flag text-2xl'
+                    span.className = 'fallback-flag text-lg'
                     span.textContent = activeProvider.flag
                     parent.insertBefore(span, parent.firstChild)
                   }
                 }}
               />
             ) : (
-              <span className="text-2xl">{activeProvider.flag}</span>
+              <span className="text-lg">{activeProvider.flag}</span>
             )}
             <div className="flex-1 text-left">
               <p className="text-sm font-bold">{activeProvider.name}</p>
