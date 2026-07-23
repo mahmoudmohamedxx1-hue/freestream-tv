@@ -1,0 +1,308 @@
+=== Fetch iptv-org/awesome-iptv for comprehensive list ===
+# Awesome IPTV
+
+A curated list of resources related to IPTV.
+
+## Contents
+
+- 💻 [Apps](#apps)
+  - [Web](#web)
+  - [Windows](#windows)
+  - acOS](#macos)
+  - [Linux](#linux)
+  - [Android](#android)
+  - [iPhone](#iphone)
+  - [iPad](#ipad)
+  - [Apple Watch](#apple-watch)
+  - [Apple TV](#apple-tv)
+  - [Apple Vision Pro](#apple-vision-pro)
+  - [Android TV](#android-tv)
+  - [WebOS](#webos)
+  - [Roku](#roku)
+  - [Xbox](#xbox)
+  - [Google Chrome](#google-chrome)
+  - [Docker](#docker)
+- 📡 [Providers](#providers)
+- 🗄️ [Channel Datasets](#channel-datasets)
+- 🗓 [EPG Sources](#epg-sources)
+- 👨🏻‍💻 [Programming](#programming)
+- 📝 [Contribution](#contribution)
+- © [License](#license)
+
+## Apps
+
+Applications with support of IPTV streams.
+
+#### Web
+
+- [IPTVnator](https://iptvnator.vercel.app/) - Open-source and cross-platform IPTV player application with multiple features, such as support of m3u and m3u8 playlists, favorites, TV archive/catchup and more.
+- [VidGrid](https://vidgrid.tk.gg) - News channel focused multiviewer with support for live m3u8 playlists, YouTube and Twitch streams with one-click audio switching.
+- [IPTV Smarter Player](http://webtv.iptvsmarters.com) - Video streaming player that allows your IPTV customers or end-users to stream content like Live TV, VOD, Series, and TV Catchup supplied by you.
+- [Purple WebPlayer](http://login.purpletv.app) - Free Webplayer to stream content within browser.
+- [Pleyr](https://pleyr.net/) - IPTV web browser player both m3u8 and mpeg2-ts playlists.
+- [Free IPTV Player](https://freeiptvplayer.net/) - Tool for testing M3U files and enjoying live HLS TV UHD, FHD, HD, or SD streams on any browser-equipped device.
+- [Ellipto IPTV](https://elliptoiptv.vercel.app/) - A progressive web app to watch m3u or m3u8 playlists with some awesome features.
+- [MediathekViewWeb](https://mediathekviewweb.de/) - Tool for finding URLs of videos specifically from German(-speaking) public broadcast.
+- [IPTV RestreamHub](https://github.com/antebrl/IPTV-Restream) - A comprehensive solution for synchronized IPTV watching (Watch2Gether), restreaming, proxying connection-limited playlists, and combining or sharing playlists seamlessly.
+- [IPTVPlayer.stream](https://iptvplayer.stream/) - A free web-based IPTV stream player that lets you import, manage, and stream IPTV playlists directly in your browser.
+- [PublicIPTV](https://publiciptv.com/) - A free online IPTV stream player that lets you explore and watch live TV from around the world.
+- [SupercamBR](http://listas.supercambr.com.br/) - Free online iptv web player with channels from all over the world.
+- [Wizju IPTV Player](https://github.com/j2jstudio/wizju-iptv-player) - Lightweight, modern, browser‑based IPTV player built with Vue 3, Vite, TypeScript, Pinia, TailwindCSS and Video.js.
+- [CieloWeb - M3U Magic](https://tools.cieloweb.com/tools/m3u-magic) - Privacy focused web player that allows you to open and stream M3U and M3U8 playlists directly in your browser, built for speed, simplicity, and full client side playback.
+- lstv.app](https://hlstv.app) – Fast, easy to use iptv player with curated local & remote URL upload capabilities.
+- [M3U IPTV](https://m3u-ip.tv/browser/) - Stream your M3U playlist with our free, easy-to-use IPTV player app.
+- [Moviepex](https://moviepex.com)- Super fast IPTV player with family profiles, great UX/UI, IMDB integration, football matches of day integration, and TV remote navigation.
+- [Web IPTV Player](https://www.webiptvplayer.com/) - Modern, secure browser-based player featuring Google Cloud Sync for playlists, Chromecast/AirPlay support, EPG, and smart VLC integration for complex streams.
+- [Streamtest](https://streamtest.in/) - Free and easy to use web based stream tester utility.
+- 3u4u](https://m3u4u.com/) - Create, edit, sort m3u playlists online, EPG, and more.
+- [RockMyM3u](https://rockmym3u.com/) - M3U & Xtream Editor, create playlists and more online.
+- 3u.in](https://m3u.in/) - Create, edit, sort channels/groups in m3u playlists online, merge two or more playlists into one, automatic updates, access logs, short links and more.
+- [IPTV Link Search](http://tonkiang.us/) - Search for public IPTV channels.
+- [Jellyfin](https://demo.jellyfin.org/) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [StreamVault](https://streamvault.hopto.org/) - Browser-based IPTV client supporting Xtream Codes, Stalker Portal (MAC auth), and M3U with favorites, watch history, EPG guide, and multi-connection switching. ([Source Code](https://github.com/cowpooo-source/StreamVault))
+
+#### Windows
+
+- [VLC for Windows](https://www.videolan.org/vlc/download-windows.html) - Free and open-source portable cross-platform media player.
+- [Kodi](https://kodi.tv/) - Free cross-platform media player with library support.
+- [MPC-HC](https://github.com/clsid2/mpc-hc) - Free and open-source video and audio player for Windows.
+- [PotPlayer](https://potplayer.daum.net/) - Free media player for Windows.
+- [Megacubo](https://megacubo.tv) - Open-source cross-platform IPTV streaming application with multiple features such as favorites, EPG based recommendations, etc.
+- [IPTVnator](https://github.com/4gray/iptvnator) - Free cross-platform IPTV streaming application with multiple features such as favorites, EPG, TV archive etc.
+- [termv](https://github.com/Roshan-R/termv) - A terminal IPTV player written in bash.
+- [Zoom Player](https://www.inmatrix.com/zplayer/) - Customizable media player for Windows PCs.
+- [SimpleTV for Windows](http://plst.rf.gd/?i=1) - Free VLC-based application for Windows designed with IPTV features in mind such as favorites, EPG, TV archive, support for MPD, extensible by LUA plugins and EventGhost integration.
+- [Open TV](https://github.com/Fredolx/open-tv) - Ultra-fast, simple and powerful cross-platform IPTV app.
+- [SupercamBR](https://www.supercambr.com.br/) - Open source iptv player and list sharing app for Windows.
+- [Xtream IPTV Player by MY-1](https://github.com/Cyogenus/XTREME-IPTV-PLAYER-by-MY-1) - An IPTV player that supports M3U_plus playlists and the Xtream Codes API, allowing users to manage and play IPTV channels, movies, and TV series.
+- [MAC & Stalker IPTV Player by MY-1](https://github.com/Cyogenus/IPTV-MAC-STALKER-PLAYER-BY-MY-1) - Stream Live TV, VOD, and Series from MAC-based and Stalker IPTV portals directly on Windows with powerful extra features.
+- [M3U IPTV](https://www.microsoft.com/store/productId/9MT1D281RDB4?ocid=pdpshare) - A free, ad-free, registration-free IPTV player designed for simple and smooth M3U playback.
+- [AndyTV](https://github.com/aherrick/AndyTV) - A lightweight, open-source IPTV player for Windows.
+- [QiTV](https://github.com/ozankaraali/QiTV) - A cross-platform STB, Xtream and IPTV player.
+- [QMPlay2](https://github.com/zaps166/QMPlay2) - A video and audio player which can play most formats and codecs.
+- [WebGrab+Plus](http://www.webgrabplus.com/) - Multi-site incremental XMLTV EPG grabber.
+- [Streamlink](https://streamlink.github.io/index.html) - A command-line utility that extracts streams from various services and pipes them into a video player of choice.
+- anusoft/IPTV-Link-Validator](https://github.com/manusoft/IPTV-Link-Validator) - IPTV API Link Validator in WinUI3.
+- [AuthoIPTV](https://github.com/glitport/AuthoIPTV) - A feature-rich Electron-powered IPTV player designed for desktop users.
+- [Jellyfin Desktop](https://github.com/jellyfin/jellyfin-desktop) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [ynoTV](https://github.com/tbeezy/ynotv) - A feature-rich, open source IPTV player for Windows built on [Tauri v2](https://tauri.app/) and pv](https://mpv.io/).
+- [PlayOnTV](https://playontv.itch.io/playontv-windows) - Supports M3U, Xtream, and Stalker Portal with EPG, cloud sync, offline downloads, and watch progress tracking; free version without intrusive full-screen ads.
+- [Stream-Recorder](https://github.com/sc44/Stream-Recorder) - Flexible IPTV player and recorder with EPG.
+- [IPTV Checker](https://github.com/kristofferR/IPTVChecker) - Cross-platform IPTV player, playlist validator, and stream health checker with thumbnails and export.
+- [IPTV Controller Pro](https://github.com/tanmay1117/Iptv-on-mpv-) - A high-performance, cross-platform IPTV browser built with Python and the MPV engine.
+- [Nightmare TV](https://apps.microsoft.com/detail/9PLPLGHTVB5G) - libmpv-based IPTV/M3U/Xtream Codes player for Windows with HDR tone-mapping (BT.2390), Dolby Atmos/DTS-X passthrough, and multi-view.
+- [sbtlTV](https://github.com/thesubtleties/sbtlTV) - A free, open-source desktop IPTV player built with Electron and mpv, focused on a simple, low-latency experience with Xtream and M3U support, EPG, movies and series, multi-source merging, and watch progress.
+- [Blazin IPTV Player](https://apps.microsoft.com/detail/9nq5s0ffcn8t?hl=en-US&gl=US) - All-in-one Windows IPTV player for Xtream, STB MAC, Stalker, M3U files, and M3U URLs with multi-threaded playlist loading and built-in VLC playback.
+- [Lotus Engine](https://github.com/hieu-TQS/MediaLedInterface) - A free, open-source desktop IPTV player that supports Digital Rights Management for Media Presentation Description.
+- [XPlayer](https://github.com/TNT-Likely/xplayer) - Free and open-source cross-platform IPTV/M3U player with channel grouping, search, EPG, and favorites.
+- [cli-tv](https://github.com/webwurst9000/cli-tv/) - A fast, lightweight terminal IPTV browser and player built in Rust, featuring background stream health probing and an interactive keyboard-driven interface.
+
+#### macOS
+
+- [VLC for Mac OS X](https://www.videolan.org/vlc/download-macosx.html) - Free and open-source portable cross-platform media player.
+- [IINA](https://iina.io/) - Modern media player for macOS.
+- [Elmedia Video Player](https://apps.apple.com/us/app/elmedia-video-player/id1044549675?platform=mac) - Free media player for Mac OS.
+- [Kodi](https://kodi.tv/) - Free cross-platform media player with library support.
+- [Megacubo](https://megacubo.tv/?os=MacOS) - Open-source cross-platform IPTV streaming application with multiple features such as favorites, EPG based recommendations, etc.
+- [IPTVnator](https://github.com/4gray/iptvnator) - Free cross-platform IPTV streaming application with multiple features such as favorites, EPG, TV archive etc.
+- [termv](https://github.com/Roshan-R/termv) - A terminal IPTV player written in bash.
+- [IPTV Player Live](https://apps.apple.com/us/app/iptv-player-live-m3u-xtream/id1662299469?platform=mac) - Easy-to-use IPTV player and list manager that supports remote and local M3U playlists, Picture-in-Picture playback, and iCloud-based content sync for your other Apple devices.
+- [Opus IPTV Player](https://apps.apple.com/us/app/iptv-player-opus/id1592313576?platform=mac) - Cross-platform IPTV Player for all your devices including iOS, iPad, MacOS, Apple TV, Android, and Android Tv.
+- [TV Set](https://apps.apple.com/de/app/tv-set/id1660197316?platform=mac) - Free IPTV app for watching tv on iOS, tvOS, and macOS.
+- [APTV](https://apps.apple.com/us/app/aptv/id1630403500?platform=mac) - A high-quality live streaming source player app that can preview in real time.
+- [Wizju-Smart IPTV Player](https://apps.apple.com/us/app/wizju-smart-iptv-player/id6749068740?platform=mac) - Smart and intuitive media hub designed to centralize your personal video collections.
+- [AuthoIPTV](https://github.com/glitport/AuthoIPTV) - A feature-rich Electron-powered IPTV player designed for desktop users.
+- [QiTV](https://github.com/ozankaraali/QiTV) - A cross-platform STB, Xtream and IPTV player.
+- [QMPlay2](https://github.com/zaps166/QMPlay2) - A video and audio player which can play most formats and codecs.
+- [Streamlink](https://streamlink.github.io/index.html) - A command-line utility that extracts streams from various services and pipes them into a video player of choice.
+- [Jellyfin Desktop](https://github.com/jellyfin/jellyfin-desktop) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [IPTV Checker](https://github.com/kristofferR/IPTVChecker) - Cross-platform IPTV player, playlist validator, and stream health checker with thumbnails and export.
+- [sbtlTV](https://github.com/thesubtleties/sbtlTV) - A free, open-source desktop IPTV player built with Electron and mpv, focused on a simple, low-latency experience with Xtream and M3U support, EPG, movies and series, multi-source merging, and watch progress.
+- [ShallowTV](https://apps.apple.com/us/app/shallowtv/id6757123182?platform=mac) - Free IPTV player with M3U playlist support for Mac, iPhone, iPad, Apple TV and Apple Vision Pro.
+- [Streamline](https://apps.apple.com/us/app/streamline-iptv-m3u-editor/id6760606054?platform=mac) - Free M3U and IPTV playlist editor with duplicate detection, ffmpeg-based playback and a built-in HTTP server for managing playlists.
+- [StreamLucid](https://apps.apple.com/us/app/stream-lucid-live-tv-guide/id6778198664?platform=mac) - Native IPTV player and live TV guide for user-provided M3U playlists with XMLTV program guide, favorites, and iCloud sync across iPhone, iPad, Mac, and Apple TV.
+- [Nightmare TV](https://github.com/zeze89/nightmare-tv-releases/releases/latest) - libmpv-based IPTV/M3U/Xtream Codes player for macOS (beta) with HDR tone-mapping (BT.2390), 4K HEVC/AV1 hardware decode, and multi-view.
+- [Dion](https://apps.apple.com/es/app/dion-media-center/id6761329047?platform=mac) - Media center for Xtream, M3U, Stremio add-ons, Plex and Jellyfin sources with EPG, iCloud sync, multiplayer playback and 4K HDR.
+- [XPlayer](https://github.com/TNT-Likely/xplayer) - Free and open-source cross-platform IPTV/M3U player with channel grouping, search, EPG, and favorites.
+- [cli-tv](https://github.com/webwurst9000/cli-tv/) - A fast, lightweight terminal IPTV browser and player built in Rust, featuring background stream health probing and an interactive keyboard-driven interface.
+
+#### Linux
+
+- [VLC for Linux](https://www.videolan.org/vlc/#download) - Free and open-source portable cross-platform media player.
+- [Kodi](https://kodi.tv/) - Free cross-platform media player with library support.
+- [Megacubo](https://github.com/EdenwareApps/Megacubo) - Open-source cross-platform IPTV streaming application with multiple features such as favorites, EPG based recommendations, etc.
+- [Hypnotix](https://github.com/linuxmint/hypnotix) - A Free IPTV streaming application with support for live TV, movies and series.
+- [IPTVnator](https://github.com/4gray/iptvnator) - Free cross-platform IPTV streaming application with multiple features such as favorites, EPG, TV archive etc.
+- [FreetuxTV](https://github.com/freetuxtv/freetuxtv) - Internet television and radio player.
+- [termv](https://github.com/Roshan-R/termv) - A terminal IPTV player written in bash.
+- [IPTV Desktop](https://github.com/0x0is1/iptv-desktop) - Watch TV channels on your device via internet from all over the world for free.
+- [pytermv](https://github.com/Ahmed-Zamouche/pytermv) - A terminal IPTV player written in python.
+- [Open TV](https://github.com/Fredolx/open-tv) - Ultra-fast, simple and powerful cross-platform IPTV app.
+- [TVHplayer](https://github.com/mfat/tvhplayer) - Cross-platform desktop client for TVheadend using vlc as playback engine, featuring EPG, remote (DVR) and local recording.
+- [AuthoIPTV](https://github.com/glitport/AuthoIPTV) - A feature-rich Electron-powered IPTV player designed for desktop users.
+- [QiTV](https://github.com/ozankaraali/QiTV) - A cross-platform STB, Xtream and IPTV player.
+- [QMPlay2](https://github.com/zaps166/QMPlay2) - A video and audio player which can play most formats and codecs.
+- [WebGrab+Plus](http://www.webgrabplus.com/) - Multi-site incremental XMLTV EPG grabber.
+- [Streamlink](https://streamlink.github.io/index.html) - A command-line utility that extracts streams from various services and pipes them into a video player of choice.
+- [Better-IPTV](https://github.com/mewset/better-iptv) - Crossplatform IPTV player written in Rust and Typescript that handles extremely large playlists (150.000+ channels) without breaking a sweat.
+- [Jellyfin Desktop](https://flathub.org/en/apps/org.jellyfin.JellyfinDesktop) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [Stream-Recorder](https://github.com/sc44/Stream-Recorder) - Flexible IPTV player and recorder with EPG.
+- [IPTV Checker](https://github.com/kristofferR/IPTVChecker) - Cross-platform IPTV player, playlist validator, and stream health checker with thumbnails and export.
+- [IPTV Controller Pro](https://github.com/tanmay1117/Iptv-on-mpv-) - A high-performance, cross-platform IPTV browser built with Python and the MPV engine.
+- [sbtlTV](https://github.com/thesubtleties/sbtlTV) - A free, open-source desktop IPTV player built with Electron and mpv, focused on a simple, low-latency experience with Xtream and M3U support, EPG, movies and series, multi-source merging, and watch progress.
+- [XPlayer](https://github.com/TNT-Likely/xplayer) - Free and open-source cross-platform IPTV/M3U player with channel grouping, search, EPG, and favorites.
+- [cli-tv](https://github.com/webwurst9000/cli-tv/) - A fast, lightweight terminal IPTV browser and player built in Rust, featuring background stream health probing and an interactive keyboard-driven interface.
+
+#### Android
+
+- [Kodi](https://play.google.com/store/apps/details?id=org.xbmc.kodi) - Free cross-platform media player with library support.
+- [KgTv Player](https://play.google.com/store/apps/details?id=tk.kgtv) - IPTV player with support quality change, search, export and modification of channels.
+- [VLC for Android](https://play.google.com/store/apps/details?id=org.videolan.vlc) - Free and open-source portable cross-platform media player.
+- [MX Player](https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.ad) - Powerful video player with advanced hardware acceleration and subtitle support.
+- [FastoTV Lite](https://play.google.com/store/apps/details?id=com.fastotv.lite) - Open source ad-free IPTV client, with support for live media, VOD, favorites list and EPG.
+- [TiviMate IPTV Player](https://play.google.com/store/apps/details?id=ar.tvplayer.tv) - IPTV player for Android set-top boxes.
+- [Megacubo](https://github.com/EdenwareApps/Megacubo) - Open-source cross-platform IPTV streaming application with multiple features such as favorites, EPG based recommendations, etc.
+- [TVirl](https://play.google.com/store/apps/details?id=by.stari4ek.tvirl) - Special Android TV Input Service to integrate IPTV channels to pre-installed system TV App like [Live Channels](https://play.google.com/store/apps/details?id=com.google.android.tv).
+- [KanTV](https://github.com/kantv-ai/kantv/) - Online-TV player and study/practise device-AI tech in real scenario with online-TV on Android phone.
+- [ProgTV Android](https://play.google.com/store/apps/details?id=com.progdvb.progtva) - The simple but convenient and universal software for watching TV and listening to radio channels over Internet or local network.
+- [Mbogi Music](https://play.google.com/store/apps/details?id=com.mbogimusic) - A one stop audio and video app that gives you access to thousands of free online radio, free IPTV and podcasts from all over the world.
+- [Opus IPTV Player](https://play.google.com/store/apps/details?id=com.biel.opus.mediaplayer) - Cross-platform IPTV Player for all your devices including iOS, iPad, MacOS, Apple TV, Android, and Android Tv.
+- [IPTV Pro](https://play.google.com/store/apps/details?id=ru.iptvremote.android.iptv.pro) - IPTV player for Android.
+- [M3UAndroid](https://github.com/realOxy/M3UAndroid) - Open source streaming player for Android to play favorite channels in zapping mode with media player enhancements.
+- [DangoPlayer](https://play.google.com/store/apps/details?id=com.brunochanrio.dangoplayeruni) - A fast video player and IPTV client for Android and TV.
+- [Live TV](https://play.google.com/store/apps/details?id=com.cy8018.livetv) - Free IPTV Player by TechArt Apps, supports .m3u playlists, Picture-in-Picture, AirPlay.
+- [Uni Player](https://play.google.com/store/apps/details?id=com.uni.xtream.player) - Solution to get easy to play local or online playlist that help you get quick play content.
+- [Smart IPTV Player Pro M3U Live](https://play.google.com/store/apps/details?id=com.iptv.player.smart.live.stream.m3u) - Free live media player that allows you to watch your favorite TV channels, movies, and TV shows.
+- [WatChat](https://apkpure.com/watchat-streaming-world-iptv/com.tv.watchat.us) - IPTV Player and messenger with thousands of ready streams.
+- [UniTV](https://play.google.com/store/apps/details?id=com.vinsonguo.flutter_iptv_client) - Flutter IPTV client provides comprehensive remote control integration for Android TV.
+- [Zapp](https://github.com/mediathekview/zapp) - Modern player specialized on German public broadcast streams.
+- [Easy Player](https://play.google.com/store/apps/details?id=com.purple.easy.player&hl=en_IN) - Easy Player app is a solution for streaming EPG, VOD, video series, and catch-up TV on Android devices.
+- [1-Stream Player](https://play.google.com/store/apps/details?id=com.onestream.player) - 1-Stream Player App is the perfect platform for your streaming needs.
+- [Simple IPTV Player](https://play.google.com/store/apps/details?id=com.purple.simple.player&hl=en_IN) - A simple and faster way to access your favourite your own stream using Simple IPTV Player.
+- [Digilog TV](https://github.com/aldrinzigmundv/digilogtv) - A free and open-source TV news app, inspired by Linux Mint's Hypnotix.
+- [SupercamBR](https://sourceforge.net/projects/supercambr) - Free iptv player for Android with channels from all over the world.
+- [M3U IPTV](https://play.google.com/store/apps/details?id=de.herber_edevelopment.m3uiptv) - A free, ad-free, registration-free IPTV player designed for simple and smooth M3U playback.
+- [IPTVMine](https://play.google.com/store/apps/details?id=com.samyak2403.iptvmine) - A registration-free IPTV player designed for simple and smooth M3U playback.
+- [Wizju - IPTV Player](https://play.google.com/store/apps/details?id=dev.j2j.wizju) - The ultimate IPTV player that supports both Xtream Codes API and M3U playlists.
+- [GlobeTV](https://play.google.com/store/apps/details?id=com.fundevelop.globetv&hl=en) - Your passport to free live TV from every corner of the globe.
+- [Jellyfin](https://play.google.com/store/apps/details?id=org.jellyfin.mobile) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [PlayOnTV](https://play.google.com/store/apps/details?id=com.brillianceappsfinland.playontv) - Supports M3U, Xtream, and Stalker Portal with EPG, cloud sync, offline downloads, and watch progress tracking; free version without intrusive full-screen ads.
+- [FireVision IPTV](https://github.com/akshaynikhare/FireVisionIPTV) - Open-source IPTV player for Amazon FireTV devices with channel management and EPG support.
+- pv-android](https://play.google.com/store/apps/details?id=is.xyz.mpv) - A video player for Android based on libmpv.
+- [GoldenView IPTV](https://play.google.com/store/apps/details?id=com.primutech.iptvplayer) - Gives you instant access to over 8,500 live TV channels from around the world completely free.
+- [Smart Player](https://play.google.com/store/apps/details?id=com.mehmedmert.mediaplayer.mobile) - Allows you to manage your media, videos, streams, IP tv etc. in an easy and smart way in one place.
+- [StreamVault IPTV](https://github.com/Davidona/StreamVault-IPTV) – Feature-rich, completely free IPTV player for Android with M3U, Xtream, and Stalker support, EPG, DVR, timeshift, multi-view, and optimized large-playlist performance.
+- [XPlayer](https://github.com/TNT-Likely/xplayer) - Free and open-source cross-platform IPTV/M3U player with channel grouping, search, EPG, favorites, and a companion phone app for remote text input on TV.
+- [Klipa](https://play.google.com/store/apps/details?id=klipa.tv) - Free player for local M3U playlists and Xtream Codes logins with EPG, favorites, VOD and series, no ads or account.
+
+#### iPhone
+
+- [Flex IPTV](https://apps.apple.com/ae/app/flex-iptv/id1182930255?platform=iphone) - Allows you to view live and non-live TV/stream technology-based IPTV.
+- [nPlayer](https://apps.apple.com/us/app/nplayer/id1116905928?platform=iphone) - Media player with support DTS (DTS HD), DTS Headphone:X, Dolby (AC3, E-AC3).
+- [FastoTV Lite](https://apps.apple.com/us/app/fastotvlite/id1496936356?platform=iphone) - Open source ad-free IPTV client, with support for live media, VOD, favorites list and EPG.
+- [WhatsUp TV](https://apps.apple.com/us/app/whatsup-tv/id1476950273?platform=iphone) - Player for IPTV (.m3u) playlists.
+- [Smarters Player Lite](https://apps.apple.com/us/app/smarters-player-lite/id1628995509?platform=iphone) - Video streaming player that allows your IPTV customers or end-users to stream content like Live TV, VOD, Series, and TV Catchup supplied by you.
+- [Purple Playlist Player](https://apps.apple.com/us/app/purple-playlist-player/id1547219704?platform=iphone) - IPTV Player for users to watch content with their playlist.
+- [IPTV Player Live](https://apps.apple.com/us/app/iptv-player-live-watch-tv-m3u/id1662299469?platform=iphone) - Free IPTV player and M3U list manager that supports Picture-in-Picture, AirPlay, Chromecast, and iCloud sync for a connected experience across iPhone, iPad, Apple TV.
+- [Opus IPTV Player](https://apps.apple.com/us/app/iptv-player-opus/id1592313576?platform=iphone) - Cross-platform IPTV Player for all your devices including iOS, iPad, MacOS, Apple TV, Android, and Android Tv.
+- [APTV](https://apps.apple.com/us/app/aptv/id1630403500?platform=iphone) - A high-quality live streaming source player app that can preview in real time.
+- [TV Set](https://apps.apple.com/de/app/tv-set/id1660197316?platform=iphone) - Free IPTV app for watching tv on iOS, tvOS, and macOS.
+- [Live TV Player](https://apps.apple.com/us/app/live-tv-player/id6448868009?platform=iphone) - Free IPTV Player by TechArt Apps, supports .m3u playlists, Picture-in-Picture, AirPlay.
+- [playr](https://apps.apple.com/us/app/playr-iptv-player/id6449495747?platform=iphone) - Simple looking app for IPTV fans.
+- [IPTV Streams](https://apps.apple.com/de/app/iptv-streams/id6746856713?platform=iphone) - IPTV Player with M3U list manager, favorites manager and iCloud sync of M3U lists and favorites.
+- [Wizju-Smart IPTV Player](https://apps.apple.com/us/app/wizju-smart-iptv-player/id6749068740?platform=iphone) - Smart and intuitive media hub designed to centralize your personal video collections.
+- [UHF](https://apps.apple.com/in/app/uhf-love-your-iptv/id6443751726?platform=iphone) - IPTV player crafted by developers with over a decade of proven success in creating globally renowned apps used by millions.
+- [KDTIVI](https://apps.apple.com/gb/app/kdtivi-iptv-plex-and-emby/id6754769190?platform=iphone) - IPTV, Plex and Emby all-in-one app, designed to look and work like an app from a real media provider.
+- [Jellyfin Mobile](https://apps.apple.com/us/app/jellyfin-mobile/id1480192618?platform=iphone) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [PlayOnTV](https://apps.apple.com/fi/app/playontv-iptv-player/id6757364859?platform=iphone) - Supports M3U, Xtream, and Stalker Portal with EPG, cloud sync, offline downloads, and watch progress tracking; free version without intrusive full-screen ads.
+- [Flayer](https://apps.apple.com/us/app/flayer-iptv-stream-cast/id6746684028?platform=iphone) - Allows you to watch your favorite live TV channels, movies, and series directly from your device.
+- [Another IPTV Player](https://apps.apple.com/us/app/another-iptv-player/id6747290392?platform=iphone) - Lightweight, free and open-source native player with M3U support, offline downloads, Picture-in-Picture, background playback, watch history, and per-series audio/subtitle track memory.
+- [ShallowTV](https://apps.apple.com/us/app/shallowtv/id6757123182?platform=iphone) - Free IPTV player with M3U playlist support for iPhone, iPad, Mac, Apple TV and Apple Vision Pro.
+- [Tilfaz](https://apps.apple.com/us/app/tilfaz-live-on-demand-iptv/id1668359578?platform=iphone) - Native player for M3U and Xtream sources with 4K playback, family profiles with per-title parental controls, App Lock, incognito mode, and a library, watch history, and favorites that sync across iPhone, iPad, and Apple TV.
+- [StreamLucid](https://apps.apple.com/us/app/stream-lucid-live-tv-guide/id6778198664?platform=iphone) - Native IPTV player and live TV guide for user-provided M3U playlists with XMLTV program guide, favorites, and iCloud sync across iPhone, iPad, Mac, and Apple TV.
+- [Dion](https://apps.apple.com/es/app/dion-media-center/id6761329047?platform=iphone) - Media center for Xtream, M3U, Stremio add-ons, Plex and Jellyfin sources with EPG, iCloud sync, multiplayer playback and 4K HDR.
+- [XPlayer](https://github.com/TNT-Likely/xplayer) - Free and open-source IPTV/M3U player for iPhone with channel grouping, search, EPG, and favorites.
+
+#### iPad
+
+- [Flex IPTV](https://apps.apple.com/ae/app/flex-iptv/id1182930255?platform=ipad) - Allows you to view live and non-live TV/stream technology-based IPTV.
+- [nPlayer](https://apps.apple.com/us/app/nplayer/id1116905928?platform=ipad) - Media player with support DTS (DTS HD), DTS Headphone:X, Dolby (AC3, E-AC3).
+- [FastoTV Lite](https://apps.apple.com/us/app/fastotvlite/id1496936356?platform=ipad) - Open source ad-free IPTV client, with support for live media, VOD, favorites list and EPG.
+- [WhatsUp TV](https://apps.apple.com/us/app/whatsup-tv/id1476950273?platform=ipad) - Player for IPTV (.m3u) playlists.
+- [Smarters Player Lite](https://apps.apple.com/us/app/smarters-player-lite/id1628995509?platform=ipad) - Video streaming player that allows your IPTV customers or end-users to stream content like Live TV, VOD, Series, and TV Catchup supplied by you.
+- [Purple Playlist Player](https://apps.apple.com/us/app/purple-playlist-player/id1547219704?platform=ipad) - IPTV Player for users to watch content with their playlist.
+- [IPTV Player Live](https://apps.apple.com/us/app/iptv-player-live-watch-tv-m3u/id1662299469?platform=ipad) - Free IPTV player and M3U list manager that supports Picture-in-Picture, AirPlay, Chromecast, and iCloud sync for a connected experience across iPhone, iPad, Apple TV.
+- [Opus IPTV Player](https://apps.apple.com/us/app/iptv-player-opus/id1592313576?platform=ipad) - Cross-platform IPTV Player for all your devices including iOS, iPad, MacOS, Apple TV, Android, and Android Tv.
+- [APTV](https://apps.apple.com/us/app/aptv/id1630403500?platform=ipad) - A high-quality live streaming source player app that can preview in real time.
+- [TV Set](https://apps.apple.com/de/app/tv-set/id1660197316?platform=ipad) - Free IPTV app for watching tv on iOS, tvOS, and macOS.
+- [Live TV Player](https://apps.apple.com/us/app/live-tv-player/id6448868009?platform=ipad) - Free IPTV Player by TechArt Apps, supports .m3u playlists, Picture-in-Picture, AirPlay.
+- [playr](https://apps.apple.com/us/app/playr-iptv-player/id6449495747?platform=ipad) - Simple looking app for IPTV fans.
+- [IPTV Streams](https://apps.apple.com/de/app/iptv-streams/id6746856713?platform=ipad) - IPTV Player with M3U list manager, favorites manager and iCloud sync of M3U lists and favorites.
+- [Wizju-Smart IPTV Player](https://apps.apple.com/us/app/wizju-smart-iptv-player/id6749068740?platform=ipad) - Smart and intuitive media hub designed to centralize your personal video collections.
+- [UHF](https://apps.apple.com/in/app/uhf-love-your-iptv/id6443751726?platform=ipad) - IPTV player crafted by developers with over a decade of proven success in creating globally renowned apps used by millions.
+- [KDTIVI](https://apps.apple.com/gb/app/kdtivi-iptv-plex-and-emby/id6754769190?platform=ipad) - IPTV, Plex and Emby all-in-one app, designed to look and work like an app from a real media provider.
+- [Jellyfin Mobile](https://apps.apple.com/us/app/jellyfin-mobile/id1480192618?platform=ipad) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [PlayOnTV](https://apps.apple.com/fi/app/playontv-iptv-player/id6757364859?platform=ipad) - Supports M3U, Xtream, and Stalker Portal with EPG, cloud sync, offline downloads, and watch progress tracking; free version without intrusive full-screen ads.
+- [Another IPTV Player](https://apps.apple.com/us/app/another-iptv-player/id6747290392?platform=ipad) - Lightweight, free and open-source native player with M3U support, offline downloads, Picture-in-Picture, background playback, watch history, and per-series audio/subtitle track memory.
+- [ShallowTV](https://apps.apple.com/us/app/shallowtv/id6757123182?platform=ipad) - Free IPTV player with M3U playlist support for iPad, iPhone, Mac, Apple TV and Apple Vision Pro.
+- [Tilfaz](https://apps.apple.com/us/app/tilfaz-live-on-demand-iptv/id1668359578?platform=ipad) - Native player for M3U and Xtream sources with 4K playback, family profiles with per-title parental controls, App Lock, incognito mode, and a library, watch history, and favorites that sync across iPhone, iPad, and Apple TV.
+- [StreamLucid](https://apps.apple.com/us/app/stream-lucid-live-tv-guide/id6778198664?platform=ipad) - Native IPTV player and live TV guide for user-provided M3U playlists with XMLTV program guide, favorites, and iCloud sync across iPhone, iPad, Mac, and Apple TV.
+- [Dion](https://apps.apple.com/es/app/dion-media-center/id6761329047?platform=ipad) - Media center for Xtream, M3U, Stremio add-ons, Plex and Jellyfin sources with EPG, iCloud sync, multiplayer playback and 4K HDR.
+- [XPlayer](https://github.com/TNT-Likely/xplayer) - Free and open-source IPTV/M3U player for iPad with channel grouping, search, EPG, and favorites.
+
+#### Apple Watch
+
+- [APTV](https://apps.apple.com/us/app/aptv/id1630403500?platform=appleWatch) - A high-quality live streaming source player app that can preview in real time.
+
+#### Apple TV
+
+- [iPlayTV](https://apps.apple.com/us/app/iplaytv/id1072226801) - IPTV/M3U player for Apple TV.
+- [IPTV Player Live](https://apps.apple.com/us/app/iptv-player-live-watch-tv-m3u/id1662299469?platform=tv) - Free IPTV player with support for M3U, Xtream Codes, and iCloud sync for a connected experience across Apple TV, iPhone, iPad, and Mac.
+- [Opus IPTV Player](https://apps.apple.com/us/app/iptv-player-opus/id1592313576?platform=tv) - Cross-platform IPTV Player for all your devices including iOS, iPad, MacOS, Apple TV, Android, and Android Tv.
+- [TV Set](https://apps.apple.com/de/app/tv-set/id1660197316?platform=tv) - Free IPTV app for watching tv on iOS, tvOS, and macOS.
+- [Purple Playlist Player](https://apps.apple.com/us/app/purple-playlist-player/id1547219704?platform=tv) - Experience ultimate entertainment with Purple Playlist Player, your all-in-one media solution.
+- [Flex IPTV](https://apps.apple.com/ae/app/flex-iptv/id1182930255?platform=tv) - Allows you to view live and non-live TV/stream technology-based IPTV.
+- [Smarters Player Lite](https://apps.apple.com/us/app/smarters-player-lite/id1628995509?platform=tv) - Video streaming player that allows your IPTV customers or end-users to stream content like Live TV, VOD, Series, and TV Catchup supplied by you.
+- [APTV](https://apps.apple.com/us/app/aptv/id1630403500?platform=tv) - A high-quality live streaming source player app that can preview in real time.
+- [UHF](https://apps.apple.com/in/app/uhf-love-your-iptv/id6443751726?platform=tv) - IPTV player crafted by developers with over a decade of proven success in creating globally renowned apps used by millions.
+- [IPTVX](https://apps.apple.com/in/app/iptvx/id1451470024?platform=tv) - An IPTV player with the pre 2025 Netflix feel.
+- [KDTIVI](https://apps.apple.com/gb/app/kdtivi-iptv-plex-and-emby/id6754769190?platform=tv) - IPTV, Plex and Emby all-in-one app, designed to look and work like an app from a real media provider.
+- [PlayOnTV](https://apps.apple.com/fi/app/playontv-iptv-player/id6757364859?platform=tv) - Supports M3U, Xtream, and Stalker Portal with EPG, cloud sync, offline downloads, and watch progress tracking; free version without intrusive full-screen ads.
+- [ShallowTV](https://apps.apple.com/us/app/shallowtv/id6757123182?platform=tv) - Free IPTV player with M3U playlist support for Apple TV, iPhone, iPad, Mac and Apple Vision Pro.
+- [Velko](https://apps.apple.com/us/app/velko-iptv-player-tv-guide/id6775969853?platform=tv) - Native player for Xtream/M3U services with a classic EPG guide, catch-up, and a free built-in Community TV source powered by the iptv-org playlist.
+- [ScoreBox](https://apps.apple.com/app/scorebox-sports-iptv/id6774886350?platform=tv) - Sports focused IPTV player that finds the channels carrying each game across your providers, for the teams and leagues you follow.
+- [Tilfaz](https://apps.apple.com/us/app/tilfaz-live-on-demand-iptv/id1668359578?platform=tv) - Native player for M3U and Xtream sources with 4K playback, family profiles with per-title parental controls, App Lock, incognito mode, and a library, watch history, and favorites that sync across iPhone, iPad, and Apple TV.
+- [StreamLucid](https://apps.apple.com/us/app/stream-lucid-live-tv-guide/id6778198664?platform=tv) - Native IPTV player and live TV guide for user-provided M3U playlists with XMLTV program guide, favorites, and iCloud sync across iPhone, iPad, Mac, and Apple TV.
+- [Dion](https://apps.apple.com/es/app/dion-media-center/id6761329047?platform=tv) - Media center for Xtream, M3U, Stremio add-ons, Plex and Jellyfin sources with EPG, iCloud sync, multiplayer playback and 4K HDR.
+
+#### Apple Vision Pro
+
+- [ShallowTV](https://apps.apple.com/us/app/shallowtv/id6757123182?platform=vision) - Free IPTV player with M3U playlist support for Apple Vision Pro, iPhone, iPad, Mac and Apple TV.
+
+#### Android TV
+
+- [Jellyfin for Android TV](https://play.google.com/store/apps/details?id=org.jellyfin.androidtv&hl=en_GB) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [M3U IPTV](https://play.google.com/store/apps/details?id=de.herber_edevelopment.m3uiptv) - Modern M3U IPTV Player for Android & Android TV.
+- [PlayOnTV](https://playontv.itch.io/playontv-android-beta) - Supports M3U, Xtream, and Stalker Portal with EPG, cloud sync, offline downloads, and watch progress tracking; free version without intrusive full-screen ads.
+- [TiviMate IPTV Player](https://play.google.com/store/apps/details?id=ar.tvplayer.tv) - IPTV player for Android set-top boxes.
+- [Smart Player](https://play.google.com/store/apps/details?id=com.mehmedmert.mediaplayer.tv) - Allows you to manage your media, videos, streams, IP tv etc. in an easy and smart way in one place.
+- [StreamVault IPTV](https://github.com/Davidona/StreamVault-IPTV) – Feature-rich, completely free IPTV player for Android TV with M3U, Xtream, and Stalker support, EPG, DVR, timeshift, multi-view, and optimized large-playlist performance.
+- [Nightmare TV](https://github.com/zeze89/nightmare-tv-releases/releases/latest) - libmpv-based IPTV/M3U/Xtream Codes player for Android TV with HDR tone-mapping, Dolby Atmos/DTS-X passthrough, and multi-view.
+- [ScoreBox](https://play.google.com/store/apps/details?id=net.darkforeststudios.scorebox) - Sports focused IPTV player that finds the channels carrying each game across your providers, for the teams and leagues you follow.
+- [XPlayer](https://github.com/TNT-Likely/xplayer) - Free and open-source IPTV/M3U player for Android TV with channel grouping, search, EPG, and a companion phone app for remote text input over the LAN.
+- [Easy IP TV](https://play.google.com/store/apps/details?id=com.easyiptv.tv) - Android TV and Google TV player that processes your M3U playlist server-side for instant loading of huge playlists, with an EPG guide, favorites, hidden channels, and D-pad remote navigation.
+- [Klipa](https://play.google.com/store/apps/details?id=klipa.tv) - Free M3U and Xtream Codes player with EPG and a remote-friendly layout, no ads or account.
+
+#### WebOS
+
+- [Jellyfin](https://us.lgappstv.com/main/tvapp/detail?appId=1030579) - Free and open-source media server with built-in Live TV and IPTV support (M3U playlists and XMLTV EPG).
+- [SS IPTV](https://us.lgappstv.com/main/tvapp/detail?appId=339090) - Smart TV application which provided opportunity of IPTV viewing for its users.
+- [M3U IPTV](https://gb.lgappstv.com/main/tvapp/detail?appId=1167871) - A free, ad-free, registration-free IPTV player designed for simple and smooth M3U playback.
+
+
+=== Fetch iptvnator GitHub stars ===
+Stars: 6663
+Forks: 861
+Last push: 2026-07-21T07:08:37Z
+Language: TypeScript
+License: MIT
