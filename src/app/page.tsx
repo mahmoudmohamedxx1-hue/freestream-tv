@@ -6,7 +6,7 @@ import {
   Globe, ChevronRight, Star, Zap, Filter, ZapOff, EyeOff,
   Settings, RotateCcw, Clock, ArrowDownAZ, ArrowUpAZ, Flame,
   CheckCircle2, Calendar, Play, ChevronDown, RefreshCw, Key,
-  Code, Twitch, Youtube, Plus, Circle, Grid3x3, Cloud, Download,
+  Code, Twitch, Youtube, Plus, Circle, Grid3x3, Cloud, Download, Smartphone,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -1452,7 +1452,16 @@ Common causes:
             {/* Divider */}
             <div className="w-px h-5 bg-white/10 mx-1" />
 
-            {/* Group 4: Language */}
+            {/* Group 4: APK download + Language */}
+            <a
+              href="/download/FreeStreamTV.apk"
+              download
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 transition-colors text-xs font-bold"
+              title="Download Android App (APK)"
+            >
+              <Smartphone className="w-4 h-4" />
+              <span className="hidden sm:inline">Android App</span>
+            </a>
             <button
               onClick={() => setLanguage(l => l === 'en' ? 'ar' : 'en')}
               className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"

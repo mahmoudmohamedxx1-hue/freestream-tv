@@ -1,0 +1,6 @@
+com.freestream.tv:xml/network_security_config = 0x7f050000
+com.freestream.tv:id/webview = 0x7f010000
+com.freestream.tv:mipmap/ic_launcher_round = 0x7f030001
+com.freestream.tv:layout/activity_main = 0x7f020000
+com.freestream.tv:style/Theme.FreeStreamTV = 0x7f040000
+com.freestream.tv:mipmap/ic_launcher = 0x7f030000

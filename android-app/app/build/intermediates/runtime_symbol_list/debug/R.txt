@@ -1,0 +1,6 @@
+int id webview 0x7f010000
+int layout activity_main 0x7f020000
+int mipmap ic_launcher 0x7f030000
+int mipmap ic_launcher_round 0x7f030001
+int style Theme_FreeStreamTV 0x7f040000
+int xml network_security_config 0x7f050000
