@@ -1316,7 +1316,7 @@ Common causes:
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       {/* ─── Header ─── */}
-      <header className="sticky top-0 z-30 backdrop-blur-xl bg-background/70 border-b border-border">
+      <header className="sticky top-0 z-30 glass border-b border-white/5">
         <div className="px-4 md:px-6 py-3 flex items-center gap-3">
           <button
             onClick={() => setSidebarOpen(v => !v)}
@@ -2148,7 +2148,7 @@ Common causes:
 
           {/* Provider grid — expands when bar is clicked */}
           {providerGridOpen && (
-            <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 p-2 rounded-xl bg-card/60 border border-border">
+            <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/5 shadow-2xl">
               {PROVIDERS.map(prov => (
                 <button
                   key={prov.id}
@@ -2157,10 +2157,10 @@ Common causes:
                     setProviderGridOpen(false)
                   }}
                   className={cn(
-                    'flex flex-col items-center gap-1.5 p-3 rounded-lg transition border',
+                    'provider-card flex flex-col items-center gap-2 p-3 rounded-xl',
                     activeProvider.id === prov.id
-                      ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/30'
-                      : 'bg-secondary/30 hover:bg-secondary border-transparent',
+                      ? 'active bg-gradient-to-br from-primary to-primary/80 text-white'
+                      : 'bg-white/5 hover:bg-white/10',
                   )}
                 >
                   {prov.logo ? (
@@ -2168,7 +2168,7 @@ Common causes:
                       src={prov.logo}
                       alt={prov.name}
                       className={cn(
-                        'w-8 h-8 object-contain',
+                        'w-8 h-8 object-contain transition-transform',
                         activeProvider.id === prov.id && 'brightness-0 invert',
                       )}
                       onError={(e) => {
@@ -2186,7 +2186,7 @@ Common causes:
                   ) : (
                     <span className="text-xl">{prov.flag}</span>
                   )}
-                  <span className="text-xs font-medium text-center leading-tight">{prov.name}</span>
+                  <span className="text-xs font-semibold text-center leading-tight">{prov.name}</span>
                 </button>
               ))}
             </div>
@@ -2726,19 +2726,20 @@ Common causes:
               ) : loading ? (
                 <div className="p-3 space-y-2">
                   {Array.from({ length: 10 }).map((_, i) => (
-                    <div key={i} className="flex gap-3 p-2">
-                      <Skeleton className="w-14 h-14 rounded-lg" />
+                    <div key={i} className="flex gap-3 p-2.5 rounded-xl">
+                      <div className="w-12 h-12 rounded-xl shimmer" />
                       <div className="flex-1 space-y-2 py-1">
-                        <Skeleton className="h-4 w-3/4" />
-                        <Skeleton className="h-3 w-1/2" />
+                        <div className="h-4 w-3/4 rounded shimmer" />
+                        <div className="h-3 w-1/2 rounded shimmer" />
                       </div>
                     </div>
                   ))}
                 </div>
               ) : filteredChannels.length === 0 ? (
-                <div className="p-8 text-center text-muted-foreground">
-                  <Tv className="w-10 h-10 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">No channels match your filters.</p>
+                <div className="p-12 text-center text-muted-foreground">
+                  <Tv className="w-16 h-16 mx-auto mb-3 opacity-20" />
+                  <p className="text-sm font-medium">No channels match your filters.</p>
+                  <p className="text-xs text-muted-foreground/60 mt-1">Try adjusting your search or filter expression.</p>
                 </div>
               ) : (
                 <div className="p-2 space-y-0.5">
@@ -3131,15 +3132,17 @@ function GroupButton({
     <button
       onClick={onClick}
       className={cn(
-        'w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition',
-        active ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-secondary text-foreground/90',
+        'w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
+        active
+          ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/20'
+          : 'hover:bg-white/5 text-foreground/80 hover:text-white',
       )}
     >
-      {icon && <span className="shrink-0">{icon}</span>}
+      {icon && <span className={cn('shrink-0', active && 'text-white')}>{icon}</span>}
       <span className="flex-1 text-left truncate">{label}</span>
       <span className={cn(
-        'text-xs px-1.5 py-0.5 rounded-md',
-        active ? 'bg-primary-foreground/20' : 'bg-secondary text-muted-foreground',
+        'text-xs px-2 py-0.5 rounded-lg font-semibold tabular-nums',
+        active ? 'bg-white/20 text-white' : 'bg-white/5 text-muted-foreground',
       )}>
         {count.toLocaleString()}
       </span>
@@ -3164,18 +3167,24 @@ function ChannelRow({
   return (
     <div
       className={cn(
-        'group flex items-center gap-3 p-2 rounded-lg cursor-pointer transition',
-        active ? 'bg-primary/15 ring-1 ring-primary/40' : 'hover:bg-secondary',
-        dead && 'opacity-50',
+        'channel-row group flex items-center gap-3 p-2.5 rounded-xl cursor-pointer',
+        active
+          ? 'bg-gradient-to-r from-primary/20 to-primary/5 ring-1 ring-primary/40 shadow-lg shadow-primary/10'
+          : 'hover:bg-white/5',
+        dead && 'opacity-40',
       )}
       onClick={onSelect}
     >
-      <div className="w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-secondary flex items-center justify-center relative">
+      {/* Logo with gradient background + active glow */}
+      <div className={cn(
+        'w-12 h-12 shrink-0 rounded-xl overflow-hidden flex items-center justify-center relative channel-logo',
+        active ? 'bg-primary/20 shadow-md shadow-primary/20' : 'bg-white/5',
+      )}>
         {channel.logo ? (
           <img
             src={channel.logo}
             alt={channel.displayName}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain p-0.5"
             loading="lazy"
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
           />
@@ -3183,55 +3192,66 @@ function ChannelRow({
           <Tv className="w-5 h-5 text-muted-foreground" />
         )}
         {dead && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+          <div className="absolute inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm">
             <ZapOff className="w-4 h-4 text-destructive" />
           </div>
         )}
+        {active && (
+          <div className="absolute inset-0 ring-2 ring-primary/50 rounded-xl" />
+        )}
       </div>
+
+      {/* Channel info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          {flag && <span className="text-sm" title={channel.countryCode?.toUpperCase()}>{flag}</span>}
+          {flag && <span className="text-sm shrink-0" title={channel.countryCode?.toUpperCase()}>{flag}</span>}
           <p className={cn(
-            'text-sm font-medium truncate',
-            active ? 'text-primary' : dead && 'line-through',
+            'text-sm font-semibold truncate transition-colors',
+            active ? 'text-primary' : 'text-foreground group-hover:text-white',
+            dead && 'line-through',
           )}>
             {channel.displayName}
           </p>
+          {fav && (
+            <Heart className="w-3 h-3 text-primary fill-current shrink-0" />
+          )}
         </div>
         <div className="flex items-center gap-1.5 mt-0.5">
           {channel.quality && (
-            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4">
+            <span className="text-[9px] font-bold px-1.5 py-0 rounded bg-white/10 text-foreground/80 uppercase tracking-wide">
               {channel.quality}
-            </Badge>
+            </span>
           )}
           {channel.isVod && (
-            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 text-blue-400 border-blue-400/40">
+            <span className="text-[9px] font-bold px-1.5 py-0 rounded bg-blue-500/20 text-blue-400 uppercase">
               VOD
-            </Badge>
+            </span>
           )}
           {channel.not247 && (
-            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 text-amber-500 border-amber-500/40">
-              Not 24/7
-            </Badge>
+            <span className="text-[9px] font-bold px-1.5 py-0 rounded bg-amber-500/20 text-amber-500 uppercase">
+              ⚠
+            </span>
           )}
           {channel.geoBlocked && (
-            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 text-amber-500 border-amber-500/40">
+            <span className="text-[9px] font-bold px-1.5 py-0 rounded bg-amber-500/20 text-amber-500 uppercase">
               Geo
-            </Badge>
+            </span>
           )}
-          {recent && (
-            <Clock className="w-3 h-3 text-primary/70" />
+          {recent && !fav && (
+            <Clock className="w-3 h-3 text-primary/60 shrink-0" />
           )}
-          <span className="text-xs text-muted-foreground truncate">
+          <span className="text-xs text-muted-foreground/70 truncate">
             {channel.group}
           </span>
         </div>
       </div>
-      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition">
+
+      {/* Hover actions */}
+      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
         {dead ? (
           <button
             onClick={(e) => { e.stopPropagation(); onUnmarkDead() }}
-            className="p-1.5 rounded-md text-muted-foreground hover:text-primary"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10"
             aria-label="Unmark as dead"
             title="Unmark as dead"
           >
@@ -3240,7 +3260,7 @@ function ChannelRow({
         ) : (
           <button
             onClick={(e) => { e.stopPropagation(); onMarkDead() }}
-            className="p-1.5 rounded-md text-muted-foreground hover:text-destructive"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10"
             aria-label="Mark as dead"
             title="Mark as dead"
           >
@@ -3250,15 +3270,14 @@ function ChannelRow({
         <button
           onClick={(e) => { e.stopPropagation(); onToggleFav() }}
           className={cn(
-            'p-1.5 rounded-md',
-            fav ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
+            'p-1.5 rounded-lg transition-colors',
+            fav ? 'text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-white/10',
           )}
           aria-label="Toggle favorite"
         >
           <Heart className={cn('w-4 h-4', fav && 'fill-current')} />
         </button>
       </div>
-      {active && <ChevronRight className="w-4 h-4 text-primary shrink-0" />}
     </div>
   )
 }
