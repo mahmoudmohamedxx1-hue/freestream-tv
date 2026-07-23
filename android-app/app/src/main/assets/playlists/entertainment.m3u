@@ -1,0 +1,202 @@
+#EXTM3U
+# Best 100 Entertainment — curated by FreeStream TV
+#EXTINF:-1 tvg-logo="http://dki01q1l7yn3y.cloudfront.net/thumbnails-platform-prod/assets/cs::content::channels/0-2048/475-LG-Logo-PNG-100x100_v3.png",332 All Reality We TV
+https://wurlrainbowmedia.global.transmit.live/hls/68c87b8e056005238ebfde4b/playlist.m3u8?wurl_channel=475&wurl_name=AllReality&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/416/lg/b2b042/LG-Logo-PNG-100x100_v1.png",361 Game Show Central
+https://wurlgameshownetwork.global.transmit.live/hls/68d174d50531b397b61a7797/v1/gsn_gameshowchannnel_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=416&wurl_name=GameShowCentral-1&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/830/lg/fb8c5c/LG-Logo-PNG-100x100_v1.png",505 GET Comedy
+https://wurlgameshownetwork.global.transmit.live/hls/68d16b590531b397b61a778d/v1/gsn_cinevault_70s_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=830&wurl_name=GETComedy&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993016/600x200.png?type=white_cropped",510 NBC Comedy Vault
+https://d4whmvwm0rdvi.cloudfront.net/10007/99993016/hls/master.m3u8?ads.xumo_channelId=99993016&ads.asnw=169843&ads.afid=380749282&ads.sfid=17556801&ads.csid=lgchannels_us_nbcutnbc_ssai_cro&ads._fw_is_lat=[LMT]&ads._fw_us_privacy=[US_PRIVACY]&ads._fw_coppa=0&ads._fw_did=[IFA]&ads._fw_vcid2=512116:[IFA]&ads._fw_app_bundle=[APP_BUNDLE]&ads._fw_app_store_url=[APP_STOREURL]&ads._fw_content_category=IAB12&ads._fw_content_genre=Comedy,Entertainment,GV&ads._fw_content_language=en&ads._fw_content_rating=tv-g&ads._fw_deviceMake=[DEVICE_MAKE]&ads._fw_device_model=[DEVICE_MODEL]&ads._fw_deviceType=3-Connected_TV&ads.appVersion=[APP_VERSION]&ads.appName=lgchannels&ads.xumo_contentId=3941&ads.xumo_contentName=NBCUTNBC&ads.xumo_providerId=3941&ads.xumo_providerName=NBCUTNBC&ads.channelId=99993016&ads._fw_ifa_type=dpid&ads.givn=[NONCE]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1197/lg/4bbe15/LG-Logo-PNG-100x100_v2.png",521 WITZ-Comedy TV
+https://wurlbesteverchannels.global.transmit.live/hls/695ff77d70783bed1981352c/playlist.m3u8?wurl_channel=1197&wurl_name=WITZComedyTV-1&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://static.frequency.com/studio/cineverse/channels/ComedyDynamics_Vector_Yellow_v1.png?width=400&height=200",522 Comedy Dynamics
+https://linear-903.frequency.stream/dist/lg-us/903/hls/master/playlist.m3u8?ads.app_bundle=[APP_BUNDLE]&ads.app_name=[APP_NAME]&ads.app_store_url=[APP_STOREURL]&ads.gdpr=[GDPR]&ads.consent=[GDPR_CONSENT]&ads.us_privacy=[US_PRIVACY]&ads.lmt=[LMT]&ads.device_make=[DEVICE_MAKE]&ads.device_model=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.ifa_type=[IFA_TYPE]&ads.device_id=[DEVICE_ID]
+#EXTINF:-1 tvg-logo="http://dki01q1l7yn3y.cloudfront.net/thumbnails-platform-prod/assets/cs::content::channels/0-2048/285-LG-Logo-PNG-100x100_v1.png",565 Home.Made.Nation
+https://aenetworks.global.transmit.live/hls/68b729088da3641997c664b0/v1/aenetworks_ae_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=285&wurl_name=HomemadeNation&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1162/lg/e95c0e/LG-Logo-PNG-100x100_v4.png",566 Today's Home
+https://wurljansonmedia.global.transmit.live/hls/67910ced0b2848c81efe74d1/playlist.m3u8?wurl_channel=1162&wurl_name=TodaysHomeowner&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1756/lg/a2064b/LG-Logo-PNG-100x100_v1.png",853 ROMCOM K-Drama
+https://wurlnewidco.global.transmit.live/hls/68dc53751dfae43e36983c96/v1/new_id_co_romcomkdrama_1/lg_us/latest/main/hls/playlist.m3u8?wurl_channel=1756&wurl_name=RomComKDrama&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/1100/lg/3f54f7/LG-Logo-PNG-100x100_v5.png",857 NEW KFOOD
+https://wurlnewidco.global.transmit.live/hls/68e03346246da8db67b6a93a/playlist.m3u8?wurl_channel=1100&wurl_name=NewKFOOD&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-id="",All Out Reality (1080p)
+https://d3kyucsyhwa3ht.cloudfront.net/All_Out_Reality.m3u8
+#EXTINF:-1 tvg-id="AFV.us@SD",America’s Funniest Home Videos (1080p)
+https://d1mp1kdk5zi1ie.cloudfront.net/playlist.m3u8
+#EXTINF:-1 tvg-id="ComedyDynamics.us@SD",Comedy Dynamics (1080p)
+https://d3a5mry3t5fzw9.cloudfront.net/playlist.m3u8
+#EXTINF:-1 tvg-id="DryBarComedyPlus.us@SD",Dry Bar Comedy (720p)
+https://drybar-drybarcomedy-1-us.samsung.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-id="",Genie K Drama (1080p)
+https://ads.its-newid.net/api/manifest.m3u8?ads.service_id=US2000012KX&channel_id=newid_351&tp=samsung_tvplus
+#EXTINF:-1 tvg-id="Homeful.ca@US",Homeful (1080p)
+https://dn8a6xbnfncub.cloudfront.net/Homeful_US.m3u8
+#EXTINF:-1 tvg-id="",K Drama+ (1080p)
+https://ads.its-newid.net/api/manifest.m3u8?ads.service_id=US1700017NM&channel_id=newid_271&tp=samsung_tvplus
+#EXTINF:-1 tvg-id="NBCLX.us@SD",NBC LX Home (1080p)
+https://dn7vkzd5khpp3.cloudfront.net/master.m3u8
+#EXTINF:-1 tvg-id="",PBS Food (1080p)
+https://d3w43rc3ob044a.cloudfront.net/PBS_Food.m3u8
+#EXTINF:-1 tvg-id="PBSTravel.us@SD",PBS Travel (1080p)
+https://d3hqevbyoxtkoi.cloudfront.net/PBS_Travel.m3u8
+#EXTINF:-1 tvg-id="",Tastemade Home (1080p)
+https://d3ca4qxsdzlrju.cloudfront.net/Tastemade_Home.m3u8
+#EXTINF:-1 tvg-id="TastemadeTravel.us@SD",Tastemade Travel (1080p)
+https://d6ef3usc6d9cl.cloudfront.net/Tastemade_Travel.m3u8
+#EXTINF:-1 tvg-id="TheDesignNetwork.us@SD",The Design Network (1080p)
+https://d4483wsd7yl91.cloudfront.net/The_Design_Network.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/WIeZMKT.png" group-title="Aguascalientes",Vive Kanal D Drama (1080p)
+https://thema-vivekanald-rakuten.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Comedy_Central_2018.svg/960px-Comedy_Central_2018.svg.png" group-title="Argentina",Comedy Central Latin America (1080p)
+http://181.119.93.83:8000/play/a1di/index.m3u8
+#EXTINF:-1 tvg-name="Food Network" tvg-logo="https://i.imgur.com/i60OYr9.png" tvg-id="Food.Network.it" tvg-chno="33" tvg-country="IT" group-title="Italy",Food Network
+https://streaming.aurora.enhanced.live/live/mpc/enl0eG1mLmVncmVzcy5mZDJ2eHI=/out/v1/IT_SIMULCAST/FOODNETWORK/CMAF/index.m3u8
+#EXTINF:-1 tvg-name="HGTV – Home & Garden Tv" tvg-logo="https://i.imgur.com/emLNC0U.png" tvg-id="HGTVItaly.it" tvg-chno="56" tvg-country="IT" group-title="Italy",HGTV – Home & Garden Tv
+https://streaming.aurora.enhanced.live/live/mpc/enl0eG1mLmVncmVzcy5mZDJ2eHI=/out/v1/IT_SIMULCAST/HGTV/CMAF/index.m3u8
+#EXTINF:-1 tvg-name="Travel TV" tvg-logo="https://i.imgur.com/aXAUyLN.png" tvg-id="TravelTV.it" tvg-chno="61" tvg-country="IT" group-title="Italy",Travel TV
+https://streaming.softwarecreation.it/GoldTvSat/GoldTvSat/playlist.m3u8
+#EXTINF:-1 tvg-name="KTN Home" tvg-logo="https://i.imgur.com/7yzunBK.png" tvg-id="KTNHome.ke" tvg-chno="4" group-title="Kenya",KTN Home
+https://www.standardmedia.co.ke/ktnhome/live
+#EXTINF:-1 tvg-name="Al Saudiya" tvg-logo="https://i.imgur.com/GRQTndk.png" tvg-id="AlSaudiya.sa" tvg-chno="1" tvg-country="SA" group-title="Saudi Arabia",Al Saudiya
+https://shd-gcp-live.edgenextcdn.net/live/bitmovin-saudi-tv/2ad66056b51fd8c1b624854623112e43/index.m3u8
+#EXTINF:-1 tvg-name="Al Saudiya Alaan" tvg-logo="https://i.imgur.com/sEOjApe.png" tvg-id="AlSaudiyaAlaan.sa" tvg-chno="5" tvg-country="SA" group-title="Saudi Arabia",Al Saudiya Alaan
+https://shd-gcp-live.edgenextcdn.net/live/bitmovin-ksa-now/71ed3aa814c643306c0a8bc4fcc7d17f/index.m3u8
+#EXTINF:-1 tvg-name="QVC Beauty Ⓢ" tvg-logo="https://i.imgur.com/ZBHtqk1.png" tvg-id="QVCBeautyUK.uk" tvg-chno="801" tvg-country="GB" group-title="UK",QVC Beauty Ⓢ
+https://qvcuk-live.akamaized.net/hls/live/2097112/qby/3/3.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Travel%20XP.png" group-title="Information",Travel XP English EU
+https://travelxp-travelxp-1-eu.rakuten.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Travel%20XP.png" group-title="Information",Travel XP English NZ
+https://travelxp-travelxp-1-nz.samsung.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/9grLJCS/fone22.png" group-title="Entertainment",FASHION ONE
+https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e2ee6997cb_1/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/9grLJCS/fone22.png" group-title="Entertainment",FASHION ONE
+https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/broadcast_5c9e2ee690051.smil/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="SKY LIFE BD",Drama 24
+https://vods2.aynascope.net/gseriesDrama/index.m3u8
+#EXTINF:-1 tvg-id="484" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Lifestyle",Travelxp HD বাংলা
+http://fastshare1.com:8080//live/25711345/late8airline/20622.ts
+#EXTINF:-1 tvg-id="107" tvg-chno="205" tvg-name="sony-hd" tvg-language="HIN" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Entertainment", Sony HD
+https://yowaimo.in/Sflex-ArtlPVT0719/SET_HD.m3u8
+#EXTINF:-1 tvg-id="sony-pal" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Entertainment",Sony Pal
+https://yowaimo.in/Sflex-ArtlPVT0719/SONY_PAL.m3u8
+#EXTINF:-1 tvg-id="sony-aath" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Entertainment",Sony Aath
+https://yowaimo.in/Sflex-ArtlPVT0719/SONY_8.m3u8
+#EXTINF:-1 tvg-id="" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Entertainment",DD Bharati
+https://d2lk5u59tns74c.cloudfront.net/out/v1/67cec794d8b14f9ba21f73924ac65797/index.m3u8
+#EXTINF:-1 tvg-id="" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Entertainment",DD National
+https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/40492a64c1db4a1385ba1a397d357d3a/index.m3u8
+#EXTINF:-2, tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-titel="shoq",  SET ENTERTAINMENT PK
+https://s1.ideationtec.live/SET_Ent/SET_Ent.m3u8
+#EXTINF:-1,AJJ ENTERTAINMENT HD
+https://s2.ideationtec.live/AAJ_Entertainment/AAJ_Entertainment.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Shoq",Bol Entertainment
+https://s2.ideationtec.live/BOL_Entertainment_HD/BOL_Entertainment_HD.m3u8
+#EXTINF:-1 tvg-id="ca1f6ad95faab603358bc0e022eeb990",M-Entertainment
+http://119.156.228.231:9983/stream/channelid/1500127178?ticket=2D341CD72568E844030F773CFCB1102FD3DA2BDC&profile=pass
+#EXTINF:-1 tvg-id="54c0421025ff3671edb25a6df192af69",TRAVEL XP
+http://119.156.228.231:9983/stream/channelid/272810068?ticket=7912C9EFC835229F7791C598C0B1CAFBDAA1E5AA&profile=pass
+#EXTINF:-1 tvg-id="5dd7a59ce27f636f30d2853ab5f1f41f",GEM TRAVEL
+http://119.156.228.231:9983/stream/channelid/480630621?ticket=CF28A825637F5C75A21B735FA3DFE56D6E493F3C&profile=pass
+#EXTINF:-1 tvg-id="60c805b95d8e41d65093c79f1cc14ec9",Fashion TV HD
+http://119.156.228.231:9983/stream/channelid/956680288?ticket=F5B1100AD7263F5C71516447DB2F24FF626B2B9D&profile=pass
+#EXTINF:-1 tvg-id="c0d7b90a63bdb7fafe1ae5652428333c",Fashion TV Asia
+http://119.156.228.231:9983/stream/channelid/179951552?ticket=FBC44C5DD4CA6D8F4E455032D2B1EC26F7B625BC&profile=pass
+#EXTINF:-1 tvg-name="Malaysia" tvg-logo="https://i.imgur.com/u5avW1c.jpeg" tvg-id="itzreisa.id" group-title="Malaysia",Drama Hotpot
+https://b27a6dd8a86c3e4ba93fbae22aaaac64.pmqrop.channel-assembly.mediatailor.ap-southeast-1.amazonaws.com/v1/channel/FAST_4/dash.mpd
+#EXTINF:-1 tvg-name="Malaysia" tvg-logo="https://i.imgur.com/TylXdvV.jpeg" tvg-id="itzreisa.id" group-title="Malaysia",Drama Hebat
+https://b27a6dd8a86c3e4ba93fbae22aaaac64.pmqrop.channel-assembly.mediatailor.ap-southeast-1.amazonaws.com/v1/channel/FAST_1/dash.mpd
+#EXTINF:-1 tvg-id="653208" tvg-logo="https://canvas-lb.tubitv.com/opts/5dQ1izCyXmvqBg==/e8f543f1-3086-4896-a76e-20e86b782bd3/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",Always Funny
+https://live-manifest.production-public.tubi.io/live/6181c031-9a68-4206-b0e6-7655f96ab6bc/playlist.m3u8
+#EXTINF:-1 tvg-id="682059" tvg-logo="https://canvas-lb.tubitv.com/opts/nDFPtoJN0b7OYw==/c327b06a-5844-429b-a4e1-36717181c962/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",Anger Management
+https://live-manifest.production-public.tubi.io/live/d02b962b-a87d-4205-9e8e-9993ce4133fc/playlist.m3u8
+#EXTINF:-1 tvg-id="694174" tvg-logo="https://canvas-lb.tubitv.com/opts/bgTisYfKI1IuqQ==/3ef7a392-9280-41c8-a8ca-a2a47f83c1d2/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",Antiques Road Trip
+https://live-manifest.production-public.tubi.io/live/994b51f6-77bc-4b0f-8dae-89ac99278d1c/playlist.m3u8
+#EXTINF:-1 tvg-id="682057" tvg-logo="https://canvas-lb.tubitv.com/opts/2MzPjBx4XH-vJA==/620cc48a-a6d9-439e-8b38-f857a4ab2630/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",Are We There Yet
+https://live-manifest.production-public.tubi.io/live/07831268-bf32-40d9-9c08-0ee6df28cbed/playlist.m3u8
+#EXTINF:-1 tvg-id="400000099" tvg-logo="https://canvas-lb.tubitv.com/opts/RruQnZmevLusfA==/279f34be-8b5c-42a1-a7df-e04f01e95693/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Ax Men
+https://live-manifest.production-public.tubi.io/live/f5cdc6d4-6e9b-4a1a-8d5c-07759cd27389/playlist.m3u8
+#EXTINF:-1 tvg-id="684164" tvg-logo="https://canvas-lb.tubitv.com/opts/dpt9OiMYmCyhzw==/c5316804-bd82-46f4-81a4-289a8333cd71/CHgQeDoFMS4xLjlAAQ==" group-title="Black Entertainment",Bounce XL
+https://live-manifest.production-public.tubi.io/live/80fc3952-4bca-490f-8819-96d1427a992c/playlist.m3u8
+#EXTINF:-1 tvg-id="400000092" tvg-logo="https://canvas-lb.tubitv.com/opts/td59qtLvlg-NcA==/1a61481a-60fa-4294-9d23-f097b7773866/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Cheaters
+https://live-manifest.production-public.tubi.io/live/c9318bbe-15a2-4ece-8cb2-797497d51277/playlist.m3u8
+#EXTINF:-1 tvg-id="400000169" tvg-logo="https://canvas-lb.tubitv.com/opts/uYKuLYyiz2HNxA==/bcc2221d-8150-4301-8c6b-98504d781641/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",Comedy Dynamics
+https://live-manifest.production-public.tubi.io/live/f35167dd-e5c5-4ab4-8741-85e9bfcb0192/playlist.m3u8
+#EXTINF:-1 tvg-id="400000086" tvg-logo="https://canvas-lb.tubitv.com/opts/LG699URBRLDqOQ==/35803cea-97e6-487c-9050-0171abf6c647/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Dance Moms
+https://live-manifest.production-public.tubi.io/live/05dcc935-bb07-4c6d-a061-a9bf5fccc383/playlist.m3u8
+#EXTINF:-1 tvg-id="400000098" tvg-logo="https://canvas-lb.tubitv.com/opts/rb2kTcyckd-Ltg==/982ab39c-a6a8-472b-9210-3b009956dee1/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Deal Zone
+https://live-manifest.production-public.tubi.io/live/feb7d8d7-6cde-4351-87e8-4afb3626e950/playlist.m3u8
+#EXTINF:-1 tvg-id="400000108" tvg-logo="https://canvas-lb.tubitv.com/opts/TA-WoDn6tYKtCQ==/e1fddeac-4117-45e8-a880-d46000b4fcda/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Discovery Turbo TV
+https://live-manifest.production-public.tubi.io/live/e7be5ad5-9044-4151-95d4-a9aae10ab0a5/playlist.m3u8
+#EXTINF:-1 tvg-id="400000088" tvg-logo="https://canvas-lb.tubitv.com/opts/Er-hEK6ElFu0BA==/d81a47a9-92b7-403c-b65b-d4153a9ebefd/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Dog the Bounty Hunter
+https://live-manifest.production-public.tubi.io/live/d6872865-27e6-4f9c-9e63-ced3057a741c/playlist.m3u8
+#EXTINF:-1 tvg-id="400000087" tvg-logo="https://canvas-lb.tubitv.com/opts/27B0TzReARo-SQ==/f2f4da49-e449-451e-a1e2-1abf11dcfcf9/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Duck Dynasty
+https://live-manifest.production-public.tubi.io/live/f21508c8-437e-416c-b02f-340bc1a3da1a/playlist.m3u8
+#EXTINF:-1 tvg-id="400000056" tvg-logo="https://canvas-lb.tubitv.com/opts/yHCUm2mwp3Y8yw==/6ff20b44-04d5-426c-aaf5-5593a6c60b87/CHgQeDoFMS4xLjlAAQ==" group-title="Black Entertainment",Ebony TV by Lionsgate
+https://live-manifest.production-public.tubi.io/live/490b3e91-00d8-4637-a47b-47c05437c5e0/playlist.m3u8
+#EXTINF:-1 tvg-id="400000289" tvg-logo="https://canvas-lb.tubitv.com/opts/VuPsFP8P0bwjzg==/79c97537-0288-43e3-8d3d-d9aa37591d9c/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",FailArmy
+https://live-manifest.production-public.tubi.io/live/5fd9c7cd-53e4-445e-81c9-6bc717e0bcb7/playlist.m3u8
+#EXTINF:-1 tvg-id="555382" tvg-logo="https://canvas-lb.tubitv.com/opts/RL-qLG_anSeyOg==/bbbed8f2-f666-49ad-8288-03f049585e3d/CHgQeDoFMS4xLjlAAQ==" group-title="Black Entertainment",FOX SOUL
+https://live-manifest.production-public.tubi.io/live/99849dd6-1831-49d8-9cec-408d4e404445/playlist.m3u8
+#EXTINF:-1 tvg-id="673411" tvg-logo="https://canvas-lb.tubitv.com/opts/ZiXULUiKSeFNHQ==/6f7f3b3f-a050-4254-82eb-2c705dab77a6/CHgQeDoFMS4xLjlAAQ==" group-title="Games & Competition",Game Show Central
+https://live-manifest.production-public.tubi.io/live/94afd871-77af-49a7-b040-10b1a9cbcddd/playlist.m3u8
+#EXTINF:-1 tvg-id="700407" tvg-logo="https://canvas-lb.tubitv.com/opts/pMAu7mxETSJVkA==/65c6d925-e66f-49a2-88fd-2d8e323ccef9/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",Garden with Monty Don
+https://live-manifest.production-public.tubi.io/live/d91152d3-557b-4e9e-a7b9-73e0246f826d/playlist.m3u8
+#EXTINF:-1 tvg-id="400000070" tvg-logo="https://canvas-lb.tubitv.com/opts/95HEwdQAa2iY7A==/6e4b7a38-ccc1-4f1f-b4ce-626221c91a06/CHgQeDoFMS4xLjlAAQ==" group-title="TV Dramas",Generation Drama
+https://live-manifest.production-public.tubi.io/live/a8250c51-f628-4936-97cb-67a931d2d7d8/playlist.m3u8
+#EXTINF:-1 tvg-id="400000164" tvg-logo="https://canvas-lb.tubitv.com/opts/m139XSbqHN7igw==/63cd15f5-1b92-44ec-aa48-da4c4f90fb8f/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",Hagerty
+https://live-manifest.production-public.tubi.io/live/7d917d9c-66d1-4a15-a323-7ad001137c41/playlist.m3u8
+#EXTINF:-1 tvg-id="700414" tvg-logo="https://canvas-lb.tubitv.com/opts/Mk_URWBFrOnFUw==/790ebde9-0938-4667-9664-62136298f868/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",Homeful
+https://live-manifest.production-public.tubi.io/live/f6b960bc-57bb-431f-8879-22bb076fbce6/playlist.m3u8
+#EXTINF:-1 tvg-id="715952" tvg-logo="https://canvas-lb.tubitv.com/opts/762KTCjtPl2nNw==/e7c157ef-0e36-4131-9218-f27076ce26f4/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",How To
+https://live-manifest.production-public.tubi.io/live/8ca40844-aba2-49f8-a58c-37e5597b170e/playlist.m3u8
+#EXTINF:-1 tvg-id="400000089" tvg-logo="https://canvas-lb.tubitv.com/opts/Oav7vVDh-LuKdA==/7655be2e-e1c5-43f2-92b3-fad5c753777e/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Ice Road Truckers
+https://live-manifest.production-public.tubi.io/live/ce30e46c-100c-40e3-9dc6-7e9a71f7cf44/playlist.m3u8
+#EXTINF:-1 tvg-id="400000073" tvg-logo="https://canvas-lb.tubitv.com/opts/i8bjHzfbFfhq1A==/8ec6200b-cbe1-4e2b-9883-24a37f5f4ab7/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",In the Garage
+https://live-manifest.production-public.tubi.io/live/2fe3d2d3-5dca-4da5-999f-4fcc54f4a34b/playlist.m3u8
+#EXTINF:-1 tvg-id="682634" tvg-logo="https://canvas-lb.tubitv.com/opts/LFLNras1Iw825A==/d7bf80e8-e8bc-4883-9c2b-551d1d7ab80c/CHgQeDoFMS4xLjlAAQ==" group-title="TV Dramas",ION
+https://live-manifest.production-public.tubi.io/live/cadd5511-0fda-4045-94b6-4dd982fa63e7/playlist.m3u8
+#EXTINF:-1 tvg-id="684165" tvg-logo="https://canvas-lb.tubitv.com/opts/i_iUUrOlkunMhA==/979fd7e0-d2df-4c2b-90d0-af690c9405cb/CHgQeDoFMS4xLjlAAQ==" group-title="TV Dramas",ION Plus
+https://live-manifest.production-public.tubi.io/live/2fd87230-572e-47ef-8bae-c282f99b174c/playlist.m3u8
+#EXTINF:-1 tvg-id="692114" tvg-logo="https://canvas-lb.tubitv.com/opts/Y7HgrFc8PhNT3w==/cedecff3-9f15-4dbe-b883-ff156a2ecca5/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",LOL! Network
+https://live-manifest.production-public.tubi.io/live/0bd86fc8-d100-4653-be35-26a466381a55/playlist.m3u8
+#EXTINF:-1 tvg-id="715947" tvg-logo="https://canvas-lb.tubitv.com/opts/QVwlsOJ3Ig8OfA==/7b9a7209-d8b1-4c1e-9132-0407a473ed8f/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Love & Marriage
+https://live-manifest.production-public.tubi.io/live/550da437-5c67-44a3-a95e-a897fc7d6612/playlist.m3u8
+#EXTINF:-1 tvg-id="656575" tvg-logo="https://canvas-lb.tubitv.com/opts/g-dtAd_wR8w64w==/62dc5afa-c235-41ae-904e-e77b6c93e93e/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",Mystery Science Theater 3000
+https://live-manifest.production-public.tubi.io/live/da2d381e-93a5-466c-8807-74e18bac08f1/playlist.m3u8
+#EXTINF:-1 tvg-id="400000071" tvg-logo="https://canvas-lb.tubitv.com/opts/-Qup7p-9U8QS9Q==/bf6f69f6-4495-4bc2-94f9-fd91877e36f0/CHgQeDoFMS4xLjlAAQ==" group-title="TV Dramas",Nikita
+https://live-manifest.production-public.tubi.io/live/69aad4c1-9bb9-49db-9b2a-f8b26a7c3582/playlist.m3u8
+#EXTINF:-1 tvg-id="641492" tvg-logo="https://canvas-lb.tubitv.com/opts/dGh54TTvBjR7DQ==/22eaf49e-a2ad-4da4-afbd-66aedb72c78f/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Nosey
+https://live-manifest.production-public.tubi.io/live/d0ca4057-94d2-44df-9277-fc715b261596/playlist.m3u8
+#EXTINF:-1 tvg-id="660350" tvg-logo="https://canvas-lb.tubitv.com/opts/rqdPpoz_b6nrWQ==/f5c01303-17e6-44a4-826e-d03be6b05d10/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",The Bob Ross Channel
+https://live-manifest.production-public.tubi.io/live/8536019f-5b74-4d95-a6fa-0e042da5e631/playlist.m3u8
+#EXTINF:-1 tvg-id="656574" tvg-logo="https://canvas-lb.tubitv.com/opts/G7pEsTRNoRelrA==/0de31780-db48-47ea-9279-955ddaa089b5/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",The Carol Burnett Show
+https://live-manifest.production-public.tubi.io/live/dbce464b-6541-43dd-a847-01f68b21b4ff/playlist.m3u8
+#EXTINF:-1 tvg-id="400000103" tvg-logo="https://canvas-lb.tubitv.com/opts/le71z1hR2zy5vA==/2519aeef-b530-4f17-b7e7-16dfce1f1bd0/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",The Conners
+https://live-manifest.production-public.tubi.io/live/2e2e56f4-7352-4d4f-80b5-f8a9c0c494ef/playlist.m3u8
+#EXTINF:-1 tvg-id="658746" tvg-logo="https://canvas-lb.tubitv.com/opts/AIgk5Ch_-sbsfQ==/c468221e-d75c-428a-bfaa-cdb5277c4c3b/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",The Johnny Carson Show
+https://live-manifest.production-public.tubi.io/live/196721fd-dabe-4799-8edc-d8e70f63eb31/playlist.m3u8
+#EXTINF:-1 tvg-id="400000065" tvg-logo="https://canvas-lb.tubitv.com/opts/fKfb6sHtpwnuig==/45d06aa3-8a80-4864-a7b0-25a606d26be3/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",Top Gear
+https://live-manifest.production-public.tubi.io/live/6d84d716-66f1-4f2d-8978-d0a6b99500ed/playlist.m3u8
+#EXTINF:-1 tvg-id="400000097" tvg-logo="https://canvas-lb.tubitv.com/opts/IB-MqRJoj39PYw==/8c846b53-83bc-4c0b-a9c0-ff323c46c057/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Torque
+https://live-manifest.production-public.tubi.io/live/9971fae9-6347-4cfb-94d4-b758b8e1fc1f/playlist.m3u8
+#EXTINF:-1 tvg-id="400000068" tvg-logo="https://canvas-lb.tubitv.com/opts/dnrWe24DU2G4iw==/d2ad86e1-c1b3-4758-abec-a75aabd439d0/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",Travel + Adventure
+https://live-manifest.production-public.tubi.io/live/399519f7-b848-4c8e-aaac-884546a1d916/playlist.m3u8
+#EXTINF:-1 tvg-id="400000247" tvg-logo="https://canvas-lb.tubitv.com/opts/sxMfiz-fW1hSIg==/38c3d087-46de-4c79-8b12-763f4483af0d/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",TV One Stars & Stories
+https://live-manifest.production-public.tubi.io/live/826e59ea-a6bd-4d13-923e-eee7e8f2f938/playlist.m3u8
+#EXTINF:-1 tvg-id="715942" tvg-logo="https://canvas-lb.tubitv.com/opts/m9EWLVua_xh2VQ==/a7d3ffc6-0efb-4136-9faf-1be405d7a9dd/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",Unique Lives
+https://live-manifest.production-public.tubi.io/live/5602f3d6-c62c-4109-8de7-b7d2434ab63b/playlist.m3u8
+#EXTINF:-1 tvg-id="400000000" tvg-logo="https://canvas-lb.tubitv.com/opts/URb2SUqoOhNp3Q==/4b2bb660-9424-45c9-ad67-9c7099f60cbf/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",Waypoint TV
+https://live-manifest.production-public.tubi.io/live/d419b6d7-3ede-4ca6-9d7c-3f34b039f7ab/playlist.m3u8
+#EXTINF:-1 tvg-id="715945" tvg-logo="https://canvas-lb.tubitv.com/opts/DuU9Cn6o7BqCBg==/2f1fd1c5-7bdc-475f-841f-9a2a9f3ae75b/CHgQeDoFMS4xLjlAAQ==" group-title="Lifestyle",Welcome Home
+https://live-manifest.production-public.tubi.io/live/edb986fe-9600-4f83-8b6d-8593986f2f3a/playlist.m3u8
+#EXTINF:-1 tvg-id="400000293" tvg-logo="https://canvas-lb.tubitv.com/opts/ONtAI886BGJLPQ==/f2b18c8c-c8c1-4a3c-97da-2a247fa7395e/CHgQeDoFMS4xLjlAAQ==" group-title="Reality",World of Love Island
+https://live-manifest.production-public.tubi.io/live/236f6c6f-2c44-496f-897e-6ea958233674/playlist.m3u8
+#EXTINF:-1 channel-id="86c08261fc015a58866210bea63eb8f4" tvg-id="86c08261fc015a58866210bea63eb8f4" tvg-chno="815" tvg-name="Always Funny Videos" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/86c08261fc015a58866210bea63eb8f4/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1723058240057_AF_Logo_EFEFEF_Centered_260x147.png" group-title="Comedy",Always Funny Videos
+https://jmp2.uk/rok-86c08261fc015a58866210bea63eb8f4.m3u8
+#EXTINF:-1 channel-id="20a6aa8be0f3aff9d50f3daf3dfe6ba8" tvg-id="20a6aa8be0f3aff9d50f3daf3dfe6ba8" tvg-chno="822" tvg-name="America's Funniest Home Videos" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/20a6aa8be0f3aff9d50f3daf3dfe6ba8/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1769180377871_AFHV_Roku_Info_HUD_Logo_260x147_EFEFEF.png" group-title="Comedy",America's Funniest Home Videos
+https://jmp2.uk/rok-20a6aa8be0f3aff9d50f3daf3dfe6ba8.m3u8
+#EXTINF:-1 channel-id="42ee7ce6165d5342be3e509f0afe5048" tvg-id="42ee7ce6165d5342be3e509f0afe5048" tvg-chno="1030" tvg-name="Canela.TV Clásicos" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/42ee7ce6165d5342be3e509f0afe5048/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1734562598895_ROKU-Clasicos-InfoHUD-1.png" group-title="Comedy",Canela.TV Clásicos
+https://jmp2.uk/rok-42ee7ce6165d5342be3e509f0afe5048.m3u8
+#EXTINF:-1 channel-id="c5c6a54fbd0328b108453e2537b7eee1" tvg-id="c5c6a54fbd0328b108453e2537b7eee1" tvg-chno="979" tvg-name="Caracol Mix" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c5c6a54fbd0328b108453e2537b7eee1/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1774999084418_CMIX_Info_Hud_Log_260x147.png" group-title="Comedy",Caracol Mix
+https://jmp2.uk/rok-c5c6a54fbd0328b108453e2537b7eee1.m3u8

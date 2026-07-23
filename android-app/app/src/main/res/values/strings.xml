@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FreeStream TV</string>
+    <string name="search_hint">Search channels…</string>
+    <string name="no_channels">No channels found</string>
+    <string name="loading">Loading channels…</string>
+    <string name="favorites">Favorites</string>
+    <string name="all_channels">All Channels</string>
+    <string name="categories">Categories</string>
+    <string name="error_loading">Failed to load playlist</string>
+    <string name="retry">Retry</string>
+</resources>

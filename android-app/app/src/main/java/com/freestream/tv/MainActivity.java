@@ -1,101 +1,194 @@
 package com.freestream.tv;
 
-import android.app.Activity;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
-    private WebView webView;
-    private static final String APP_URL = "https://preview-3daca255-0f2a-4d33-b138-185bdf3a2f3f.space-z.ai/";
+    private RecyclerView recyclerView;
+    private ChannelAdapter adapter;
+    private List<Channel> allChannels = new ArrayList<>();
+    private List<Channel> filteredChannels = new ArrayList<>();
+    private EditText searchBox;
+    private ProgressBar progressBar;
+    private TextView emptyText;
+    private TextView categoryTitle;
+    private LinearLayout categoryBar;
+    private Set<String> favorites = new HashSet<>();
+    private String currentGroup = "All";
+    private boolean showFavsOnly = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        setContentView(R.layout.activity_main);
+
         Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        window.setStatusBarColor(Color.parseColor("#060608"));
+        window.setStatusBarColor(0xFF060608);
 
-        FrameLayout container = new FrameLayout(this);
-        setContentView(container);
+        // Init views
+        recyclerView = findViewById(R.id.recyclerView);
+        searchBox = findViewById(R.id.searchBox);
+        progressBar = findViewById(R.id.progressBar);
+        emptyText = findViewById(R.id.emptyText);
+        categoryTitle = findViewById(R.id.categoryTitle);
+        categoryBar = findViewById(R.id.categoryBar);
 
-        webView = new WebView(this);
-        container.addView(webView, new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.MATCH_PARENT
-        ));
+        // Setup RecyclerView
+        adapter = new ChannelAdapter(filteredChannels, channel -> {
+            M3UParser.addRecent(MainActivity.this, channel.url);
+            Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
+            intent.putExtra("url", channel.url);
+            intent.putExtra("name", channel.displayName);
+            intent.putExtra("logo", channel.logo);
+            startActivity(intent);
+        }, this::toggleFavorite);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setDatabaseEnabled(true);
-        settings.setMediaPlaybackRequiresUserGesture(false);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        settings.setLoadWithOverviewMode(true);
-        settings.setUseWideViewPort(true);
-        settings.setSupportZoom(false);
-        settings.setBuiltInZoomControls(false);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return false;
+        // Search
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterChannels();
             }
         });
 
-        webView.setWebChromeClient(new WebChromeClient());
+        // Favorites toggle
+        findViewById(R.id.favButton).setOnClickListener(v -> {
+            showFavsOnly = !showFavsOnly;
+            filterChannels();
+        });
 
-        if (savedInstanceState != null) {
-            webView.restoreState(savedInstanceState);
-        } else {
-            webView.loadUrl(APP_URL);
+        // Load channels
+        loadChannels();
+    }
+
+    private void loadChannels() {
+        progressBar.setVisibility(View.VISIBLE);
+        emptyText.setVisibility(View.GONE);
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            allChannels = M3UParser.loadBundledPlaylists(this);
+            favorites = M3UParser.getFavorites(this);
+
+            new Handler(Looper.getMainLooper()).post(() -> {
+                progressBar.setVisibility(View.GONE);
+                buildCategoryBar();
+                filterChannels();
+            });
+        });
+    }
+
+    private void buildCategoryBar() {
+        categoryBar.removeAllViews();
+        Set<String> groups = new HashSet<>();
+        for (Channel ch : allChannels) {
+            if (ch.group != null) groups.add(ch.group);
+        }
+
+        // "All" button
+        addCategoryChip("All", v -> { currentGroup = "All"; filterChannels(); });
+        // "Favorites" button
+        addCategoryChip("❤ Favorites", v -> { showFavsOnly = true; filterChannels(); });
+
+        for (String group : groups) {
+            addCategoryChip(group, v -> { currentGroup = group; showFavsOnly = false; filterChannels(); });
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        webView.saveState(outState);
+    private void addCategoryChip(String text, View.OnClickListener listener) {
+        TextView chip = new TextView(this);
+        chip.setText(text);
+        chip.setTextColor(0xCCFFFFFF);
+        chip.setTextSize(13);
+        chip.setPadding(40, 20, 40, 20);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMarginEnd(16);
+        chip.setLayoutParams(params);
+        chip.setOnClickListener(v -> {
+            // Reset all chips
+            for (int i = 0; i < categoryBar.getChildCount(); i++) {
+                View child = categoryBar.getChildAt(i);
+                if (child instanceof TextView) {
+                    ((TextView) child).setTextColor(0xCCFFFFFF);
+                    child.setBackgroundColor(0x00000000);
+                }
+            }
+            // Highlight selected
+            chip.setTextColor(0xFFFFFFFF);
+            chip.setBackgroundColor(0x33E50914);
+            listener.onClick(v);
+        });
+        categoryBar.addView(chip);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (webView != null && webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
+    private void filterChannels() {
+        String query = searchBox.getText().toString().toLowerCase().trim();
+        filteredChannels.clear();
+
+        for (Channel ch : allChannels) {
+            // Favorites filter
+            if (showFavsOnly && !favorites.contains(ch.url)) continue;
+            // Group filter
+            if (!currentGroup.equals("All") && !showFavsOnly) {
+                if (ch.group == null || !ch.group.equals(currentGroup)) continue;
+            }
+            // Search filter
+            if (!query.isEmpty()) {
+                if (!ch.displayName.toLowerCase().contains(query) &&
+                    !ch.name.toLowerCase().contains(query) &&
+                    (ch.group == null || !ch.group.toLowerCase().contains(query))) continue;
+            }
+            ch.isFavorite = favorites.contains(ch.url);
+            filteredChannels.add(ch);
         }
+
+        categoryTitle.setText(currentGroup + " (" + filteredChannels.size() + ")");
+        adapter.notifyDataSetChanged();
+        emptyText.setVisibility(filteredChannels.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (webView != null) webView.onPause();
+    private void toggleFavorite(Channel channel) {
+        M3UParser.toggleFavorite(this, channel.url);
+        favorites = M3UParser.getFavorites(this);
+        channel.isFavorite = favorites.contains(channel.url);
+        adapter.notifyDataSetChanged();
+        Toast.makeText(this, channel.isFavorite ? "Added to favorites" : "Removed from favorites", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (webView != null) webView.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (webView != null) {
-            ((FrameLayout) webView.getParent()).removeView(webView);
-            webView.destroy();
-        }
-        super.onDestroy();
+        favorites = M3UParser.getFavorites(this);
+        filterChannels();
     }
 }

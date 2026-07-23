@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:gravity="center_vertical"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="2dp">
+
+    <!-- Channel logo -->
+    <ImageView
+        android:id="@+id/channelLogo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_media_play"
+        android:background="#1AFFFFFF"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:layout_marginEnd="12dp" />
+
+    <!-- Channel info -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/channelName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#F0F0F0"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:maxWidth="220dp" />
+
+            <TextView
+                android:id="@+id/channelQuality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#80FFFFFF"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:background="#20FFFFFF"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:layout_marginStart="6dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/channelVod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VOD"
+                android:textColor="#60A5FA"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:background="#2060A5FA"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:layout_marginStart="4dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/channelGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#60FFFFFF"
+            android:textSize="12sp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:maxWidth="240dp"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+
+    <!-- Favorite button -->
+    <TextView
+        android:id="@+id/favButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="🤍"
+        android:textSize="18sp"
+        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+</LinearLayout>

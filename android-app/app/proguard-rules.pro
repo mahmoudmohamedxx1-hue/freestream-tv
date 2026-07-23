@@ -1,1 +1,2 @@
 -keep class com.freestream.tv.** { *; }
+-keep class androidx.media3.** { *; }

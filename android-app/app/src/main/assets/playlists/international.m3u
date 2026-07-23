@@ -1,0 +1,156 @@
+#EXTM3U
+# Best 100 International — curated by FreeStream TV
+#EXTINF:-1 tvg-logo="https://image.xumo.com/v1/channels/channel/99993006/600x200.png?type=white_cropped",393 World's Most Evil Killers
+https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99993006&ads.xumo_streamId=99993006&ads.channelId=99993006&ads.ad_tag_id=95744&ads.csid=lgchannels_us_worldsmostevilkillers_ssai&ads.channelName=worldsmostevilkillers_us&ads.xumo_contentName=FilmRise&ads.xumo_contentId=260&ads.xumo_providerName=FilmRise&ads.xumo_providerId=260&ads.content_category=IAB1-7&ads.content_genre=television&ads.content_language=en&ads.content_rating=tv-14&ads.coppa=0&ads.livestream=0&ads.prodq=1&ads.did=[IFA]&ads.lmt=[LMT]&ads.dnt=[DNS]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_name=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_storeurl=[APP_STOREURL]
+#EXTINF:-1 tvg-logo="http://img.platform.wurl.dev/channel/2131/lg/12ce40/LG-Logo-PNG-100x100_v1.png",439 World Poker Tour
+https://wurlwptenterprise.global.transmit.live/hls/68d306580531b397b61a7855/v1/world_poker_tour_wpt_1/lg_us/latest/main/hls/lg.m3u8?wurl_channel=2131&wurl_name=WorldPokerTour&coppa=0&uid=[DEVICE_ID]&rdid=[IFA]&ifatype=[IFA_TYPE]&dnt=[LMT]&donotsell=[DNS]&isgdpr=[GDPR]&gdpr=[GDPR_CONSENT]&country=[COUNTRY]&pr=[US_PRIVACY]&appstoreurl=[APP_STOREURL]&bundleid=[APP_BUNDLE]&appname=[APP_NAME]&appversion=[APP_VERSION]&dt=[DEVICE_TYPE]&make=[DEVICE_MAKE]&model=[DEVICE_MODEL]&targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&nonce=[NONCE]
+#EXTINF:-1 tvg-logo="https://i.imgur.com/r8MmFRX.png" group-title="Afghanistan",Afghanistan International (720p)
+https://hls.afintl.com/hls/stream.m3u8
+#EXTINF:-1 tvg-name="Das Erste Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Das_Erste_2014.svg/640px-Das_Erste_2014.svg.png" tvg-id="DasErste.de" tvg-chno="1" tvg-country="DE" group-title="Germany",Das Erste Ⓖ
+https://daserste-live.ard-mcdn.de/daserste/live/hls/de/master.m3u8
+#EXTINF:-1 tvg-name="ARD Alpha Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/ARD_alpha.svg/640px-ARD_alpha.svg.png" tvg-id="ARDalpha.de" tvg-chno="4" tvg-country="DE" group-title="Germany",ARD Alpha Ⓖ
+https://mcdn.br.de/br/fs/ard_alpha/hls/de/master.m3u8
+#EXTINF:-1 tvg-name="KiKa Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Kika_2012.svg/640px-Kika_2012.svg.png" tvg-id="KIKA.de" tvg-chno="11" tvg-country="DE" group-title="Germany",KiKa Ⓖ
+https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8
+#EXTINF:-1 tvg-name="Tagesschau24" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Tagesschau24-2012.svg/640px-Tagesschau24-2012.svg.png" tvg-id="tagesschau24.de" tvg-chno="16" tvg-country="DE" group-title="Germany",Tagesschau24
+https://tagesschau.akamaized.net/hls/live/2020115/tagesschau/tagesschau_1/master.m3u8
+#EXTINF:-1 tvg-name="BR Nord Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Logo_BR_Fernsehen_2021.svg/768px-Logo_BR_Fernsehen_2021.svg.png" tvg-id="BRFernsehenNord.de" tvg-chno="1" tvg-country="DE" group-title="Germany",BR Nord Ⓖ
+https://mcdn.br.de/br/fs/bfs_nord/hls/de/master.m3u8
+#EXTINF:-1 tvg-name="HR Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/HR-Fernsehen_Logo_2023.svg/640px-HR-Fernsehen_Logo_2023.svg.png" tvg-id="HRFernsehen.de" tvg-chno="3" tvg-country="DE" group-title="Germany",HR Ⓖ
+https://hrhls.akamaized.net/hls/live/2024525/hrhls/master.m3u8
+#EXTINF:-1 tvg-name="NDR Hamburg Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Logo_NDR_Fernsehen_2017.svg/578px-Logo_NDR_Fernsehen_2017.svg.png" tvg-id="NDRFernsehenHamburg.de" tvg-chno="7" tvg-country="DE" group-title="Germany",NDR Hamburg Ⓖ
+https://mcdn.ndr.de/ndr/hls/ndr_fs/ndr_hh/master.m3u8
+#EXTINF:-1 tvg-name="NDR Mecklenburg-Vorpommern Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Logo_NDR_Fernsehen_2017.svg/578px-Logo_NDR_Fernsehen_2017.svg.png" tvg-id="NDRFernsehenMecklenburgVorpommern.de" tvg-chno="8" tvg-country="DE" group-title="Germany",NDR Mecklenburg-Vorpommern Ⓖ
+https://mcdn.ndr.de/ndr/hls/ndr_fs/ndr_mv/master.m3u8
+#EXTINF:-1 tvg-name="NDR Niedersachsen Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Logo_NDR_Fernsehen_2017.svg/578px-Logo_NDR_Fernsehen_2017.svg.png" tvg-id="NDRFernsehenNiedersachsen.de" tvg-chno="9" tvg-country="DE" group-title="Germany",NDR Niedersachsen Ⓖ
+https://mcdn.ndr.de/ndr/hls/ndr_fs/ndr_nds/master.m3u8
+#EXTINF:-1 tvg-name="NDR Schleswig-Holstein Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Logo_NDR_Fernsehen_2017.svg/578px-Logo_NDR_Fernsehen_2017.svg.png" tvg-id="NDRFernsehenSchleswigHolstein.de" tvg-chno="10" tvg-country="DE" group-title="Germany",NDR Schleswig-Holstein Ⓖ
+https://mcdn.ndr.de/ndr/hls/ndr_fs/ndr_sh/master.m3u8
+#EXTINF:-1 tvg-name="SR Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/SR_Fernsehen_Logo_2023.svg/538px-SR_Fernsehen_Logo_2023.svg.png" tvg-id="SRFernsehen.de" tvg-chno="14" tvg-country="DE" group-title="Germany",SR Ⓖ
+https://srfs.akamaized.net/hls/live/689649/srfsgeo/index.m3u8
+#EXTINF:-1 tvg-name="WDR Ⓖ" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Wdr_fernsehen_logo_2016.svg/640px-Wdr_fernsehen_logo_2016.svg.png" tvg-id="WDR.de" tvg-chno="17" tvg-country="DE" group-title="Germany",WDR Ⓖ
+https://wdrfs247.akamaized.net/hls/live/681509/wdr_msl4_fs247/index.m3u8
+#EXTINF:-1 tvg-name="NDR International" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Logo_NDR_Fernsehen_2017.svg/578px-Logo_NDR_Fernsehen_2017.svg.png" tvg-id="NDRFernsehenInternational.de" tvg-chno="1" tvg-country="DE" group-title="Germany",NDR International
+https://ndrint.akamaized.net/hls/live/2020766/ndr_int/index.m3u8
+#EXTINF:-1 tvg-name="Star International" tvg-logo="https://i.imgur.com/Hp0stVQ.png" tvg-id="StarChannel.gr" tvg-chno="25" tvg-country="GR" group-title="Greece",Star International
+https://livestar.siliconweb.com/starvod/star_int/star_int.m3u8
+#EXTINF:-1 tvg-name="DD Urdu Ⓨ" tvg-logo="https://i.imgur.com/OiQPS34.png" tvg-id="DDUrdu.in" tvg-chno="9" tvg-country="IN" group-title="India",DD Urdu Ⓨ
+https://www.youtube.com/@DDUrdu/live
+#EXTINF:-1 tvg-name="IB3 Global Ⓨ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/ib3-es.png" tvg-id="IB3.es" tvg-chno="7" tvg-country="ES" group-title="Spain",IB3 Global Ⓨ
+https://www.youtube.com/c/ib3/live
+#EXTINF:-1 tvg-name="Arirang World" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/67cfa9368d2d135744732a3aed3baecb3fadcf13/countries/international/arirang-int.png" tvg-id="ArirangWorld.kr" tvg-chno="214" tvg-country="GB" group-title="UK",Arirang World
+http://amdlive.ctnd.com.edgesuite.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b2256000_sleng.m3u8
+#EXTINF:-1 tvg-logo="https://i.ibb.co/598TYnC/20240827-092020.png" group-title="Relagion Channel", Peace TV Urdu
+https://dzkyvlfyge.erbvr.com/PeaceTvUrdu/index.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Bangladeshi 🇧🇩" tvg-logo=" ", Arabica TV
+http://istream.binarywaves.com:8081/hls/arabica/playlist.m3u8
+#EXTINF:-1 tvg-id="0ac6af3d-acce-4d9d-9ce5-32d4b53f9326" tvg-name="Global TV" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Channels",Global TV
+https://app24.jagobd.com.bd/c3VydmVyX8RpbEU9Mi8xNy8yMFDEEHGcfRgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcEdsEfeDeKiNkVN3PTOmdFseWRtaW51aiPhnPTI2/Global-tv.stream/playlist.m3u8
+#EXTINF:-1 tvg-id="zee-anoml-cinema" tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Bengali",Zee Bangla Sonar
+https://stream.ottplus.live/live/zee_bangla_cinema_abr/live/zee_bangla_cinema_720/chunks.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="AynaOTT - Indian ENT",StarPlus HD
+http://66.102.126.10:8000/play/a008/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="HINDI",Star Gold 2 HD
+https://yowaimo.in/Sflex-ArtlPVT0719/STAR_GOLD_2_HD.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="HINDI",Star Gold HD
+http://66.102.126.10:8000/play/a00f/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="HINDI",Star Bharat HD
+http://66.102.126.10:8000/play/a022/index.m3u8
+#EXTINF:-1 tvg-id="c84e50af925923cb811d9fde34a04686",Peace TV Urdu HD
+http://119.156.228.231:9983/stream/channelid/793792200?ticket=7F097CAF9866266C6A7CC3064E9202203CD919F5&profile=pass
+#EXTINF:-1 tvg-id="e370b3dcc27be6bcbfb3096a801a2ea0",M-World
+http://119.156.228.231:9983/stream/channelid/1555263715?ticket=853B6ACA604518F495F7F2D6D49B094218D9CCF7&profile=pass
+#EXTINF:- 1 tvg-name="TVRI World" tvg-logo="https://i.imgur.com/mP6V7Sf.jpeg" tvg-id="TVRI World.id" group-title="Indonesia", TVRI World
+https://ott-balancer.tvri.go.id/live/eds/TVRIWorld/hls/TVRIWorld.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BMDQwM2QwMDEtMDk5MC00NmNlLThjMGMtY2IwZDhmZTU1MzFmXkEyXkFqcGc@._V1_.jpg" group-title="Southindian Hindi Dubbed",Ugly Story
+https://fmftp.net/api/stream/video/stream?type=movies&id=20933
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BYTY4NWY2MWQtMGFkMi00MDViLWEwZDgtNGMyZjA3MmYzMWU5XkEyXkFqcGc@._V1_.jpg" group-title="Southindian Hindi Dubbed",Karuppu
+https://fmftp.net/api/stream/video/stream?type=movies&id=20948
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BZjZiM2VjZTUtZTI5My00MjhmLWJjMGEtMzU1MmRhYTY2NjdlXkEyXkFqcGc@._V1_.jpg" group-title="Southindian Hindi Dubbed",Peddi
+https://fmftp.net/api/stream/video/stream?type=movies&id=20931
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BYTBiYWQyMWQtYTQwMC00NmZiLWFkOWYtNmNlNjM4NDlkNjQ4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" group-title="Southindian Hindi Dubbed",Sathi Leelavathi
+https://fmftp.net/api/stream/video/stream?type=movies&id=20918
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BNDUzOGQyNTEtZDlhOC00OTRlLThiNzMtMWI5NDliYWVhMTllXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" group-title="Southindian Hindi Dubbed",Kara
+https://fmftp.net/api/stream/video/stream?type=movies&id=20915
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5FJuZJLGDzsBPlFyMwDOgLeCva0vmlRMT5g&s" group-title="Southindian Hindi Dubbed",Madhuvidhu
+https://fmftp.net/api/stream/video/stream?type=movies&id=20904
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BNTk2NjNmYjUtMGEzNS00ZDFiLWE5NmItMDAzZDAyNDYwYTA1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" group-title="Southindian Hindi Dubbed",TN 2026
+https://fmftp.net/api/stream/video/stream?type=movies&id=20919
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BNTA2YzhlYTUtMGJmMS00MjlmLWExMjYtOWEzOTBmMTViMWQyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" group-title="Southindian Hindi Dubbed",Dacoit
+https://fmftp.net/api/stream/video/stream?type=movies&id=20794
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BMzZkN2FlMTQtZTI1MC00OGE4LTgxNDktOTdjNTlhYzVkN2MwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" group-title="Southindian Hindi Dubbed",Mohiniyattam
+https://fmftp.net/api/stream/video/stream?type=movies&id=20869
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-logo="https://m.media-amazon.com/images/M/MV5BOGViNGU3MWUtNDY0Zi00ZTJiLTg0MDUtZGNkN2ZkNjYwOWJhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" group-title="Southindian Hindi Dubbed",Love Insurance Kompany
+https://fmftp.net/api/stream/video/stream?type=movies&id=20868
+#EXTINF:-1 tvg-id="2104163" tvg-name="WC-4K| 4K 1" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 1
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104163
+#EXTINF:-1 tvg-id="2104162" tvg-name="WC-4K| 4K 2" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 2
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104162
+#EXTINF:-1 tvg-id="2104161" tvg-name="WC-4K| 4K 3" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 3
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104161
+#EXTINF:-1 tvg-id="2104160" tvg-name="WC-4K| 4K 4" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 4
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104160
+#EXTINF:-1 tvg-id="2104159" tvg-name="WC-4K| 4K 5" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| 4K 5
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2104159
+#EXTINF:-1 tvg-id="2095902" tvg-name="WC-4K| FOX ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FOX ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095902
+#EXTINF:-1 tvg-id="2095901" tvg-name="WC-4K| FOX [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FOX [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095901
+#EXTINF:-1 tvg-id="2095896" tvg-name="WC-4K| M6 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| M6 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095896
+#EXTINF:-1 tvg-id="2095895" tvg-name="WC-4K| FUSSBALL.TV1 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FUSSBALL.TV1 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095895
+#EXTINF:-1 tvg-id="2095894" tvg-name="WC-4K| FUSSBALL.TV 1 ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FUSSBALL.TV 1 ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095894
+#EXTINF:-1 tvg-id="2095892" tvg-name="WC-4K| FUSSBALL.TV 1 [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FUSSBALL.TV 1 [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095892
+#EXTINF:-1 tvg-id="2095891" tvg-name="WC-4K| FUSSBALL.TV 2 [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| FUSSBALL.TV 2 [BK] ᵁᴴᴰ ³⁸⁴⁰ᴾᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095891
+#EXTINF:-1 tvg-id="2095890" tvg-name="WC-4K| MW FUSSBALL 1 DE ᵁᴴᴰ ³⁸⁴⁰ᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| MW FUSSBALL 1 DE ᵁᴴᴰ ³⁸⁴⁰ᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095890
+#EXTINF:-1 tvg-id="2095889" tvg-name="WC-4K| MW FUSSBALL 2 DE ᵁᴴᴰ ³⁸⁴⁰ᴾᴾ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 ᵁᴴᴰ ³⁸⁴⁰ᴾ", WC-4K| MW FUSSBALL 2 DE ᵁᴴᴰ ³⁸⁴⁰ᴾᴾ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2095889
+#EXTINF:-1 tvg-id="2085222" tvg-name="WORLD CUP 2026 REPLAY INFO ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY INFO ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085222
+#EXTINF:-1 tvg-id="2085221" tvg-name="WORLD CUP 2026 REPLAY 1 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 1 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085221
+#EXTINF:-1 tvg-id="2085220" tvg-name="WORLD CUP 2026 REPLAY 2 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 2 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085220
+#EXTINF:-1 tvg-id="2085219" tvg-name="WORLD CUP 2026 REPLAY 3 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 3 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085219
+#EXTINF:-1 tvg-id="2085218" tvg-name="WORLD CUP 2026 REPLAY 4 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 4 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085218
+#EXTINF:-1 tvg-id="2085217" tvg-name="WORLD CUP 2026 REPLAY 5 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 5 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085217
+#EXTINF:-1 tvg-id="2085216" tvg-name="WORLD CUP 2026 REPLAY 6 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 6 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085216
+#EXTINF:-1 tvg-id="2085215" tvg-name="WORLD CUP 2026 REPLAY 7 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 7 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085215
+#EXTINF:-1 tvg-id="2085214" tvg-name="WORLD CUP 2026 REPLAY 8 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 8 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085214
+#EXTINF:-1 tvg-id="2085213" tvg-name="WORLD CUP 2026 REPLAY 9 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 9 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085213
+#EXTINF:-1 tvg-id="2085212" tvg-name="WORLD CUP 2026 REPLAY 10 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 10 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085212
+#EXTINF:-1 tvg-id="2085211" tvg-name="WORLD CUP 2026 REPLAY 11 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 11 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085211
+#EXTINF:-1 tvg-id="2085210" tvg-name="WORLD CUP 2026 REPLAY 12 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 12 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085210
+#EXTINF:-1 tvg-id="2085209" tvg-name="WORLD CUP 2026 REPLAY 13 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 13 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085209
+#EXTINF:-1 tvg-id="2085208" tvg-name="WORLD CUP 2026 REPLAY 14 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 14 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085208
+#EXTINF:-1 tvg-id="2085207" tvg-name="WORLD CUP 2026 REPLAY 15 ᴴᴰ" tvg-logo="http://51.158.145.100/picons/logos/logos/WORLDCUP2026REPLAY.png" group-title="WORLD CUP 2026 REPLAY", WORLD CUP 2026 REPLAY 15 ᴴᴰ
+http://16386-incest.tx-4kott.com:80/4bc06afd48/25de8a441d01/2085207
+#EXTINF:-1 tvg-id="715946" tvg-logo="https://canvas-lb.tubitv.com/opts/CqSYtT2lYvQOPQ==/686ca4a9-30ac-42d6-bdbf-70199f7912d9/CHgQeDoFMS4xLjlAAQ==" group-title="Sci-Fi & Supernatural",Mysterious Worlds
+https://live-manifest.production-public.tubi.io/live/8fa6f1c5-c602-426c-999d-8651180ca7ff/playlist.m3u8
+#EXTINF:-1 tvg-id="XUMO_99951398" tvg-logo="https://image.xumo.com/v1/channels/channel/99951398/300x300.webp?type=color_onBlack" group-title="XUMOðŸ‡ºðŸ‡¸: Horror & Sci-Fi",Mysterious Worlds
+https://dbrb49pjoymg4.cloudfront.net/10001/99951398/hls/playlist.m3u8?ads.xumo_channelId=99951398&ads._fw_ifa_type=[IFA_TYPE]&ads._fw_did=[IFA]&ads.amznappId=[AMZN_APP_ID]&ads.lat=[LAT]&ads.lon=[LON]&ads.os=[OS]&ads.osv=[OS_VERSION]&ads.asnw=&ads.caid=WBDMysteriousWorlds&ads.csid=xumo_[PLATFORM]_WBDMysteriousWorlds_ssai&ads._fw_is_lat=[IS_LAT]&ads._fw_us_privacy=[CCPA_Value]&ads._fw_coppa=0&ads.genre=[CONTENT_IMDB_GENRE]&ads._fw_content_category=[IAB_content_category]&ads._fw_content_language=[content_language]&ads._fw_content_genre=[content_genre]&ads._fw_content_rating=[content_rating]&ads.xumo_contentId=4206&ads.xumo_contentName=WBDMysteriousWorlds&ads.xumo_providerId=4206&ads.xumo_providerName=WBDMysteriousWorlds&ads._fw_deviceMake=[device_make]&ads._fw_device_model=[device_model]&ads.channelId=99951398&ads.xumo_platform=[PLATFORM]&ads.site_id=[publica_site_id]&ads.appName=xumo&ads.appVersion=[APP_VERSION]&ads._fw_app_bundle=[app_bundle]&ads._fw_app_store_url=[app_store_url]
+#EXTINF:-1,World's Wildest Police Videos
+https://d3f4oii5n0oeqi.cloudfront.net/11701/88884549/hls/master.m3u8?includeAssetTags=true&ads.xumo_channelId=88884549&ads.xumo_streamId=88884549&declaredCC1Language=en&ads.caid=WorldsWildestPoliceVideos&ads.csid=tcl2_us_worldswildestpolicevideos_ssai&ads.xumo_ifaType=%5BIFA_TYPE%5D&ads.xumo_ifa=%5BIFA%5D&ads.appName=%5BAPP_NAME%5D&ads.appVersion=%5BAPP_VERSION%5D&ads._fw_app_bundle=%5BTCL_APP_BUNDLE%5D&ads.genre=Action%252CAdventure%252CComedy%252CCrime%252CDrama%252CFamily%252CFantasy%252CHorror%252CMystery%252CRomance%252CSci-Fi%252CThriller%252CWar%252CWestern%252CSuperhero&ads._fw_content_category=IAB1-5&ads._fw_content_genre=television&ads._fw_content_language=en&ads._fw_content_rating=tv-14&ads._fw_deviceMake=%5BDEVICE_MAKE%5D&ads._fw_device_model=%5BDEVICE_MODEL%5D&ads._fw_devicetype=3-Connected_TV&ads._fw_coppa=0&ads._fw_is_lat=%5BLMT%5D&ads._fw_us_privacy=%5BUS_PRIVACY%5D&ads._fw_h_x_country=US&ads._fw_player_width=%5BPLAYER_WIDTH%5D&ads._fw_player_height=%5BPLAYER_HEIGHT%5D&ads.xumo_contentId=5&ads.xumo_contentName=WorldsWildestPoliceVideos&ads.xumo_providerId=5&ads.xumo_providerName=WorldsWildestPoliceVideos&ads.xumo_channelName=WorldsWildestPoliceVideos&ads._fw_app_store_url=%5BTCL_APP_STORE_URL%5D
+#EXTINF:-1,Revry Global
+https://linear-5.frequency.stream/dist/tcltv/5/hls/master/playlist.m3u8?ads.dnt=DNT&ads.ic=IC&ads.duration=DURATION&ads.app_bundle=APP_BUNDLE&ads.app_name=APP_NAME&ads.app_store_url=APP_STORE_URL&ads.device_id=DID&ads.device_make=DEVICE_MAKE&ads.device_model=DEVICE_MODEL&ads.brand_name=BRAND_NAME&ads.ifa_type=IFA_TYPE&ads.gdpr_consent=GDPR_CONSENT&ads.gdpr=GDPR&ads.us_privacy=US_PRIVACY&ads.coppa=COPPA&ads.lmt=LMT&ads.gpp_sid=GPP_SID&ads.gpp=GPP&ads.csid=CSID
+#EXTINF:-1,World's Most Evil Killers
+https://d3f4oii5n0oeqi.cloudfront.net/11701/88884570/hls/master.m3u8?includeAssetTags=true&ads.xumo_channelId=88884570&ads.xumo_streamId=88884570&declaredCC1Language=en&ads.caid=WorldsMostEvilKillers&ads.csid=tcl2_us_worldsmostevilkillers_ssai&ads.xumo_ifaType=%5BIFA_TYPE%5D&ads.xumo_ifa=%5BIFA%5D&ads.appName=%5BAPP_NAME%5D&ads.appVersion=%5BAPP_VERSION%5D&ads._fw_app_bundle=%5BTCL_APP_BUNDLE%5D&ads.genre=Action%252CAdventure%252CComedy%252CCrime%252CDrama%252CFamily%252CFantasy%252CHorror%252CMystery%252CRomance%252CSci-Fi%252CThriller%252CWar%252CWestern%252CSuperhero&ads._fw_content_category=IAB1-5&ads._fw_content_genre=television&ads._fw_content_language=en&ads._fw_content_rating=tv-14&ads._fw_deviceMake=%5BDEVICE_MAKE%5D&ads._fw_device_model=%5BDEVICE_MODEL%5D&ads._fw_devicetype=3-Connected_TV&ads._fw_coppa=0&ads._fw_is_lat=%5BLMT%5D&ads._fw_us_privacy=%5BUS_PRIVACY%5D&ads._fw_h_x_country=US&ads._fw_player_width=%5BPLAYER_WIDTH%5D&ads._fw_player_height=%5BPLAYER_HEIGHT%5D&ads.xumo_contentId=5&ads.xumo_contentName=WorldsMostEvilKillers&ads.xumo_providerId=5&ads.xumo_providerName=WorldsMostEvilKillers&ads.xumo_channelName=WorldsMostEvilKillers&ads._fw_app_store_url=%5BTCL_APP_STORE_URL%5D
+#EXTINF:-1 tvg-logo="https://image-resizer-cloud-cdn.api.cms.amdvids.com/image/93B6C05F-675F-4ED1-8FF9-942FDA693714/3-1x1.png" tvg-id="LN_93B6C05F-675F-4ED1-8FF9-942FDA693714" group-title="LocalNowðŸ‡ºðŸ‡¸: Horror and SciFi",Mysterious Worlds
+https://s9host5.localnow.api.cms.amdvids.com/v1/master/c189661feba961c19bc5fb60b57879ee9b84548a/config12/playlist.m3u8?ads.cdnhost=s9host5.localnow.api.cms.amdvids.com&ads.playbackid=93B6C05F-675F-4ED1-8FF9-942FDA693714&ads.n1=rule_id&ads.v1=31E67C91-301F-4DA0-997C-55E852CBE4CB-1752176430&ads.n3=qp_content_id&ads.v3=93B6C05F-675F-4ED1-8FF9-942FDA693714&ads.n4=content_name&ads.v4=Mysterious%20Worlds&ads.n21=content_custom_2_param&ads.v21=AMDB013583&ads.n22=app_store_url&ads.v22=&ads.n23=channel_genre&ads.v23=Horror&ads.n24=channel_brand_id&ads.v24=AMDB013583&ads.n25=channel_title&ads.v25=Mysterious%20Worlds&ads.n26=channel_name&ads.v26=Mysterious%20Worlds&ads.n27=channel_corp&ads.v27=Warner%20Brothers%20Discovery&ads.n28=url&ads.v28=https%25253A%25252F%25252Flocalnow.com%25252Fchannels%25252Fcbs-news-chicago-hyperlocal&ads.n29=dnt&ads.v29=&ads.n30=content_type&ads.v30=channel&ads.n31=app_version&ads.v31=0.0.0&ads.n32=device_make&ads.v32=&ads.n33=device_model&ads.v33=&ads.n34=cust_devicename&ads.v34=desktop_web&ads.n35=h&ads.v35=1080&ads.n36=channel_company_id&ads.v36=AMDP500559&ads.n37=gpp_sid&ads.v37=&ads.n38=content_custom_3_param&ads.v38=channel&ads.n39=channel_rating&ads.v39=TV-PG&ads.n40=gpp&ads.v40=&ads.n41=us_privacy&ads.v41=1YNY&ads.n42=ua&ads.v42=Mozilla%2F5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F122.0.0.0%20Safari%2F537.36&ads.n43=network_name&ads.v43=mysterious-worlds&ads.n44=app_bundle&ads.v44=&ads.n45=content_custom_1_param&ads.v45=93B6C05F-675F-4ED1-8FF9-942FDA693714&ads.n46=content_producer_name&ads.v46=Warner%20Brothers%20Discovery&ads.n47=channel_ext_id&ads.v47=&ads.n48=channel_language&ads.v48=en&ads.n49=app_name&ads.v49=&ads.n50=did&ads.v50=&ads.n51=channel_id&ads.v51=93B6C05F-675F-4ED1-8FF9-942FDA693714&ads.n52=ifa_type&ads.v52=&ads.n53=content_livestream&ads.v53=1&ads.n54=pos&ads.v54=midroll&ads.n55=content_provider&ads.v55=mysterious-worlds&ads.n56=ip&ads.v56=185.217.168.164&ads.n57=device_type&ads.v57=&ads.n58=w&ads.v58=1920
