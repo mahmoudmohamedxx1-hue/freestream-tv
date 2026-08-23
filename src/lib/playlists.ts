@@ -973,6 +973,137 @@ export const PROVIDERS: Provider[] = [
   },
 
   // ─────────────────────────────────────────────────────────────────────────
+  // Football Live — Premier League, La Liga & all football/soccer
+  // Auto-updating M3U sources + direct channel URLs + free legal options
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'football-live',
+    name: 'Football Live',
+    description: 'Premier League, La Liga & all football — auto-updating sources',
+    flag: '⚽',
+    categories: [
+      {
+        id: 'auto-m3u',
+        name: 'Auto-Updating M3U',
+        flag: '🔄',
+        playlists: [
+          {
+            id: 'ashik-bot',
+            name: 'ashik4u IPTV Bot (15min refresh)',
+            flag: '⚡',
+            url: 'https://raw.githubusercontent.com/ashik4u/iptv-m3u-bot/refs/heads/main/output/all.m3u',
+          },
+          {
+            id: 'romaxa-world',
+            name: 'Romaxa55 World IPTV (6h refresh)',
+            flag: '✅',
+            url: 'https://romaxa55.github.io/world_ip_tv/output/index.m3u',
+          },
+          {
+            id: 'iptv-org-sports',
+            name: 'IPTV-org Sports (daily)',
+            flag: '🏆',
+            url: 'https://iptv-org.github.io/iptv/categories/sports.m3u',
+          },
+        ],
+      },
+      {
+        id: 'premier-league',
+        name: 'Premier League Channels',
+        flag: '🦁',
+        playlists: [
+          {
+            id: 'sky-sports-pl',
+            name: 'Sky Sports Premier League',
+            flag: '🇬🇧',
+            url: 'https://live20.bozztv.com/trn03/gin-skysportspl/index.m3u8',
+          },
+          {
+            id: 'supersport-pl',
+            name: 'SuperSport Premier League HD',
+            flag: '🌍',
+            url: 'http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/52299',
+          },
+          {
+            id: 'canal-pl-fr',
+            name: 'Canal+ Premier Ligue (FR)',
+            flag: '🇫🇷',
+            url: 'http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/53531',
+          },
+        ],
+      },
+      {
+        id: 'la-liga',
+        name: 'La Liga Channels',
+        flag: '🇪🇸',
+        playlists: [
+          {
+            id: 'laliga-tv',
+            name: 'LaLiga TV (Spain)',
+            flag: '🇪🇸',
+            url: 'https://iptv-org.github.io/channels/es/LaLigaTV#SD',
+          },
+          {
+            id: 'movistar-laliga',
+            name: 'Movistar LaLiga',
+            flag: '🇪🇸',
+            url: 'http://93.152.174.144:4000/play/beinlaliga/index.m3u8',
+          },
+          {
+            id: 'uk-laliga-fhd',
+            name: 'UK La Liga TV FHD',
+            flag: '🇬🇧',
+            url: 'http://server.sibfungold.info:8080/pacha-man1/e0VaVPskUa/52816',
+          },
+          {
+            id: 'm-laliga',
+            name: 'M. LaLiga',
+            flag: '🇪🇸',
+            url: 'http://185.228.155.93:8000/play/a035/index.m3u8',
+          },
+          {
+            id: 'm-laliga-1hd',
+            name: 'M. LaLiga 1 HD',
+            flag: '🇪🇸',
+            url: 'http://185.228.155.93:8000/play/a01s/index.m3u8',
+          },
+          {
+            id: 'm-laliga-2hd',
+            name: 'M. LaLiga 2 HD',
+            flag: '🇪🇸',
+            url: 'http://185.228.155.93:8000/play/a03h/index.m3u8',
+          },
+          {
+            id: 'm-laliga-3hd',
+            name: 'M. LaLiga 3 HD',
+            flag: '🇪🇸',
+            url: 'http://185.228.155.93:8000/play/a03i/index.m3u8',
+          },
+          {
+            id: 'm-laliga-hd',
+            name: 'M. LaLiga HD',
+            flag: '🇪🇸',
+            url: 'http://185.228.155.93:8000/play/a01x/index.m3u8',
+          },
+        ],
+      },
+      {
+        id: 'free-legal',
+        name: 'Free Legal',
+        flag: '✅',
+        playlists: [
+          {
+            id: 'cazetv-yt',
+            name: 'CazeTV (all 380 La Liga games FREE)',
+            flag: '🇧🇷',
+            url: 'youtube-live:UCwVg9c5tQzVf7l5tQzVf7l5t',
+          },
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
   // Xtream Codes — login to any XC provider (or self-hosted kptv-proxy)
   // Enter credentials in the Admin panel. Credentials are stored in localStorage.
   // ─────────────────────────────────────────────────────────────────────────

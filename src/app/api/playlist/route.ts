@@ -192,6 +192,43 @@ export async function GET(req: NextRequest) {
     const content = await readPlaylistContent(target!, req)
     const parsed = parseM3U(content)
 
+    // If parsing returned 0 channels but the URL is a direct .m3u8 HLS stream,
+    // treat it as a single-channel playlist (the URL itself is the stream)
+    if (parsed.channels.length === 0 && target && /\.m3u8?(\?|$)/i.test(target)) {
+      // Find the playlist name from the provider catalog
+      let channelName = 'Live Stream'
+      if (providerId && categoryId && playlistId) {
+        const cat = getCategoryById(providerId, categoryId)
+        const pl = cat?.playlists?.find(p => p.id === playlistId)
+        if (pl) channelName = pl.name
+      }
+      const singleChannel = {
+        id: 'direct-0',
+        name: channelName,
+        displayName: channelName,
+        rawName: channelName,
+        url: target,
+        group: cat?.name || 'Direct Stream',
+        quality: 'HLS',
+        qualityTier: 20,
+        isVod: false,
+      }
+      const singleParsed = {
+        channels: [singleChannel],
+        groups: [singleChannel.group],
+        totalCount: 1,
+      }
+      if (cacheKey) {
+        cache.set(cacheKey, { data: singleParsed, fetchedAt: Date.now(), sourceKey: sourceLabel })
+      }
+      return NextResponse.json({
+        ...singleParsed,
+        sourceKey: sourceLabel,
+        cached: false,
+        fetchedAt: Date.now(),
+      })
+    }
+
     // Cache it
     if (cacheKey) {
       cache.set(cacheKey, {
@@ -208,6 +245,33 @@ export async function GET(req: NextRequest) {
       fetchedAt: Date.now(),
     })
   } catch (err: unknown) {
+    // If fetch failed but it's a direct stream URL, return it as a single channel
+    if (target && /\.m3u8?(\?|$)/i.test(target)) {
+      let channelName = 'Live Stream'
+      if (providerId && categoryId && playlistId) {
+        const cat = getCategoryById(providerId, categoryId)
+        const pl = cat?.playlists?.find(p => p.id === playlistId)
+        if (pl) channelName = pl.name
+      }
+      return NextResponse.json({
+        channels: [{
+          id: 'direct-0',
+          name: channelName,
+          displayName: channelName,
+          rawName: channelName,
+          url: target,
+          group: 'Direct Stream',
+          quality: 'HLS',
+          qualityTier: 20,
+          isVod: false,
+        }],
+        groups: ['Direct Stream'],
+        totalCount: 1,
+        sourceKey: sourceLabel,
+        cached: false,
+        fetchedAt: Date.now(),
+      })
+    }
     const message = err instanceof Error ? err.message : 'Unknown error'
     return NextResponse.json(
       { error: `Failed to load playlist: ${message}` },
