@@ -174,6 +174,11 @@ export default function Home() {
   const [showUploadDropzone, setShowUploadDropzone] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
+  // ─── Primary navigation: Home / Live / Guide / More ────────────────────
+  const [primaryView, setPrimaryView] = useState<'home' | 'live' | 'guide'>('home')
+  const [showMoreDrawer, setShowMoreDrawer] = useState(false)
+  const [hasAutoSelected, setHasAutoSelected] = useState(false)
+
   // ─── Multi-view, DVR, Stalker, Cloud sync state ────────────────────────
   const [showMultiView, setShowMultiView] = useState(false)
   const [showDVR, setShowDVR] = useState(false)
@@ -1315,161 +1320,128 @@ Common causes:
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* ─── Header — clean, organized, Pluto TV style ─── */}
+      {/* ─── Header — premium streaming nav ─── */}
       <header className="sticky top-0 z-30 glass border-b border-white/5">
-        <div className="px-3 md:px-6 py-2.5 flex items-center gap-2 md:gap-4">
-          {/* Left: Logo + mobile menu */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => setSidebarOpen(v => !v)}
-              className="lg:hidden p-2 rounded-lg hover:bg-white/5"
-              aria-label="Toggle sidebar"
-            >
-              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/30">
-                <Radio className="w-4 h-4 text-white" />
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-base font-bold tracking-tight leading-none">FreeStream TV</h1>
-                <p className="text-[10px] text-muted-foreground mt-0.5">{language === 'ar' ? 'تلفزيون مجاني' : 'Free live TV'}</p>
-              </div>
+        <div className="px-4 md:px-6 py-2.5 flex items-center gap-4">
+          {/* Logo */}
+          <button
+            onClick={() => { setPrimaryView('home'); switchProvider(PROVIDERS[0]) }}
+            className="flex items-center gap-2.5 shrink-0"
+          >
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/30">
+              <Radio className="w-4 h-4 text-white" />
             </div>
-          </div>
+            <div className="hidden sm:block">
+              <h1 className="text-base font-bold tracking-tight leading-none">FreeStream TV</h1>
+              <p className="text-[10px] text-muted-foreground mt-0.5">Free live TV</p>
+            </div>
+          </button>
 
-          {/* Center: Search */}
+          {/* Primary navigation */}
+          <nav className="hidden md:flex items-center gap-1">
+            {(['home', 'live', 'guide'] as const).map(view => (
+              <button
+                key={view}
+                onClick={() => {
+                  setPrimaryView(view)
+                  if (view === 'guide') setSidebarView('guide')
+                  else setSidebarView('channels')
+                }}
+                className={cn(
+                  'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors capitalize',
+                  primaryView === view
+                    ? 'bg-white/10 text-white'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                )}
+              >
+                {view === 'home' ? 'Home' : view === 'live' ? 'Live' : 'Guide'}
+              </button>
+            ))}
+          </nav>
+
+          {/* Search */}
           <div className="flex-1 max-w-md mx-auto relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search channels…"
+              placeholder="Search live TV…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => { if (primaryView === 'home') setPrimaryView('live') }}
               className="pl-9 bg-white/5 border-white/5 focus-visible:bg-white/10 h-9"
             />
+            <button
+              onClick={() => setGlobalSearchOpen(true)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded text-[10px] font-mono text-muted-foreground bg-white/5 hover:bg-white/10"
+              title="Global search (Ctrl+K)"
+            >
+              ⌘K
+            </button>
           </div>
 
-          {/* Right: Grouped icon sections */}
+          {/* Right: Favorites + More */}
           <div className="flex items-center gap-1 shrink-0">
-            {/* Group 1: Quick filters (Recent + Favs) */}
-            <div className="flex items-center gap-0.5">
-              <button
-                onClick={() => { setShowRecentOnly(v => !v); setShowFavsOnly(false) }}
-                className={cn(
-                  'p-2 rounded-lg transition-colors',
-                  showRecentOnly ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
-                )}
-                title="Recently watched"
-              >
-                <Clock className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => { setShowFavsOnly(v => !v); setShowRecentOnly(false) }}
-                className={cn(
-                  'p-2 rounded-lg transition-colors relative',
-                  showFavsOnly ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
-                )}
-                title="Favorites"
-              >
-                <Heart className={cn('w-4 h-4', showFavsOnly && 'fill-current')} />
-                {favorites.size > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary text-[8px] flex items-center justify-center text-white font-bold">
-                    {favorites.size > 9 ? '9+' : favorites.size}
-                  </span>
-                )}
-              </button>
-            </div>
+            <button
+              onClick={() => { setShowFavsOnly(v => !v); setShowRecentOnly(false); setPrimaryView('live') }}
+              className={cn(
+                'p-2 rounded-lg transition-colors relative',
+                showFavsOnly ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+              )}
+              title="Favorites"
+            >
+              <Heart className={cn('w-4 h-4', showFavsOnly && 'fill-current')} />
+              {favorites.size > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary text-[8px] flex items-center justify-center text-white font-bold">
+                  {favorites.size > 9 ? '9+' : favorites.size}
+                </span>
+              )}
+            </button>
 
-            {/* Divider */}
-            <div className="w-px h-5 bg-white/10 mx-1" />
+            {/* More drawer button */}
+            <button
+              onClick={() => setShowMoreDrawer(true)}
+              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+              title="More tools"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
 
-            {/* Group 2: Advanced features (icons only on mobile, labeled on desktop) */}
-            <div className="flex items-center gap-0.5">
-              <button
-                onClick={() => setGlobalSearchOpen(true)}
-                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
-                title="Global Search (Ctrl+K)"
-              >
-                <Search className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setShowMultiView(true)}
-                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
-                title="Multi-View"
-              >
-                <Grid3x3 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setShowDVR(true)}
-                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
-                title="DVR Recordings"
-              >
-                <Circle className={cn('w-4 h-4', dvrRecording && 'fill-red-500 text-red-500 animate-pulse')} />
-              </button>
-              <button
-                onClick={() => setShowSync(true)}
-                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
-                title="Cloud Sync"
-              >
-                <Cloud className={cn('w-4 h-4', syncStatus === 'ok' && 'text-green-500', syncStatus === 'syncing' && 'animate-pulse')} />
-              </button>
-            </div>
-
-            {/* Divider */}
-            <div className="w-px h-5 bg-white/10 mx-1" />
-
-            {/* Group 3: Settings/Admin */}
-            <div className="flex items-center gap-0.5">
-              <button
-                onClick={() => setRefreshNonce(n => n + 1)}
-                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
-                title="Refresh"
-              >
-                <RefreshCw className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setShowAdmin(v => !v)}
-                className={cn(
-                  'p-2 rounded-lg transition-colors',
-                  showAdmin ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
-                )}
-                title="Admin"
-              >
-                <Tv className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setShowSettings(v => !v)}
-                className={cn(
-                  'p-2 rounded-lg transition-colors',
-                  showSettings ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
-                )}
-                title="Settings"
-              >
-                <Settings className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Divider */}
-            <div className="w-px h-5 bg-white/10 mx-1" />
-
-            {/* Group 4: APK download + Language */}
+            {/* APK download */}
             <a
               href="/download/FreeStreamTV.apk"
               download
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 transition-colors text-xs font-bold"
-              title="Download Android App (APK)"
+              title="Download Android App"
             >
               <Smartphone className="w-4 h-4" />
-              <span className="hidden sm:inline">Android App</span>
             </a>
-            <button
-              onClick={() => setLanguage(l => l === 'en' ? 'ar' : 'en')}
-              className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
-              title={language === 'en' ? 'التبديل إلى العربية' : 'Switch to English'}
-            >
-              {language === 'en' ? 'ع' : 'EN'}
-            </button>
           </div>
+        </div>
+
+        {/* Mobile nav */}
+        <div className="md:hidden flex items-center gap-1 px-4 pb-2">
+          {(['home', 'live', 'guide'] as const).map(view => (
+            <button
+              key={view}
+              onClick={() => {
+                setPrimaryView(view)
+                if (view === 'guide') setSidebarView('guide')
+                else setSidebarView('channels')
+              }}
+              className={cn(
+                'px-3 py-1 rounded-lg text-xs font-medium transition-colors capitalize',
+                primaryView === view ? 'bg-white/10 text-white' : 'text-muted-foreground'
+              )}
+            >
+              {view}
+            </button>
+          ))}
+          <div className="flex-1" />
+          <button
+            onClick={() => setShowMoreDrawer(true)}
+            className="px-3 py-1 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground"
+          >
+            More
+          </button>
         </div>
 
         {/* ─── Admin panel — tabbed: Custom Channels / Xtream Codes / Twitch+YT ─── */}
@@ -2205,7 +2177,255 @@ Common causes:
         )}
       </header>
 
-      {/* ─── Main ─── */}
+      {/* ─── More drawer (advanced tools) ─── */}
+      {showMoreDrawer && (
+        <div className="fixed inset-0 z-50 bg-black/60" onClick={() => setShowMoreDrawer(false)}>
+          <div
+            className="absolute right-0 top-0 bottom-0 w-80 bg-card border-l border-border p-4 overflow-y-auto thin-scroll"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold">More Tools</h3>
+              <button onClick={() => setShowMoreDrawer(false)} className="p-1 rounded hover:bg-secondary">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-1">
+              {[
+                { icon: Search, label: 'Global Search', desc: 'Search 8000+ channels', onClick: () => { setGlobalSearchOpen(true); setShowMoreDrawer(false) } },
+                { icon: Grid3x3, label: 'Multi-View', desc: 'Watch multiple channels', onClick: () => { setShowMultiView(true); setShowMoreDrawer(false) } },
+                { icon: Circle, label: 'DVR Recordings', desc: 'Record & manage streams', onClick: () => { setShowDVR(true); setShowMoreDrawer(false) } },
+                { icon: Cloud, label: 'Cloud Sync', desc: 'Sync across devices', onClick: () => { setShowSync(true); setShowMoreDrawer(false) } },
+                { icon: RefreshCw, label: 'Refresh Playlist', desc: 'Pull latest channels', onClick: () => { setRefreshNonce(n => n + 1); setShowMoreDrawer(false) } },
+                { icon: Tv, label: 'Admin Panel', desc: 'Add channels, XC, Stalker', onClick: () => { setShowAdmin(true); setShowMoreDrawer(false) } },
+                { icon: Settings, label: 'Settings', desc: 'Filters, quality, shortcuts', onClick: () => { setShowSettings(true); setShowMoreDrawer(false) } },
+              ].map(item => (
+                <button
+                  key={item.label}
+                  onClick={item.onClick}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition text-left"
+                >
+                  <item.icon className="w-5 h-5 text-muted-foreground shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">{item.label}</p>
+                    <p className="text-xs text-muted-foreground">{item.desc}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="mt-4 pt-4 border-t border-border space-y-1">
+              <a
+                href="/download/FreeStreamTV.apk"
+                download
+                className="w-full flex items-center gap-3 p-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition text-left"
+              >
+                <Smartphone className="w-5 h-5 text-primary shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-primary">Download Android App</p>
+                  <p className="text-xs text-muted-foreground">36,000+ channels, native player</p>
+                </div>
+              </a>
+              <button
+                onClick={() => { setLanguage(l => l === 'en' ? 'ar' : 'en'); setShowMoreDrawer(false) }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition text-left"
+              >
+                <Globe className="w-5 h-5 text-muted-foreground shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium">{language === 'en' ? 'العربية' : 'English'}</p>
+                  <p className="text-xs text-muted-foreground">Switch language</p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Home dashboard view ─── */}
+      {primaryView === 'home' && (
+        <div className="flex-1 overflow-y-auto thin-scroll page-enter">
+          <div className="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
+            {/* Featured player */}
+            {currentChannel && (
+              <div className="space-y-4">
+                <div className="aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl">
+                  {isEmbedUrl(currentChannel.url) ? (
+                    <EmbedPlayer
+                      url={currentChannel.url}
+                      channelName={currentChannel.displayName}
+                      poster={currentChannel.logo}
+                      onError={handlePlayerError}
+                      onNext={goToNextChannel}
+                      autoSkip={autoSkip}
+                      maxQuality={maxQuality}
+                      externalVideoRef={videoRef}
+                    />
+                  ) : (
+                    <VideoPlayer
+                      src={currentChannel.url}
+                      poster={currentChannel.logo}
+                      channelName={currentChannel.displayName}
+                      onError={handlePlayerError}
+                      onNext={goToNextChannel}
+                      autoSkip={autoSkip}
+                      maxQuality={maxQuality}
+                      externalVideoRef={videoRef}
+                    />
+                  )}
+                </div>
+                {/* Channel info + actions */}
+                <div className="flex items-start gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="flex items-center gap-1 text-xs font-bold text-primary">
+                        <span className="relative flex h-2 w-2">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                          <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                        </span>
+                        LIVE
+                      </span>
+                      {currentChannel.quality && (
+                        <span className="text-[10px] font-bold px-1.5 py-0 rounded bg-white/10 uppercase">{currentChannel.quality}</span>
+                      )}
+                      {currentChannel.countryCode && (
+                        <span className="text-xs text-muted-foreground">{flagForCountry(currentChannel.countryCode)} {currentChannel.countryCode.toUpperCase()}</span>
+                      )}
+                    </div>
+                    <h2 className="text-2xl font-bold tracking-tight">{currentChannel.displayName}</h2>
+                    <p className="text-sm text-muted-foreground mt-1">{currentChannel.group}</p>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <Button
+                      variant={isFav(currentChannel) ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => toggleFav(currentChannel)}
+                      className="gap-2"
+                    >
+                      <Heart className={cn('w-4 h-4', isFav(currentChannel) && 'fill-current')} />
+                      {isFav(currentChannel) ? 'Saved' : 'Save'}
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => setPrimaryView('live')} className="gap-2">
+                      <Tv className="w-4 h-4" /> Browse
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Continue watching */}
+            {recentChannels.length > 0 && (
+              <div>
+                <h3 className="text-lg font-bold mb-3">Continue Watching</h3>
+                <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+                  {[...(customChannels || []), ...(data?.channels || [])]
+                    .filter(c => recentChannels.includes(c.url))
+                    .sort((a, b) => recentChannels.indexOf(a.url) - recentChannels.indexOf(b.url))
+                    .slice(0, 10)
+                    .map(ch => (
+                      <button
+                        key={ch.id + ch.url}
+                        onClick={() => { handleSelectChannel(ch); setPrimaryView('home') }}
+                        className="shrink-0 w-48 group"
+                      >
+                        <div className="aspect-video rounded-xl overflow-hidden bg-white/5 relative">
+                          {ch.logo ? (
+                            <img src={ch.logo} alt="" className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform" loading="lazy" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Tv className="w-8 h-8 text-muted-foreground" />
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-2">
+                            <Play className="w-6 h-6 text-white" />
+                          </div>
+                        </div>
+                        <p className="text-xs font-medium mt-1.5 truncate">{ch.displayName}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{ch.group}</p>
+                      </button>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* Browse by category */}
+            <div>
+              <h3 className="text-lg font-bold mb-3">Browse by Category</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {[
+                  { name: 'Sports', flag: '⚽', prov: 'best-of', cat: 'sports' },
+                  { name: 'Movies', flag: '🎬', prov: 'best-of', cat: 'movies' },
+                  { name: 'News', flag: '📰', prov: 'best-of', cat: 'news' },
+                  { name: 'Music', flag: '🎵', prov: 'best-of', cat: 'music' },
+                  { name: 'Kids', flag: '👶', prov: 'best-of', cat: 'kids' },
+                  { name: 'Entertainment', flag: '🎪', prov: 'best-of', cat: 'entertainment' },
+                  { name: 'Documentary', flag: '🔬', prov: 'best-of', cat: 'documentary' },
+                  { name: 'International', flag: '🌍', prov: 'best-of', cat: 'international' },
+                ].map(item => {
+                  const prov = PROVIDERS.find(p => p.id === item.prov)
+                  const category = prov?.categories.find(c => c.id === item.cat)
+                  if (!prov || !category) return null
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => { switchProvider(prov); switchCategory(category); setPrimaryView('live') }}
+                      className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-white/8 to-white/3 hover:from-white/12 hover:to-white/5 border border-white/5 hover:border-white/10 p-4 flex flex-col items-center justify-center gap-2 transition-all group"
+                    >
+                      <span className="text-3xl group-hover:scale-110 transition-transform">{item.flag}</span>
+                      <span className="text-sm font-semibold">{item.name}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Football Live spotlight */}
+            <div>
+              <h3 className="text-lg font-bold mb-3">⚽ Football Live</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {(() => {
+                  const prov = PROVIDERS.find(p => p.id === 'football-live')
+                  if (!prov) return null
+                  return prov.categories.flatMap(cat =>
+                    (cat.playlists || []).map(pl => ({ pl, cat, prov }))
+                  ).slice(0, 6).map(({ pl, cat, prov }) => (
+                    <button
+                      key={pl.id}
+                      onClick={() => { switchProvider(prov); switchCategory(cat); setActivePlaylistId(pl.id); setPrimaryView('live') }}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/8 transition text-left"
+                    >
+                      <span className="text-xl shrink-0">{pl.flag}</span>
+                      <span className="text-sm font-medium truncate">{pl.name}</span>
+                    </button>
+                  ))
+                })()}
+              </div>
+            </div>
+
+            {/* Sources */}
+            <div>
+              <h3 className="text-lg font-bold mb-3">All Sources</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                {PROVIDERS.map(prov => (
+                  <button
+                    key={prov.id}
+                    onClick={() => { switchProvider(prov); setPrimaryView('live') }}
+                    className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition group"
+                  >
+                    {prov.logo ? (
+                      <img src={prov.logo} alt="" className="w-8 h-8 object-contain" />
+                    ) : (
+                      <span className="text-xl group-hover:scale-110 transition-transform">{prov.flag}</span>
+                    )}
+                    <span className="text-xs font-medium text-center leading-tight">{prov.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Live browsing view (original layout) ─── */}
+      {primaryView !== 'home' && (
       <div className="flex-1 flex relative">
         {/* ─── Sidebar (pro layout) ─── */}
         <aside
@@ -2739,6 +2959,7 @@ Common causes:
           </section>
         </main>
       </div>
+      )}
 
       {/* ─── Global Search Modal (Ctrl+K) ─── */}
       {globalSearchOpen && (
