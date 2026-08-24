@@ -23,7 +23,7 @@ import { DVRPanel } from '@/components/dvr-panel'
 import { ChannelCard } from '@/components/channel-card'
 import { ContentRail } from '@/components/content-rail'
 import { EmptyState, LoadingState, SkeletonRail } from '@/components/states'
-import { PROVIDERS, type Provider, type ProviderCategory } from '@/lib/playlists'
+import { PROVIDERS, type Provider, type ProviderCategory, type ProviderTier, getProvidersByTier, getFeaturedProviders } from '@/lib/playlists'
 import type { Channel } from '@/lib/m3u-parser'
 import { flagForCountry } from '@/lib/countries'
 import { cn } from '@/lib/utils'
@@ -820,15 +820,44 @@ export default function Home() {
               </div>
             </section>
 
-            {/* All Sources */}
+            {/* Featured Sources */}
             <section>
-              <h2 className="text-xl font-bold mb-3">All Sources</h2>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-                {PROVIDERS.map(p => (
+              <h2 className="text-xl font-bold mb-3">Featured Sources</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                {PROVIDERS.filter(p => p.tier === 'featured').map(p => (
                   <button key={p.id} onClick={() => { switchProvider(p); setView('live') }}
-                    className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] card-hover">
+                    className="flex flex-col items-center gap-2.5 p-4 rounded-2xl bg-gradient-to-br from-white/[0.06] to-white/[0.02] hover:from-white/[0.10] hover:to-white/[0.04] card-hover">
+                    {p.logo ? <img src={p.logo} alt="" className="w-10 h-10 object-contain" /> : <span className="text-2xl">{p.flag}</span>}
+                    <span className="text-xs font-semibold text-center leading-tight">{p.name}</span>
+                    {p.countLabel && <span className="text-[10px] text-muted-foreground text-center">{p.countLabel}</span>}
+                  </button>
+                ))}
+              </div>
+            </section>
+
+            {/* Regional Sources */}
+            <section>
+              <h2 className="text-xl font-bold mb-3">More Free Services</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                {PROVIDERS.filter(p => p.tier === 'regional').map(p => (
+                  <button key={p.id} onClick={() => { switchProvider(p); setView('live') }}
+                    className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] card-hover">
                     {p.logo ? <img src={p.logo} alt="" className="w-7 h-7 object-contain" /> : <span className="text-lg">{p.flag}</span>}
                     <span className="text-[11px] font-medium text-center leading-tight">{p.name}</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+
+            {/* Power User Tools */}
+            <section>
+              <h2 className="text-xl font-bold mb-3">Advanced Tools</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {PROVIDERS.filter(p => p.tier === 'power').map(p => (
+                  <button key={p.id} onClick={() => { switchProvider(p); setView('live') }}
+                    className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] card-hover">
+                    <span className="text-lg">{p.flag}</span>
+                    <span className="text-[11px] font-medium text-center">{p.name}</span>
                   </button>
                 ))}
               </div>

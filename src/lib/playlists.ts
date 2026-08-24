@@ -1,15 +1,23 @@
-// Playlist catalog — organized by PLATFORM
-// Each platform (Pluto TV, Samsung TV Plus, LG Channels, Tubi, Roku, etc.)
-// is a Provider with sub-playlists grouped under categories like
-// "By Country" or "All Channels". Channel-type filtering (Sports/News/Movies/etc.)
-// happens in the sidebar via the M3U group-title field, not at the provider level.
+// Playlist catalog — restructured for premium streaming UX
+//
+// Provider tiers:
+//   featured   — Primary FAST sources shown on Home
+//   regional   — Secondary sources, region-dependent
+//   power      — Advanced tools (XC, Stalker, M3U import, embeds)
+//   library    — User's personal collection
+//
+// Source types describe legal/technical provenance:
+//   official-api       — Uses the provider's official API
+//   community-playlist — Public M3U from GitHub/iptv-org
+//   curated            — Internally curated by FreeStream
+//   user-provided      — User-added (M3U URL, XC, Stalker)
+//   external-embed     — Twitch/YouTube iframe
 
 export type PlaylistItem = {
   id: string
   name: string
   flag?: string
   url: string
-  /** Channel count hint shown in UI */
   count?: number
 }
 
@@ -17,20 +25,36 @@ export type ProviderCategory = {
   id: string
   name: string
   flag?: string
-  /** If set, clicking this category loads this URL directly (no sub-playlist picker) */
   directUrl?: string
-  /** If set, this category contains multiple sub-playlists to pick from */
   playlists?: PlaylistItem[]
 }
+
+export type ProviderTier = 'featured' | 'regional' | 'power' | 'library'
+
+export type SourceType = 'official-api' | 'community-playlist' | 'curated' | 'user-provided' | 'external-embed'
 
 export type Provider = {
   id: string
   name: string
   description: string
   flag: string
-  /** Real logo URL (shown in provider tab instead of emoji) */
   logo?: string
+  tier: ProviderTier
+  sourceType: SourceType
+  officialWebsite?: string
+  /** Soft count label — avoids showing stale exact numbers */
+  countLabel?: string
   categories: ProviderCategory[]
+}
+
+// Helper: get providers by tier
+export function getProvidersByTier(tier: ProviderTier): Provider[] {
+  return PROVIDERS.filter(p => p.tier === tier)
+}
+
+// Helper: get featured providers for Home page
+export function getFeaturedProviders(): Provider[] {
+  return PROVIDERS.filter(p => p.tier === 'featured' || p.tier === 'library')
 }
 
 export const PROVIDERS: Provider[] = [
@@ -42,13 +66,15 @@ export const PROVIDERS: Provider[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'my-channels',
-    name: 'My Channels',
-    description: 'Your saved channels — custom M3U, single channels, Twitch & YouTube',
+    name: 'My Library',
+    description: 'Your saved channels, imports, and custom streams',
+    tier: 'library',
+    sourceType: 'user-provided',
     flag: '⭐',
     categories: [
       {
         id: 'all',
-        name: 'All My Channels',
+        name: 'All Saved',
         flag: '⭐',
         // The URL is never fetched — page.tsx intercepts this provider and
         // returns customChannels directly.
@@ -65,20 +91,23 @@ export const PROVIDERS: Provider[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'best-of',
-    name: 'Best of FreeStream',
-    description: 'Curated top channels per genre — all verified working',
+    name: 'FreeStream Picks',
+    description: 'Curated live channels by genre — the FreeStream experience',
+    tier: 'featured',
+    sourceType: 'curated',
+    countLabel: 'Hundreds of curated channels',
     flag: '🏆',
     categories: [
-      { id: 'sports', name: '⚽ Sports (97✓)', flag: '🏆', directUrl: '/curated/sports.m3u' },
-      { id: 'movies', name: '🎬 Movies (176✓)', flag: '🏆', directUrl: '/curated/movies.m3u' },
-      { id: 'news', name: 'News (100✓)', flag: '📰', directUrl: '/curated/news.m3u' },
-      { id: 'music', name: 'Music (100✓)', flag: '🎵', directUrl: '/curated/music.m3u' },
-      { id: 'kids', name: 'Kids (100✓)', flag: '👶', directUrl: '/curated/kids.m3u' },
-      { id: 'entertainment', name: 'Entertainment (100✓)', flag: '🎪', directUrl: '/curated/entertainment.m3u' },
-      { id: 'documentary', name: 'Documentary (100✓)', flag: '🔬', directUrl: '/curated/documentary.m3u' },
-      { id: 'international', name: 'International (77✓)', flag: '🌍', directUrl: '/curated/international.m3u' },
-      { id: 'religious', name: 'Religious (24✓)', flag: '🕌', directUrl: '/curated/religious.m3u' },
-      { id: 'education', name: 'Education (9✓)', flag: '🎓', directUrl: '/curated/education.m3u' },
+      { id: 'sports', name: '⚽ Sports', flag: '🏆', directUrl: '/curated/sports.m3u' },
+      { id: 'movies', name: '🎬 Movies', flag: '🏆', directUrl: '/curated/movies.m3u' },
+      { id: 'news', name: 'News', flag: '📰', directUrl: '/curated/news.m3u' },
+      { id: 'music', name: 'Music', flag: '🎵', directUrl: '/curated/music.m3u' },
+      { id: 'kids', name: 'Kids', flag: '👶', directUrl: '/curated/kids.m3u' },
+      { id: 'entertainment', name: 'Entertainment', flag: '🎪', directUrl: '/curated/entertainment.m3u' },
+      { id: 'documentary', name: 'Documentary', flag: '🔬', directUrl: '/curated/documentary.m3u' },
+      { id: 'international', name: 'International', flag: '🌍', directUrl: '/curated/international.m3u' },
+      { id: 'religious', name: 'Religious', flag: '🕌', directUrl: '/curated/religious.m3u' },
+      { id: 'education', name: 'Education', flag: '🎓', directUrl: '/curated/education.m3u' },
     ],
   },
 
@@ -87,13 +116,16 @@ export const PROVIDERS: Provider[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'sports-cats',
-    name: 'Sports by Category',
-    description: 'Sports channels broken down by type — Football, Soccer, Basketball & more',
+    name: 'Sports',
+    description: 'Live sports by type — football, soccer, basketball & more',
+    tier: 'featured',
+    sourceType: 'curated',
+    countLabel: 'Live sports channels',
     flag: '🏅',
     categories: [
       {
         id: 'all-sports',
-        name: 'All Sports (97✓)',
+        name: 'All Sports',
         flag: '🏆',
         directUrl: '/curated/sports.m3u',
       },
@@ -102,15 +134,15 @@ export const PROVIDERS: Provider[] = [
         name: 'By Sport Type',
         flag: '📂',
         playlists: [
-          { id: 'football', name: '🏈 Football (18✓)', flag: '🏈', url: '/curated/sports-football.m3u' },
-          { id: 'soccer', name: '⚽ Soccer (20✓)', flag: '⚽', url: '/curated/sports-soccer.m3u' },
-          { id: 'basketball', name: '🏀 Basketball (3✓)', flag: '🏀', url: '/curated/sports-basketball.m3u' },
-          { id: 'baseball', name: '⚾ Baseball (2✓)', flag: '⚾', url: '/curated/sports-baseball.m3u' },
-          { id: 'hockey', name: '🏒 Hockey (1✓)', flag: '🏒', url: '/curated/sports-hockey.m3u' },
-          { id: 'combat', name: '🥊 Combat (20✓)', flag: '🥊', url: '/curated/sports-combat.m3u' },
-          { id: 'racing', name: '🏎️ Racing (10✓)', flag: '🏎️', url: '/curated/sports-racing.m3u' },
-          { id: 'college', name: '🎓 College (3✓)', flag: '🎓', url: '/curated/sports-college.m3u' },
-          { id: 'general', name: '🏆 General Sports (20✓)', flag: '🏆', url: '/curated/sports-general-sports.m3u' },
+          { id: 'football', name: '🏈 Football', flag: '🏈', url: '/curated/sports-football.m3u' },
+          { id: 'soccer', name: '⚽ Soccer', flag: '⚽', url: '/curated/sports-soccer.m3u' },
+          { id: 'basketball', name: '🏀 Basketball', flag: '🏀', url: '/curated/sports-basketball.m3u' },
+          { id: 'baseball', name: '⚾ Baseball', flag: '⚾', url: '/curated/sports-baseball.m3u' },
+          { id: 'hockey', name: '🏒 Hockey', flag: '🏒', url: '/curated/sports-hockey.m3u' },
+          { id: 'combat', name: '🥊 Combat', flag: '🥊', url: '/curated/sports-combat.m3u' },
+          { id: 'racing', name: '🏎️ Racing', flag: '🏎️', url: '/curated/sports-racing.m3u' },
+          { id: 'college', name: '🎓 College', flag: '🎓', url: '/curated/sports-college.m3u' },
+          { id: 'general', name: '🏆 General Sports', flag: '🏆', url: '/curated/sports-general-sports.m3u' },
         ],
       },
     ],
@@ -121,13 +153,16 @@ export const PROVIDERS: Provider[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'movies-cats',
-    name: 'Movies by Category',
-    description: 'Movie channels broken down by genre — Action, Comedy, Drama & more',
+    name: 'Movies',
+    description: 'Movie channels by genre — action, comedy, drama & more',
+    tier: 'featured',
+    sourceType: 'curated',
+    countLabel: 'Movie channels',
     flag: '🎞️',
     categories: [
       {
         id: 'all-movies',
-        name: 'All Movies (176✓)',
+        name: 'All Movies',
         flag: '🎬',
         directUrl: '/curated/movies.m3u',
       },
@@ -136,14 +171,14 @@ export const PROVIDERS: Provider[] = [
         name: 'By Movie Genre',
         flag: '📂',
         playlists: [
-          { id: 'action', name: '💥 Action (22✓)', flag: '💥', url: '/curated/movies-action.m3u' },
-          { id: 'comedy', name: '😂 Comedy (22✓)', flag: '😂', url: '/curated/movies-comedy.m3u' },
-          { id: 'drama', name: '🎭 Drama (22✓)', flag: '🎭', url: '/curated/movies-drama.m3u' },
-          { id: 'horror', name: '👻 Horror (22✓)', flag: '👻', url: '/curated/movies-horror.m3u' },
-          { id: 'classic', name: '📽️ Classic (22✓)', flag: '📽️', url: '/curated/movies-classic.m3u' },
-          { id: 'western', name: '🤠 Western (22✓)', flag: '🤠', url: '/curated/movies-western.m3u' },
-          { id: 'scifi', name: '🚀 Sci-Fi & Fantasy (22✓)', flag: '🚀', url: '/curated/movies-scifi.m3u' },
-          { id: 'general', name: '🎬 General Movies (22✓)', flag: '🎬', url: '/curated/movies-general-movies.m3u' },
+          { id: 'action', name: '💥 Action', flag: '💥', url: '/curated/movies-action.m3u' },
+          { id: 'comedy', name: '😂 Comedy', flag: '😂', url: '/curated/movies-comedy.m3u' },
+          { id: 'drama', name: '🎭 Drama', flag: '🎭', url: '/curated/movies-drama.m3u' },
+          { id: 'horror', name: '👻 Horror', flag: '👻', url: '/curated/movies-horror.m3u' },
+          { id: 'classic', name: '📽️ Classic', flag: '📽️', url: '/curated/movies-classic.m3u' },
+          { id: 'western', name: '🤠 Western', flag: '🤠', url: '/curated/movies-western.m3u' },
+          { id: 'scifi', name: '🚀 Sci-Fi & Fantasy', flag: '🚀', url: '/curated/movies-scifi.m3u' },
+          { id: 'general', name: '🎬 General Movies', flag: '🎬', url: '/curated/movies-general-movies.m3u' },
         ],
       },
     ],
@@ -155,8 +190,11 @@ export const PROVIDERS: Provider[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'countries',
-    name: 'Countries',
-    description: 'Channels by country — aggregated across all providers',
+    name: 'International',
+    description: 'Channels from around the world — 48 countries',
+    tier: 'regional',
+    sourceType: 'curated',
+    countLabel: 'International channels',
     flag: '🌍',
     categories: [
       {
@@ -223,8 +261,11 @@ export const PROVIDERS: Provider[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'leagues',
-    name: 'Leagues & Championships',
-    description: 'Channels by league — Premier League, La Liga, World Cup & more',
+    name: 'Live Sports',
+    description: 'Live sports by league — Premier League, NFL, NBA & more',
+    tier: 'featured',
+    sourceType: 'curated',
+    countLabel: 'League channels',
     flag: '🏆',
     categories: [
       {
@@ -232,19 +273,19 @@ export const PROVIDERS: Provider[] = [
         name: 'By League',
         flag: '🏆',
         playlists: [
-          { id: 'premier-league', name: '🦁 Premier League (16✓)', flag: '🦁', url: '/leagues/premier-league.m3u' },
-          { id: 'la-liga', name: '🇪🇸 La Liga (5✓)', flag: '🇪🇸', url: '/leagues/la-liga.m3u' },
-          { id: 'champions-league', name: '🏆 Champions League (4✓)', flag: '🏆', url: '/leagues/champions-league.m3u' },
-          { id: 'europa-league', name: '🥈 Europa League (5✓)', flag: '🥈', url: '/leagues/europa-league.m3u' },
-          { id: 'world-cup-2026', name: '🏆 World Cup 2026 (50✓)', flag: '🏆', url: '/leagues/world-cup-2026.m3u' },
-          { id: 'other-football', name: '⚽ Other Football (50✓)', flag: '⚽', url: '/leagues/other-football.m3u' },
-          { id: 'nfl', name: '🏈 NFL (6✓)', flag: '🏈', url: '/leagues/nfl.m3u' },
-          { id: 'nba', name: '🏀 NBA (2✓)', flag: '🏀', url: '/leagues/nba.m3u' },
-          { id: 'mlb', name: '⚾ MLB (4✓)', flag: '⚾', url: '/leagues/mlb.m3u' },
-          { id: 'nhl', name: '🏒 NHL (2✓)', flag: '🏒', url: '/leagues/nhl.m3u' },
-          { id: 'ufc-mma', name: '🥊 UFC & MMA (30✓)', flag: '🥊', url: '/leagues/ufc-mma.m3u' },
-          { id: 'f1-racing', name: '🏎️ F1 & Motorsport (7✓)', flag: '🏎️', url: '/leagues/f1-racing.m3u' },
-          { id: 'college-sports', name: '🎓 College NCAA (2✓)', flag: '🎓', url: '/leagues/college-sports.m3u' },
+          { id: 'premier-league', name: '🦁 Premier League', flag: '🦁', url: '/leagues/premier-league.m3u' },
+          { id: 'la-liga', name: '🇪🇸 La Liga', flag: '🇪🇸', url: '/leagues/la-liga.m3u' },
+          { id: 'champions-league', name: '🏆 Champions League', flag: '🏆', url: '/leagues/champions-league.m3u' },
+          { id: 'europa-league', name: '🥈 Europa League', flag: '🥈', url: '/leagues/europa-league.m3u' },
+          { id: 'world-cup-2026', name: '🏆 World Cup 2026', flag: '🏆', url: '/leagues/world-cup-2026.m3u' },
+          { id: 'other-football', name: '⚽ Other Football', flag: '⚽', url: '/leagues/other-football.m3u' },
+          { id: 'nfl', name: '🏈 NFL', flag: '🏈', url: '/leagues/nfl.m3u' },
+          { id: 'nba', name: '🏀 NBA', flag: '🏀', url: '/leagues/nba.m3u' },
+          { id: 'mlb', name: '⚾ MLB', flag: '⚾', url: '/leagues/mlb.m3u' },
+          { id: 'nhl', name: '🏒 NHL', flag: '🏒', url: '/leagues/nhl.m3u' },
+          { id: 'ufc-mma', name: '🥊 UFC & MMA', flag: '🥊', url: '/leagues/ufc-mma.m3u' },
+          { id: 'f1-racing', name: '🏎️ F1 & Motorsport', flag: '🏎️', url: '/leagues/f1-racing.m3u' },
+          { id: 'college-sports', name: '🎓 College NCAA', flag: '🎓', url: '/leagues/college-sports.m3u' },
         ],
       },
     ],
@@ -257,7 +298,10 @@ export const PROVIDERS: Provider[] = [
   {
     id: 'world-regions',
     name: 'World Regions',
-    description: 'Channels by world region — Europe, Asia, Americas & more',
+    description: 'Channels grouped by world region',
+    tier: 'regional',
+    sourceType: 'curated',
+    countLabel: 'Regional channels',
     flag: '🗺️',
     categories: [
       {
@@ -285,6 +329,10 @@ export const PROVIDERS: Provider[] = [
     id: 'pluto-tv',
     name: 'Pluto TV',
     description: 'Free ad-supported TV by Paramount — 12 countries',
+    tier: 'featured',
+    sourceType: 'community-playlist',
+    officialWebsite: 'https://pluto.tv',
+    countLabel: 'Hundreds of live channels',
     flag: '🆓',
     logo: '/logos/pluto-tv.svg',
     categories: [
@@ -317,6 +365,10 @@ export const PROVIDERS: Provider[] = [
     id: 'samsung-tv',
     name: 'Samsung TV Plus',
     description: 'Free TV by Samsung — 15 countries (filtered)',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    officialWebsite: 'https://www.samsungtvplus.com',
+    countLabel: 'Live channels',
     flag: '📱',
     logo: '/logos/samsung-tv.svg',
     categories: [
@@ -325,9 +377,9 @@ export const PROVIDERS: Provider[] = [
         name: 'By Country',
         flag: '🗺️',
         playlists: [
-          { id: 'us', name: 'USA (252✓)', flag: '🇺🇸', url: '/filtered/iptv-streams-samsung-tv-us-samsung.m3u', count: 252 },
-          { id: 'uk', name: 'UK (120✓)', flag: '🇬🇧', url: '/filtered/iptv-streams-samsung-tv-uk-samsung.m3u', count: 120 },
-          { id: 'de', name: 'Germany (1✓)', flag: '🇩🇪', url: '/filtered/iptv-streams-samsung-tv-de-samsung.m3u', count: 1 },
+          { id: 'us', name: 'USA', flag: '🇺🇸', url: '/filtered/iptv-streams-samsung-tv-us-samsung.m3u', count: 252 },
+          { id: 'uk', name: 'UK', flag: '🇬🇧', url: '/filtered/iptv-streams-samsung-tv-uk-samsung.m3u', count: 120 },
+          { id: 'de', name: 'Germany', flag: '🇩🇪', url: '/filtered/iptv-streams-samsung-tv-de-samsung.m3u', count: 1 },
           { id: 'at', name: 'Austria', flag: '🇦🇹', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/at_samsung.m3u' },
           { id: 'au', name: 'Australia', flag: '🇦🇺', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/au_samsung.m3u' },
           { id: 'be', name: 'Belgium', flag: '🇧🇪', url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/be_samsung.m3u' },
@@ -352,6 +404,10 @@ export const PROVIDERS: Provider[] = [
     id: 'lg-channels',
     name: 'LG Channels',
     description: 'Free TV by LG Electronics — 32 countries',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    officialWebsite: 'https://www.lg.com',
+    countLabel: 'Live channels',
     flag: '📺',
     logo: '/logos/lg-channels.svg',
     categories: [
@@ -404,6 +460,10 @@ export const PROVIDERS: Provider[] = [
     id: 'tubi',
     name: 'Tubi TV',
     description: 'Free ad-supported TV by Fox — 176 channels',
+    tier: 'featured',
+    sourceType: 'community-playlist',
+    officialWebsite: 'https://tubitv.com',
+    countLabel: 'Live channels',
     flag: '🦊',
     logo: '/logos/tubi.png',
     categories: [
@@ -423,6 +483,10 @@ export const PROVIDERS: Provider[] = [
     id: 'roku',
     name: 'Roku Channel',
     description: 'Free ad-supported TV by Roku — 352 channels',
+    tier: 'featured',
+    sourceType: 'community-playlist',
+    officialWebsite: 'https://therokochannel.roku.com',
+    countLabel: 'Live channels',
     flag: '🔴',
     logo: '/logos/roku.png',
     categories: [
@@ -442,6 +506,9 @@ export const PROVIDERS: Provider[] = [
     id: 'vizio',
     name: 'Vizio WatchFree+',
     description: 'Free ad-supported TV by Vizio — 433 channels',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    countLabel: 'Live channels',
     flag: '📺',
     logo: '/logos/vizio.png',
     categories: [
@@ -461,6 +528,10 @@ export const PROVIDERS: Provider[] = [
     id: 'xumo',
     name: 'Xumo TV',
     description: 'Free ad-supported TV by Xumo — 389 channels',
+    tier: 'featured',
+    sourceType: 'community-playlist',
+    officialWebsite: 'https://play.xumo.com',
+    countLabel: 'Live channels',
     flag: '📺',
     logo: '/logos/xumo.png',
     categories: [
@@ -480,6 +551,9 @@ export const PROVIDERS: Provider[] = [
     id: 'rakuten',
     name: 'Rakuten TV',
     description: 'Free ad-supported TV by Rakuten — UK & France',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    countLabel: 'Live channels',
     flag: '🇯🇵',
     logo: '/logos/rakuten.png',
     categories: [
@@ -535,6 +609,9 @@ export const PROVIDERS: Provider[] = [
     id: 'bein',
     name: 'beIN Sports',
     description: 'Verified working beIN streams — XTRA, XTRA Ñ, Haber',
+    tier: 'regional',
+    sourceType: 'curated',
+    countLabel: 'Sports channels',
     flag: '⚽',
     logo: '/logos/bein.png',
     categories: [
@@ -554,6 +631,9 @@ export const PROVIDERS: Provider[] = [
     id: 'fast-iptv',
     name: 'FAST IPTV',
     description: 'South Asian TV + World Cup 2026 — 744 verified working',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    countLabel: 'Live channels',
     flag: '⚡',
     categories: [
       {
@@ -561,8 +641,8 @@ export const PROVIDERS: Provider[] = [
         name: 'World Cup 2026',
         flag: '🏆',
         playlists: [
-          { id: 'fifa', name: 'FIFA BDIX (12✓)', flag: '⚽', url: '/filtered/fast-iptv-world-cup-f-fifa.m3u', count: 12 },
-          { id: 'combined', name: 'Combined Sports (117✓)', flag: '🏅', url: '/filtered/fast-iptv-world-cup-f-combined.m3u', count: 117 },
+          { id: 'fifa', name: 'FIFA BDIX', flag: '⚽', url: '/filtered/fast-iptv-world-cup-f-fifa.m3u', count: 12 },
+          { id: 'combined', name: 'Combined Sports', flag: '🏅', url: '/filtered/fast-iptv-world-cup-f-combined.m3u', count: 117 },
         ],
       },
       {
@@ -570,9 +650,9 @@ export const PROVIDERS: Provider[] = [
         name: 'By Country',
         flag: '🗺️',
         playlists: [
-          { id: 'indian', name: 'Indian (28✓)', flag: '🇮🇳', url: '/filtered/fast-iptv-countries-f-indian.m3u', count: 28 },
+          { id: 'indian', name: 'Indian', flag: '🇮🇳', url: '/filtered/fast-iptv-countries-f-indian.m3u', count: 28 },
           { id: 'world-4k', name: 'Bangladesh 4K (60)', flag: '🇧🇩', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/m3u_world_4k.m3u8', count: 60 },
-          { id: 'play', name: 'Indonesia Play (151✓)', flag: '🇮🇩', url: '/filtered/fast-iptv-countries-f-play.m3u', count: 151 },
+          { id: 'play', name: 'Indonesia Play', flag: '🇮🇩', url: '/filtered/fast-iptv-countries-f-play.m3u', count: 151 },
         ],
       },
       {
@@ -580,10 +660,10 @@ export const PROVIDERS: Provider[] = [
         name: 'Movies & Shows',
         flag: '🎬',
         playlists: [
-          { id: 'movies', name: 'Movies (78✓)', flag: '🎬', url: '/filtered/fast-iptv-content-f-movies.m3u', count: 78 },
+          { id: 'movies', name: 'Movies', flag: '🎬', url: '/filtered/fast-iptv-content-f-movies.m3u', count: 78 },
           { id: 'animation', name: 'Animation (6)', flag: '🎨', url: 'https://raw.githubusercontent.com/ahan443/FAST-IPTV/main/animation.m3u' },
-          { id: 'direct', name: 'Direct M3U (220✓)', flag: '📺', url: '/filtered/fast-iptv-content-f-direct.m3u', count: 220 },
-          { id: 'channels', name: 'Channels (138✓)', flag: '📡', url: '/filtered/fast-iptv-content-f-channels.m3u', count: 138 },
+          { id: 'direct', name: 'Direct M3U', flag: '📺', url: '/filtered/fast-iptv-content-f-direct.m3u', count: 220 },
+          { id: 'channels', name: 'Channels', flag: '📡', url: '/filtered/fast-iptv-content-f-channels.m3u', count: 138 },
         ],
       },
     ],
@@ -596,6 +676,9 @@ export const PROVIDERS: Provider[] = [
     id: 'iptv4on',
     name: 'IPTV4ON',
     description: 'Arabic, beIN, France, World Cup — verified working',
+    tier: 'regional',
+    sourceType: 'curated',
+    countLabel: 'Live channels',
     flag: '🎬',
     categories: [
       {
@@ -614,6 +697,9 @@ export const PROVIDERS: Provider[] = [
     id: 'free-tv',
     name: 'Free-TV Aggregated',
     description: 'Pluto + Plex + Samsung combined — 731 verified working',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    countLabel: 'Live channels',
     flag: '📺',
     categories: [
       {
@@ -632,6 +718,9 @@ export const PROVIDERS: Provider[] = [
     id: 'world-iptv',
     name: 'World IPTV',
     description: 'Auto-verified every 6 hours — 14,148 channels filtered to 261✓',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    countLabel: 'Verified channels',
     flag: '✅',
     categories: [
       {
@@ -656,6 +745,10 @@ export const PROVIDERS: Provider[] = [
     id: 'iptv-org',
     name: 'IPTV-org',
     description: 'Main public IPTV directory — 8,000+ channels worldwide',
+    tier: 'featured',
+    sourceType: 'community-playlist',
+    officialWebsite: 'https://iptv-org.github.io',
+    countLabel: '8,000+ channels',
     flag: '🌍',
     logo: '/logos/iptv-org.png',
     categories: [
@@ -757,6 +850,9 @@ export const PROVIDERS: Provider[] = [
     id: 'cn-iptv',
     name: 'China & Asia',
     description: 'Chinese regional TV + Taiwan/HK + international channels',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    countLabel: 'Chinese channels',
     flag: '🇨🇳',
     categories: [
       {
@@ -821,6 +917,9 @@ export const PROVIDERS: Provider[] = [
     id: 'yang-iptv',
     name: 'YanG IPTV',
     description: 'Chinese channels + Migu sports — with real EPG data',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    countLabel: 'Chinese channels',
     flag: '📡',
     categories: [
       {
@@ -844,6 +943,9 @@ export const PROVIDERS: Provider[] = [
     id: 'auto-updated',
     name: 'Auto-Updated',
     description: 'GitHub Actions playlists — refreshed every 15min–2h automatically',
+    tier: 'regional',
+    sourceType: 'community-playlist',
+    countLabel: 'Auto-updated channels',
     flag: '🔄',
     categories: [
       {
@@ -980,6 +1082,9 @@ export const PROVIDERS: Provider[] = [
     id: 'football-live',
     name: 'Football Live',
     description: 'Premier League, La Liga & all football — auto-updating sources',
+    tier: 'featured',
+    sourceType: 'curated',
+    countLabel: 'Football channels',
     flag: '⚽',
     categories: [
       {
@@ -1142,6 +1247,9 @@ export const PROVIDERS: Provider[] = [
     id: 'xtream',
     name: 'Xtream Codes',
     description: 'Login to any XC provider — enter server + user + pass in Admin',
+    tier: 'power',
+    sourceType: 'user-provided',
+    countLabel: 'Your XC channels',
     flag: '🔐',
     categories: [
       {
@@ -1165,6 +1273,9 @@ export const PROVIDERS: Provider[] = [
     id: 'embeds',
     name: 'Twitch & YouTube',
     description: 'Embed Twitch / YouTube streams via iframe — no server needed',
+    tier: 'power',
+    sourceType: 'external-embed',
+    countLabel: 'Embed channels',
     flag: '🎥',
     categories: [
       {
@@ -1311,8 +1422,11 @@ export const PROVIDERS: Provider[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     id: 'custom-upload',
-    name: 'Custom M3U',
-    description: 'Paste a URL or upload your own M3U playlist',
+    name: 'Import M3U',
+    description: 'Import M3U by URL or file',
+    tier: 'power',
+    sourceType: 'user-provided',
+    countLabel: 'Custom channels',
     flag: '📎',
     categories: [
       {
